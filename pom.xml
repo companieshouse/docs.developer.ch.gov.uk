@@ -11,7 +11,7 @@
   <artifactId>docs.developer.ch.gov.uk</artifactId>
   <version>unversioned</version>
   <name>developer-hub.static</name>
-  <description>Static content for the devloper hub, such as "getting started" and "introduction" documentation</description>
+  <description>Static content for the developer hub, such as "getting started" and "introduction" documentation</description>
 
 
 </project>
