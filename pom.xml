@@ -3,14 +3,14 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <name>docs.developer.ch.gov.uk</name>
+  <artifactId>docs.developer.ch.gov.uk</artifactId>
+  <version>unversioned</version>
   <parent>
     <groupId>uk.gov.companieshouse</groupId>
     <artifactId>companies-house-parent</artifactId>
-    <version>0.1.0</version>
+    <version>1.1.0</version>
   </parent>
-  <artifactId>docs.developer.ch.gov.uk</artifactId>
-  <version>unversioned</version>
-  <name>developer-hub.static</name>
   <description>Static content for the developer hub, such as "getting started" and "introduction" documentation</description>
 
 
