@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title layout:title-pattern="$CONTENT_TITLE"></title>
+  <div hidden id="templateName" th:attr="data-id=${templateName},data-metadata=${metadata}"></div>
+
+  <link
+      media="all"
+      rel="stylesheet"
+      th:href="@{{cdnUrl}/stylesheets/chs-styles.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
+      type="text/css"/>
+
+  <link
+      rel="icon"
+      th:href="@{{cdnUrl}/images/favicon.ico?0.17.3(cdnUrl=${@environment.getProperty('cdn.url')})}"
+      type="image/x-icon"/>
+
+</head>
+<body>
+<script crossorigin="anonymous"
+        src="https://polyfill.io/v3/polyfill.min.js?features=default%2CNumber.isInteger"></script>
+<script
+    th:src="@{{cdnUrl}/javascripts/lib/company-accounts-web/details-polyfill.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
+    type="text/javascript"></script>
+<script
+    th:src="@{{cdnUrl}/javascripts/app/body-js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
+    type="text/javascript"></script>
+<script
+    th:src="@{{cdnUrl}/javascripts/vendor/require.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
+    type="text/javascript"></script>
+<script
+    th:src="@{{cdnUrl}/javascripts/vendor/jquery-3.3.1.min.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
+    type="text/javascript"></script>
+<div class="entire-wrapper">
+  <div th:replace="fragments/header :: header"></div>
+  <div class="govuk-width-container">
+    <div th:replace="fragments/betaBanner :: betaBanner"></div>
+    <div th:replace="fragments/userBar :: userBar"></div>
+    <div th:replace="fragments/backButtonLink :: backButtonLink"></div>
+    <main class="govuk-main-wrapper" id="content" role="main">
+      <div layout:fragment="content"></div>
+    </main>
+  </div>
+  <div class="push"></div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+
+<script
+    th:src="@{{cdnUrl}/javascripts/app/js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
+    type="text/javascript"></script>
+<script
+    th:src="@{{cdnUrl}/javascripts/app/radio-buttons.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
+    type="text/javascript"></script>
+<script
+    th:src="@{{cdnUrl}/javascripts/app/piwik-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
+    type="text/javascript"></script>
+<script
+    th:src="@{{cdnUrl}/javascripts/lib/company-accounts-web/autocalculate-input-fields.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
+    type="text/javascript"></script>
+
+<div th:replace="fragments/piwik :: piwik"></div>
+</body>
+</html>
