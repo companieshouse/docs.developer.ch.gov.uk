@@ -23,9 +23,6 @@
 <script crossorigin="anonymous"
         src="https://polyfill.io/v3/polyfill.min.js?features=default%2CNumber.isInteger"></script>
 <script
-    th:src="@{{cdnUrl}/javascripts/lib/company-accounts-web/details-polyfill.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
-    type="text/javascript"></script>
-<script
     th:src="@{{cdnUrl}/javascripts/app/body-js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
     type="text/javascript"></script>
 <script
@@ -56,9 +53,6 @@
     type="text/javascript"></script>
 <script
     th:src="@{{cdnUrl}/javascripts/app/piwik-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
-    type="text/javascript"></script>
-<script
-    th:src="@{{cdnUrl}/javascripts/lib/company-accounts-web/autocalculate-input-fields.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
     type="text/javascript"></script>
 
 <div th:replace="fragments/piwik :: piwik"></div>
