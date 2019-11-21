@@ -1,21 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>docs.developer.ch.gov.uk</artifactId>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <groupId>org.junit.platform</groupId>
+            <version>1.0.0</version>
+          </dependency>
+        </dependencies>
+        <version>2.19</version>
+      </plugin>
+    </plugins>
+  </build>
+  <packaging>jar</packaging>
+  <dependencies>
+    <dependency>
+      <artifactId>jackson-databind</artifactId>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <version>2.9.10.1</version>
+    </dependency>
+    <dependency>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <scope>test</scope>
+      <version>${junit-platform.version}</version>
+    </dependency>
+  </dependencies>
+  <description>Static content for the developer hub, such as "getting started" and "introduction"
+    documentation
+  </description>
   <modelVersion>4.0.0</modelVersion>
   <name>docs.developer.ch.gov.uk</name>
-  <artifactId>docs.developer.ch.gov.uk</artifactId>
-  <version>unversioned</version>
   <parent>
-    <groupId>uk.gov.companieshouse</groupId>
     <artifactId>companies-house-parent</artifactId>
+    <groupId>uk.gov.companieshouse</groupId>
     <version>1.1.0</version>
   </parent>
-  <description>Static content for the developer hub, such as "getting started" and "introduction" documentation</description>
+
   <properties>
     <java.version>1.8</java.version>
+    <junit-platform.version>5.3.1</junit-platform.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
   </properties>
+  <version>unversioned</version>
 
 </project>

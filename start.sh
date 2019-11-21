@@ -9,7 +9,7 @@ if [[ -z "${MESOS_SLAVE_PID}" ]]; then
     source ~/.chs_env/global_env
     source ~/.chs_env/docs.developer.ch.gov.uk/env
 
-    PORT="${CHIPS_PROSECUTION_API_WEB_PORT}"
+    PORT="${DOC_DEVELOPER_WEB_PORT}"
 else
     PORT="$1"
     CONFIG_URL="$2"
@@ -27,4 +27,4 @@ else
     source "${APP_DIR}/app_env"
 fi
 
-exec java ${JAVA_MEM_ARGS} -jar -Dserver.port="${PORT}" "${APP_DIR}/chips-prosecution-api.jar"
+exec java ${JAVA_MEM_ARGS} -jar -Dserver.port="${PORT}" "${APP_DIR}/docs.developer.ch.gov.uk-unversioned.jar"
