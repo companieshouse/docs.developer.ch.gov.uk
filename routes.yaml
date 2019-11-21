@@ -1,4 +1,4 @@
-app_name: docs-developer-web
+app_name: doc-developer-web
 group: web
 weight: 854
 routes:
