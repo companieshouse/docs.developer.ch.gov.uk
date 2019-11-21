@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="en_gb"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/baseLayout}">
 
@@ -8,75 +9,6 @@
   <title th:utext="${templateHeading}"></title>
 </head>
 <body>
-<div id="lookup-main-content" layout:fragment="content">
-
-  <form id="lookup-form" th:action="@{''}" th:object="${companyDetail}" class="form" method="post">
-
-    <div class="govuk-grid-row">
-
-      <div class="govuk-grid-column-two-thirds">
-
-        <fieldset class="govuk-fieldset">
-
-          <h1 class="govuk-heading-l" id="company-details-heading" th:utext="${templateHeading}">
-          </h1>
-          <p class="govuk-body govuk-!-margin-bottom-9">
-            <a th:href="${templateLinkUrl}" th:data-event-id="${eventLink}" class="piwik-event" th:utext="${templateLinkText}"></a>
-          </p>
-          <dl class="app-check-your-answers app-check-your-answers--short">
-            <div class="app-check-your-answers__contents">
-              <dt class="app-check-your-answers__question">
-                Company name
-              </dt>
-              <dd class="app-check-your-answers__answer"  id="companyDetail-companyName"
-                   th:utext="*{#strings.replace(companyName,'&#10;','&lt;br&gt;')}">
-              </dd>
-            </div>
-
-            <div class="app-check-your-answers__contents">
-              <dt class="app-check-your-answers__question">
-                Company number
-              </dt>
-              <dd class="app-check-your-answers__answer" id="companyDetail-companyNumber"
-                   th:utext="*{#strings.replace(companyNumber,'&#10;','&lt;br&gt;')}">
-              </dd>
-            </div>
-
-            <div class="app-check-your-answers__contents">
-              <dt class="app-check-your-answers__question">
-                Registered office address
-              </dt>
-              <dd class="app-check-your-answers__answer" id="companyDetail-registeredOfficeAddress"
-                   th:utext="*{#strings.replace(registeredOfficeAddress,'&#10;','&lt;br&gt;')}">
-              </dd>
-            </div>
-
-            <div class="app-check-your-answers__contents">
-              <dt class="app-check-your-answers__question">
-                Next accounts made up to
-              </dt>
-              <dd class="app-check-your-answers__answer" id="companyDetail-accountsNextMadeUpTo">
-                  <div th:utext="*{#temporals.format(accountsNextMadeUpTo, 'dd MMMM yyyy')}"></div>
-                  <div th:utext="'due by ' + *{#temporals.format(nextDue, 'dd MMMM yyyy')}"></div>
-              </dd>
-            </div>
-            <div class="app-check-your-answers__contents">
-              <dt class="app-check-your-answers__question">
-                Last accounts made up to
-              </dt>
-              <dd class="app-check-your-answers__answer" id="companyDetail-lastAccountsNextMadeUpTo"
-                   th:utext="*{#temporals.format(lastAccountsNextMadeUpTo, 'dd MMMM yyyy')}">
-            </dd>
-            </div>
-          </dl>
-        </fieldset>
-        <input th:if="${showContinue}" id="next-button" data-event-id="Confirm company" class="govuk-button piwik-event"
-               type="submit" role="button" value="Continue"/>
-
-      </div>
-    </div>
-  </form>
-
-</div>
+<h1>Hello, world</h1>
 </body>
 </html>

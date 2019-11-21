@@ -23,12 +23,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/uk/gov/ch/developer/docs/DocsWebApplication.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/uk/gov/ch/developer/docs/controller/BaseController.java">
           <value>
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/uk/gov/ch/developer/docs/interceptor/LoggingInterceptor.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/resources/templates/baseLayout.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/resources/templates/docs/gettingStarted.html">
           <value>
             <set />
           </value>

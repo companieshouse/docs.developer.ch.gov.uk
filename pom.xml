@@ -20,7 +20,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-<!--          <mainClass>uk.gov.companieshouse.web.accounts.CompanyAccountsWebApplication</mainClass>-->
+          <mainClass>uk.gov.ch.developer.docs.DocsWebApplication</mainClass>
           <layout>ZIP</layout>
         </configuration>
         <executions>
