@@ -16,6 +16,21 @@
         </dependencies>
         <version>2.19</version>
       </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>uk.gov.ch.developer.docs.DocsWebApplication</mainClass>
+          <layout>ZIP</layout>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <packaging>jar</packaging>
@@ -31,6 +46,18 @@
       <scope>test</scope>
       <version>${junit-platform.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Logging dependencies -->
+    <dependency>
+      <groupId>uk.gov.companieshouse</groupId>
+      <artifactId>structured-logging</artifactId>
+      <version>${structured-logging.version}</version>
+    </dependency>
   </dependencies>
   <description>Static content for the developer hub, such as "getting started" and "introduction"
     documentation
@@ -38,9 +65,10 @@
   <modelVersion>4.0.0</modelVersion>
   <name>docs.developer.ch.gov.uk</name>
   <parent>
-    <artifactId>companies-house-parent</artifactId>
-    <groupId>uk.gov.companieshouse</groupId>
-    <version>1.1.0</version>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.0.3.RELEASE</version>
+    <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
   <properties>
@@ -48,7 +76,10 @@
     <junit-platform.version>5.3.1</junit-platform.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
+    <structured-logging.version>1.9.0</structured-logging.version>
   </properties>
+
+
   <version>unversioned</version>
 
 </project>
