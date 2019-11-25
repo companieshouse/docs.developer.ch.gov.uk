@@ -1,5 +1,5 @@
-app_name: doc-developer-web
+app_name: docs-developer-service
 group: web
 weight: 854
 routes:
-1: /chs/doc/(.*)/
+  1: /chs/doc/(.*)/
