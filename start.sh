@@ -9,7 +9,7 @@ if [[ -z "${MESOS_SLAVE_PID}" ]]; then
     source ~/.chs_env/global_env
     source ~/.chs_env/docs.developer.ch.gov.uk/env
 
-    PORT="${DOC_DEVELOPER_WEB_PORT}"
+    PORT="${DOC_DEVELOPER_SERVICE_PORT}"
 else
     PORT="$1"
     CONFIG_URL="$2"
