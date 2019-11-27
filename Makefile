@@ -1,5 +1,5 @@
 artifact_name       := docs.developer.ch.gov.uk
-version             := unversioned
+version             := "unversioned"
 
 .PHONY: all
 all: build
@@ -14,7 +14,6 @@ clean:
 
 .PHONY: build
 build:
-	mvn compile
 	mvn versions:set -DnewVersion=$(version) -DgenerateBackupPoms=false
 	mvn package -DskipTests=true
 	cp ./target/$(artifact_name)-$(version).jar ./$(artifact_name).jar
@@ -44,13 +43,10 @@ endif
 .PHONY: dist
 dist: clean build package
 
-# Makefile target
 .PHONY: sonar
 sonar:
 	mvn sonar:sonar
 
-# Makefile target
-
 .PHONY: sonar-pr-analysis
 sonar-pr-analysis:
-    mvn sonar:sonar -P sonar-pr-analysis
+	mvn sonar:sonar -P sonar-pr-analysis
