@@ -44,6 +44,13 @@ endif
 .PHONY: dist
 dist: clean build package
 
+# Makefile target
 .PHONY: sonar
 sonar:
 	mvn sonar:sonar
+
+# Makefile target
+
+.PHONY: sonar-pr-analysis
+sonar-pr-analysis:
+    mvn sonar:sonar -P sonar-pr-analysis
