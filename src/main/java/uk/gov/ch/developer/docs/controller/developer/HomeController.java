@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.ch.developer.docs.controller.BaseController;
 
 @Controller
-@RequestMapping("/gettingstarted")
-public class GettingStartedController extends BaseController {
+@RequestMapping("/")
+public class HomeController extends BaseController {
 
-    private static final String DOCS_GETTING_STARTED = "docs/gettingStarted";
+    private static final String DOCS_HOME = "docs/home";
 
     @GetMapping
     public String get() {
@@ -18,6 +18,6 @@ public class GettingStartedController extends BaseController {
 
     @Override
     protected String getTemplateName() {
-        return DOCS_GETTING_STARTED;
+        return DOCS_HOME;
     }
 }
