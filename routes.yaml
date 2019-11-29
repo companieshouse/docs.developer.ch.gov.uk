@@ -2,4 +2,5 @@ app_name: docs-developer-service
 group: web
 weight: 854
 routes:
-  1: ^/gettingstarted
+  1: /dev-hub
+  2: /dev-hub/*

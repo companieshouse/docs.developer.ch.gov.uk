@@ -1,10 +1,5 @@
 package uk.gov.ch.developer.docs.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,8 +8,10 @@ import uk.gov.ch.developer.docs.validation.ValidationError;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
+import java.util.*;
+
 @Controller
-@RequestMapping("/gettingstarted")
+@RequestMapping("/dev-hub")
 
 public abstract class BaseController {
 
