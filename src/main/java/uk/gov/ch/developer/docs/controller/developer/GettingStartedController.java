@@ -6,18 +6,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.ch.developer.docs.controller.BaseController;
 
 @Controller
-@RequestMapping("/gettingstarted")
+@RequestMapping("/dev-hub/getting-started")
 public class GettingStartedController extends BaseController {
 
-    private static final String DOCS_GETTING_STARTED = "docs/gettingStarted";
+    private static final String DEV_HUB_GETTING_STARTED = "/dev-hub/getting-started";
+    private static final String TEMPLATE_TITLE = "Getting started with the Companies House API";
 
     @GetMapping
-    public String get() {
+    public String getDevHubHome() {
         return getTemplateName();
     }
 
     @Override
     protected String getTemplateName() {
-        return DOCS_GETTING_STARTED;
+        return DEV_HUB_GETTING_STARTED;
     }
+
+    @Override
+    public String getTemplateTitle() {
+        return TEMPLATE_TITLE; }
+
 }

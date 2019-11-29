@@ -6,18 +6,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.ch.developer.docs.controller.BaseController;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/dev-hub")
 public class HomeController extends BaseController {
 
-    private static final String DOCS_HOME = "docs/home";
+    private static final String DEV_HUB = "/dev-hub";
+    private static final String TEMPLATE_TITLE = "Developer Hub Home";
 
     @GetMapping
     public String get() {
+
         return getTemplateName();
     }
 
     @Override
     protected String getTemplateName() {
-        return DOCS_HOME;
+
+        return DEV_HUB;
     }
+
+    @Override
+    public String getTemplateTitle() {
+        return TEMPLATE_TITLE; }
 }
