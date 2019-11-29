@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title layout:title-pattern="$CONTENT_TITLE"></title>
-  <div hidden id="templateName" th:attr="data-id=${templateName},data-metadata=${metadata}"></div>
 
   <link
       media="all"
@@ -20,17 +19,15 @@
 
 </head>
 <body>
+<div hidden id="templateName" th:attr="data-id=${templateName},data-metadata=${metadata}"></div>
 <script crossorigin="anonymous"
         src="https://polyfill.io/v3/polyfill.min.js?features=default%2CNumber.isInteger"></script>
 <script
-    th:src="@{{cdnUrl}/javascripts/app/body-js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
-    type="text/javascript"></script>
+    th:src="@{{cdnUrl}/javascripts/app/body-js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 <script
-    th:src="@{{cdnUrl}/javascripts/vendor/require.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
-    type="text/javascript"></script>
+    th:src="@{{cdnUrl}/javascripts/vendor/require.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 <script
-    th:src="@{{cdnUrl}/javascripts/vendor/jquery-3.3.1.min.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
-    type="text/javascript"></script>
+    th:src="@{{cdnUrl}/javascripts/vendor/jquery-3.3.1.min.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 <div class="entire-wrapper">
   <div th:replace="fragments/header :: header"></div>
   <div class="govuk-width-container">
@@ -46,14 +43,11 @@
 <div th:replace="fragments/footer :: footer"></div>
 
 <script
-    th:src="@{{cdnUrl}/javascripts/app/js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
-    type="text/javascript"></script>
+    th:src="@{{cdnUrl}/javascripts/app/js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 <script
-    th:src="@{{cdnUrl}/javascripts/app/radio-buttons.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
-    type="text/javascript"></script>
+    th:src="@{{cdnUrl}/javascripts/app/radio-buttons.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 <script
-    th:src="@{{cdnUrl}/javascripts/app/piwik-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
-    type="text/javascript"></script>
+    th:src="@{{cdnUrl}/javascripts/app/piwik-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 
 <div th:replace="fragments/piwik :: piwik"></div>
 </body>

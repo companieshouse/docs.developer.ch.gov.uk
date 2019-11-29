@@ -9,6 +9,9 @@ import uk.gov.ch.developer.docs.controller.BaseController;
 @RequestMapping("/gettingstarted")
 public class GettingStartedController extends BaseController {
 
+    public static final String TEMPLATE_NAME = "docs/gettingStarted";
+    private static final String TEMPLATE_TITLE = "Getting started with the Companies House API";
+
     @GetMapping
     public String get() {
         return getTemplateName();
@@ -16,6 +19,12 @@ public class GettingStartedController extends BaseController {
 
     @Override
     protected String getTemplateName() {
-        return "docs/gettingStarted";
+        return TEMPLATE_NAME;
+    }
+
+
+    @Override
+    public String getTemplateTitle() {
+        return TEMPLATE_TITLE;
     }
 }
