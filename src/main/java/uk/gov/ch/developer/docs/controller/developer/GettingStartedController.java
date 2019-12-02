@@ -9,7 +9,7 @@ import uk.gov.ch.developer.docs.controller.BaseController;
 @RequestMapping("/dev-hub/getting-started")
 public class GettingStartedController extends BaseController {
 
-    private static final String DEV_HUB_GETTING_STARTED = "/dev-hub/getting-started";
+    private static final String DEV_HUB_GETTING_STARTED = "dev-hub/gettingStarted";
     private static final String TEMPLATE_TITLE = "Getting started with the Companies House API";
 
     @GetMapping

@@ -2,13 +2,10 @@ package uk.gov.ch.developer.docs.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
 @Controller
-@RequestMapping("/dev-hub")
-
 public abstract class BaseController {
 
     protected static final Logger LOGGER = LoggerFactory

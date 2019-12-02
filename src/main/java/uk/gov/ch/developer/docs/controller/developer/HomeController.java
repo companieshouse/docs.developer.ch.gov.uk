@@ -9,7 +9,7 @@ import uk.gov.ch.developer.docs.controller.BaseController;
 @RequestMapping("/dev-hub")
 public class HomeController extends BaseController {
 
-    private static final String DEV_HUB = "/dev-hub";
+    private static final String DEV_HUB = "dev-hub/home";
     private static final String TEMPLATE_TITLE = "Developer Hub Home";
 
     @GetMapping
