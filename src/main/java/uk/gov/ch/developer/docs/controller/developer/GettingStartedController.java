@@ -13,7 +13,7 @@ public class GettingStartedController extends BaseController {
     private static final String TEMPLATE_TITLE = "Getting started with the Companies House API";
 
     @GetMapping
-    public String getDevHubHome() {
+    public String get() {
         return getTemplateName();
     }
 
