@@ -1,8 +1,6 @@
 package uk.gov.ch.developer.docs.interceptor;
 
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,17 +10,23 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.logging.util.RequestLogger;
 
-@Component
-public class LoggingInterceptor extends HandlerInterceptorAdapter implements RequestLogger {
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-    private static final Logger LOGGER = LoggerFactory
+@Component
+public class LoggingInterceptor extends HandlerInterceptorAdapter {
+
+    private RequestLogger requestLogger = new RequestLogger() {
+        // Implement Defaults
+    };
+
+    private Logger LOGGER = LoggerFactory
             .getLogger(DocsWebApplication.APPLICATION_NAME_SPACE);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) {
-
-        logStartRequestProcessing(request, LOGGER);
+        requestLogger.logStartRequestProcessing(request, LOGGER);
         return true;
     }
 
@@ -30,6 +34,6 @@ public class LoggingInterceptor extends HandlerInterceptorAdapter implements Req
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             @Nullable ModelAndView modelAndView) {
 
-        logEndRequestProcessing(request, response, LOGGER);
+        requestLogger.logEndRequestProcessing(request, response, LOGGER);
     }
 }
