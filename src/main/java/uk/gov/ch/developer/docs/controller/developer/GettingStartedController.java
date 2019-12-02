@@ -19,6 +19,7 @@ public class GettingStartedController extends BaseController {
 
     @Override
     protected String getTemplateName() {
+
         return DEV_HUB_GETTING_STARTED;
     }
 
