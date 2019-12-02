@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.ch.developer.docs.controller.BaseController;
 
 @Controller
-@RequestMapping("/gettingstarted")
+@RequestMapping("/dev-hub/gettingstarted")
 public class GettingStartedController extends BaseController {
 
     public static final String TEMPLATE_NAME = "docs/gettingStarted";
