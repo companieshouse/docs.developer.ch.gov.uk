@@ -79,5 +79,8 @@ public abstract class BaseController {
         );
     }
 
+    @ModelAttribute("templateTitle")
+    public abstract String getTemplateTitle();
+
 
 }
