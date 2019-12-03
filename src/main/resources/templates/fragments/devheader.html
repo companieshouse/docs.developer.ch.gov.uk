@@ -11,10 +11,16 @@
       <div class="header-global">
         <div class="govuk-header__logo">
           <a class="govuk-header__link govuk-header__link--homepage" id="logo"
-             th:href="@{{chsUrl}/dev-hub(chsUrl=${@environment.getProperty('chs.url')})}"
+             th:href="@{{chsUrl}/(chsUrl=${@environment.getProperty('chs.url')})}"
              title="Go to the companies house homepage">
             <span
-                class="govuk-header__logotype-text"> Companies House <strong>Developer Hub</strong></span>
+                class="govuk-header__logotype-text"> Companies House</span>
+          </a>
+        </div>
+        <div class="govuk-header__content">
+          <a class="govuk-header__link govuk-header__link--service-name"
+             th:href="@{{chsUrl}/dev-hub(chsUrl=${@environment.getProperty('chs.url')})}">
+            Developer Hub
           </a>
         </div>
       </div>
