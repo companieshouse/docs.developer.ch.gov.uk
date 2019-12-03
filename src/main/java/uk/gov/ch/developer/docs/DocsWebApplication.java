@@ -17,7 +17,6 @@ public class DocsWebApplication implements WebMvcConfigurer {
 
     @Autowired
     public DocsWebApplication(LoggingInterceptor loggingInterceptor) {
-
         this.loggingInterceptor = loggingInterceptor;
     }
 
@@ -27,8 +26,6 @@ public class DocsWebApplication implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-
         registry.addInterceptor(loggingInterceptor);
-
     }
 }

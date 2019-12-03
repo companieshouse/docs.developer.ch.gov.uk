@@ -20,8 +20,15 @@ public class LoggingInterceptor extends HandlerInterceptorAdapter {
         // Implement Defaults
     };
 
-    private Logger LOGGER = LoggerFactory
-            .getLogger(DocsWebApplication.APPLICATION_NAME_SPACE);
+    private final Logger LOGGER;
+
+    public LoggingInterceptor() {
+        this(LoggerFactory.getLogger(DocsWebApplication.APPLICATION_NAME_SPACE));
+    }
+
+    public LoggingInterceptor(final Logger logger) {
+        LOGGER = logger;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
@@ -33,7 +40,6 @@ public class LoggingInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             @Nullable ModelAndView modelAndView) {
-
         requestLogger.logEndRequestProcessing(request, response, LOGGER);
     }
 }
