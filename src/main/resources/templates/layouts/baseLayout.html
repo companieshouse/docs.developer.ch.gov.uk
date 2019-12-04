@@ -29,10 +29,10 @@
 <script
     th:src="@{{cdnUrl}/javascripts/vendor/jquery-3.3.1.min.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 <div class="entire-wrapper">
-  <div th:replace="fragments/devHeader :: header"></div>
+  <div th:replace="fragments/header :: header"></div>
   <div class="govuk-width-container">
     <div th:replace="fragments/betaBanner :: betaBanner"></div>
-    <div th:replace="fragments/devUserBar :: userBar"></div>
+    <div th:replace="fragments/userBar :: userBar"></div>
     <div th:replace="fragments/backButtonLink :: backButtonLink"></div>
     <main class="govuk-main-wrapper" id="content" role="main">
       <div layout:fragment="content"></div>
