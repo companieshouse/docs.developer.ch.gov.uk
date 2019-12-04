@@ -14,6 +14,7 @@ import uk.gov.companieshouse.logging.util.RequestLogger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -67,5 +68,6 @@ class LoggingInterceptorTest {
     @Test
     void test_constructor_doesnt_Error() {
         LoggingInterceptor newInterceptor = new LoggingInterceptor();
+        assertNotNull(newInterceptor);
     }
 }
