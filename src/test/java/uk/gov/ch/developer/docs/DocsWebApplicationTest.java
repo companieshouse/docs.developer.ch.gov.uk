@@ -9,8 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest
 class DocsWebApplicationTest {
 
-
     @Test
-    private void contextLoads() {
+    void contextLoads() {
     }
 }

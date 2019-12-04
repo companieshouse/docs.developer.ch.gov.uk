@@ -13,6 +13,7 @@ import uk.gov.ch.developer.docs.ApplicationVariables;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -30,8 +31,16 @@ class GettingStartedControllerollerTest {
 
     @Test
     @DisplayName("Get Getting Started Page - success path")
-    void Test_GetRequest_ReturnsSuccess_ForCorrectPathtRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
+    void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
         this.mockMvc.perform(get(ApplicationVariables.GETTINGSTARTED_PATH))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(view().name(ApplicationVariables.GETTINGSTARTED_VIEW));
+    }
+
+    @Test
+    @DisplayName("Get Getting Started Page - Failure path")
+    void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
+        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
+                .andExpect(status().isNotFound());
     }
 }
