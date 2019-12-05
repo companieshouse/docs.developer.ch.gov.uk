@@ -3,42 +3,51 @@ package uk.gov.ch.developer.docs.controller.developer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import uk.gov.ch.developer.docs.ApplicationVariables;
+import uk.gov.ch.developer.docs.DocsWebApplication;
+import uk.gov.ch.developer.docs.utility.TestUtils;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@ExtendWith(MockitoExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class HowToCreateAPIControllerTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = DocsWebApplication.class)
+class HowToCreateAPIKeyControllerTest {
+
+    private static final String PATH = "/dev-hub/create-api-key";
+    private static final String VIEW = "dev-hub/createApiKey";
 
     private MockMvc mockMvc;
 
-    @InjectMocks
-    private HowToCreateAPIController controller;
+    static {
+        TestUtils.setUpEnviromentProperties();
+    }
 
-    //    @Value("${howToCreate.path}")
-    private String path = "/dev-hub/create-api";
+    @Autowired
+    private WebApplicationContext context;
+    @InjectMocks
+    private HowToCreateAPIKeyController controller;
 
     @BeforeEach
     void setUp() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
     @Test
     @DisplayName("Get How To Create API Home Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
-        System.out.println(path);
-        this.mockMvc.perform(get(path))
+        this.mockMvc.perform(get(PATH))
                 .andExpect(status().isOk())
-                .andExpect(view().name("dev-hub/createApi"));
+                .andExpect(view().name(VIEW));
     }
 
     @Test
