@@ -10,6 +10,7 @@
 </head>
 <body>
 <div layout:fragment="content">
+
   <h1>Getting started with the Companies House API</h1>
   <p>The Companies House API lets you retrieve information about limited companies (and other
     companies that fall within the Companies Act 2006). The data returned is live and real-time, and
@@ -79,7 +80,9 @@
   <section id="authentication">
     <h3 class="heading-small">Authentication</h3>
     <p>Access to all API services requires authentication.
-      The <a href="https://www.example.com/">Authorisation</a> page describes the authorisation
+      The <a id="createApiKey-link"
+             th:href="@{{createApiUrl}/(createApiUrl=${@environment.getProperty('howToCreateAPIKey.url')})}">Authorisation</a>
+      page describes the authorisation
       mechanism used by the
       Companies House API, and how to register your application.</p>
   </section>

@@ -10,7 +10,8 @@ public class TestUtils {
         p.setProperty("chs.url", "//");
         p.setProperty("piwik.url", "//");
         p.setProperty("piwik.siteId", "//");
-
+        p.setProperty("home.url", "/dev-hub");
+        p.setProperty("howToCreateAPIKey.url", "${home.url}/create-api-key");
         System.setProperties(p);
     }
 }

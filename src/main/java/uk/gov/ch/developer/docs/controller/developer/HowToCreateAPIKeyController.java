@@ -9,7 +9,7 @@ import uk.gov.ch.developer.docs.controller.BaseController;
 
 
 @Controller
-@RequestMapping("dev-hub/create-api-key")
+@RequestMapping("${howToCreateAPIKey.url}")
 public class HowToCreateAPIKeyController extends BaseController {
 
     private static final String title = "How to create an API Key";
