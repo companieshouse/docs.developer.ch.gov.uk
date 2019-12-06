@@ -12,7 +12,7 @@ import uk.gov.ch.developer.docs.controller.BaseController;
 @RequestMapping("${howToObtainAPIKey.url}")
 public class HowToObtainAPIKeyController extends BaseController {
 
-    private static final String TITLE = "How to obtain an API Key";
+    private static final String TITLE = "How to Obtain an API Key";
     @Value("${howToObtainAPIKey.path}")
     private String path;
 

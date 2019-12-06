@@ -1,16 +1,18 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.ch.developer.docs.controller.BaseController;
 
 @Controller
-@RequestMapping("/dev-hub/create-account")
+@RequestMapping("${createAccount.url}")
 public class CreateAccountController extends BaseController {
 
-    private static final String DEV_HUB_CREATE_ACCOUNT = "dev-hub/createAccount";
-    private static final String TEMPLATE_TITLE = "Set up a Companies House account";
+    private static final String title = "How to Set Up a Companies House Account";
+    @Value("${createAccount.path}")
+    private String path;
 
     @GetMapping
     public String get() {
@@ -19,12 +21,12 @@ public class CreateAccountController extends BaseController {
 
     @Override
     protected String getTemplateName() {
-        return DEV_HUB_CREATE_ACCOUNT;
+        return path;
     }
 
     @Override
     public String getTemplateTitle() {
-        return TEMPLATE_TITLE;
+        return title;
     }
 
 }

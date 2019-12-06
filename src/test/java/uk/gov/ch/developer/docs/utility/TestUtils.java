@@ -15,6 +15,7 @@ public class TestUtils {
         p.setProperty("piwik.siteId", "//");
         p.setProperty("home.url", "/dev-hub");
         p.setProperty("howToObtainAPIKey.url", "${home.url}/obtain-api-key");
+        p.setProperty("createAccount.url", "${home.url}/create-account");
         System.setProperties(p);
     }
 }
