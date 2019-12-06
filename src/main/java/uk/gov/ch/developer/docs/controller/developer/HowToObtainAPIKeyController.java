@@ -9,11 +9,11 @@ import uk.gov.ch.developer.docs.controller.BaseController;
 
 
 @Controller
-@RequestMapping("${howToCreateAPIKey.url}")
-public class HowToCreateAPIKeyController extends BaseController {
+@RequestMapping("${howToObtainAPIKey.url}")
+public class HowToObtainAPIKeyController extends BaseController {
 
-    private static final String TITLE = "How to create an API Key";
-    @Value("${howToCreateAPIKey.path}")
+    private static final String TITLE = "How to obtain an API Key";
+    @Value("${howToObtainAPIKey.path}")
     private String path;
 
     @GetMapping

@@ -22,10 +22,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
-class HowToCreateAPIKeyControllerTest {
+class HowToObtainAPIKeyControllerTest {
 
-    private static final String PATH = "/dev-hub/create-api-key";
-    private static final String VIEW = "dev-hub/createApiKey";
+    private static final String PATH = "/dev-hub/obtain-api-key";
+    private static final String VIEW = "dev-hub/obtainApiKey";
 
     private MockMvc mockMvc;
 
@@ -36,7 +36,7 @@ class HowToCreateAPIKeyControllerTest {
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
-    private HowToCreateAPIKeyController controller;
+    private HowToObtainAPIKeyController controller;
 
     @BeforeEach
     void setUp() {
@@ -44,7 +44,7 @@ class HowToCreateAPIKeyControllerTest {
     }
 
     @Test
-    @DisplayName("Get How To Create API Home Page - success path")
+    @DisplayName("Get How To Obtain an API Home Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
         this.mockMvc.perform(get(PATH))
                 .andExpect(status().isOk())
@@ -52,14 +52,14 @@ class HowToCreateAPIKeyControllerTest {
     }
 
     @Test
-    @DisplayName("Get How To Create API Home Page - Failure path")
+    @DisplayName("Get How To Obtain an API Home Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
         this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
                 .andExpect(status().isNotFound());
     }
 
     @Test()
-    @DisplayName("Get How To Create API Home Page - Null path")
+    @DisplayName("Get How To Obtain an API Home Page - Null path")
     void Test_GetRequest_ThrowsException_ForNullPath() {
         //Inspection suppressed because we are passing null to a @NotNull parameter.
         //noinspection ConstantConditions
