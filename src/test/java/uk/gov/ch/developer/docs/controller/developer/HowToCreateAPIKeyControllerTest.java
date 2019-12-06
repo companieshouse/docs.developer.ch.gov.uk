@@ -15,6 +15,7 @@ import uk.gov.ch.developer.docs.ApplicationVariables;
 import uk.gov.ch.developer.docs.DocsWebApplication;
 import uk.gov.ch.developer.docs.utility.TestUtils;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -55,5 +56,13 @@ class HowToCreateAPIKeyControllerTest {
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
         this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test()
+    @DisplayName("Get How To Create API Home Page - Null path")
+    void Test_GetRequest_ThrowsException_ForNullPath() {
+        //Inspection suppressed because we are passing null to a @NotNull parameter.
+        //noinspection ConstantConditions
+        assertThrows(IllegalArgumentException.class, () -> this.mockMvc.perform(get(null)));
     }
 }
