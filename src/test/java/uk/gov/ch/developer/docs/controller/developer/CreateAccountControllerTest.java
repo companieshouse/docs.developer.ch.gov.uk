@@ -17,12 +17,12 @@ import uk.gov.ch.developer.docs.ApplicationVariables;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class GettingStartedControllerTest {
+class CreateAccountControllerTest {
 
     private MockMvc mockMvc;
 
     @InjectMocks
-    private GettingStartedController controller;
+    private CreateAccountController controller;
 
     @BeforeEach
     void setUp() {
@@ -30,7 +30,7 @@ class GettingStartedControllerTest {
     }
 
     @Test
-    @DisplayName("Get Getting Started Page - success path")
+    @DisplayName("Create Account Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
         this.mockMvc.perform(get(ApplicationVariables.GETTINGSTARTED_PATH))
                 .andExpect(status().isOk())
@@ -38,7 +38,7 @@ class GettingStartedControllerTest {
     }
 
     @Test
-    @DisplayName("Get Getting Started Page - Failure path")
+    @DisplayName("Create Account Controller - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
         this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
                 .andExpect(status().isNotFound());
