@@ -10,7 +10,7 @@ import uk.gov.ch.developer.docs.controller.BaseController;
 @RequestMapping("${createAccount.url}")
 public class CreateAccountController extends BaseController {
 
-    private static final String title = "How to Set Up a Companies House Account";
+    private static final String TITLE = "How to Set Up a Companies House Account";
     @Value("${createAccount.path}")
     private String path;
 
@@ -26,7 +26,7 @@ public class CreateAccountController extends BaseController {
 
     @Override
     public String getTemplateTitle() {
-        return title;
+        return TITLE;
     }
 
 }
