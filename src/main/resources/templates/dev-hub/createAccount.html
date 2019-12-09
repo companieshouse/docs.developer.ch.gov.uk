@@ -1,0 +1,16 @@
+<html lang="en-GB"
+      layout:decorate="~{layouts/baseLayout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title th:utext="${templateTitle}"></title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h1 class="heading-large" th:utext="${templateTitle}">Set up a CH Account</h1>
+  <p>To be able to explore and perform tests with the Companies House API, you
+    need to register a <a href="/developer/signin">user account</a> with Companies House.</p>
+</div>
+</body>
+</html>
