@@ -1,5 +1,5 @@
 app_name: docs-developer-service
-group: web
+group: dev
 weight: 854
 routes:
-  1: /dev-hub/*
+  1: /.*
