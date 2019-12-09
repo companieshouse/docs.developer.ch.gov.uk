@@ -1,30 +1,26 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import uk.gov.ch.developer.docs.controller.BaseController;
+import uk.gov.ch.developer.docs.controller.AbstractPageController;
 
 @Controller
-@RequestMapping("/dev-hub/getting-started")
-public class GettingStartedController extends BaseController {
+@RequestMapping("${gettingStarted.url}")
+public class GettingStartedController extends AbstractPageController {
 
-    private static final String DEV_HUB_GETTING_STARTED = "dev-hub/gettingStarted";
-    private static final String TEMPLATE_TITLE = "Getting started with the Companies House API";
+    private static final String TITLE = "Getting started with the Companies House API";
 
-    @GetMapping
-    public String get() {
-        return getTemplateName();
+    @Value("${gettingStarted.path}")
+    private String path;
+
+    public GettingStartedController() {
+        super(TITLE);
     }
 
     @Override
-    protected String getTemplateName() {
-
-        return DEV_HUB_GETTING_STARTED;
+    public String getPath() {
+        return path;
     }
-
-    @Override
-    public String getTemplateTitle() {
-        return TEMPLATE_TITLE; }
 
 }
