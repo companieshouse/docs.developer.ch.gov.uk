@@ -22,10 +22,10 @@
 
   <h2 class="heading-medium">Getting started</h2>
   <p>If you are new to the Companies House API, we recommend you take a look at the
-    <a th:href="@{/dev-hub/getting-started}">getting started</a> guide, with the resources
+    <a th:href="@{{startUrl}/(startUrl=${@environment.getProperty('gettingStarted.url')})}">getting
+      started</a> guide, with the resources
     and examples provided there to help you.</p>
   <p>We also have a support <a href="https://forum.aws.chdev.org">forum</a> where you can discuss
     the API, find help and provide feedback.</p>
-
 </div>
 </html>

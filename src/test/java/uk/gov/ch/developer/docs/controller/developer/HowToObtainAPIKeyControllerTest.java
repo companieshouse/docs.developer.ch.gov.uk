@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DocsWebApplication.class)
 class HowToObtainAPIKeyControllerTest {
 
-    private static final String PATH = "/dev-hub/obtain-api-key";
+    private static final String PATH = "/obtain-api-key";
     private static final String VIEW = "dev-hub/obtainApiKey";
 
     private MockMvc mockMvc;

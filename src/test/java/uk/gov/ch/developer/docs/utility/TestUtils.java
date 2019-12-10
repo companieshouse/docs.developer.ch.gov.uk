@@ -13,9 +13,11 @@ public class TestUtils {
         p.setProperty("chs.url", "//");
         p.setProperty("piwik.url", "//");
         p.setProperty("piwik.siteId", "//");
-        p.setProperty("home.url", "/dev-hub");
+
+        p.setProperty("home.url", "/");
         p.setProperty("howToObtainAPIKey.url", "${home.url}/obtain-api-key");
         p.setProperty("createAccount.url", "${home.url}/create-account");
+        p.setProperty("gettingStarted.url", "${home.url}/getting-started");
         System.setProperties(p);
     }
 }
