@@ -7,6 +7,16 @@
 <body>
 
 <th:block th:fragment="navBar">
+    <h1 th:text="${navBarModel}"></h1>
+    <ul>
+        <div th:each="section : ${navBarModel.sections}">
+            <li><h2 th:text="${section.key}">1</h2></li>
+
+            <div th:each="item : ${section.value}">
+                <div th:replace="fragments/navBarSubMenu :: navBarSubMenu(menu=${item})"></div>
+            </div>
+        </div>
+    </ul>
     <aside class="app-related-items" role="complementary">
         <h2 class="govuk-heading-m" id="subsection-title">
             Related content

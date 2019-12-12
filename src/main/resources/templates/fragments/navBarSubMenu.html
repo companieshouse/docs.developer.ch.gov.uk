@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html class="govuk-template" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="navBarSubMenu (menu)" th:remove="tag">
+    <!--    <ul th:if="${not #lists.isEmpty(menu.children)}" th:class="${#objects.nullSafe(depth, 1) &gt; 1}? 'children'">-->
+    <!--        <li th:each="child : ${menu.children}">-->
+    <!--            <span th:if="${#strings.isEmpty(child.actionUri)}" th:text="${child.displayLabel}">Addons</span>-->
+    <!--            <a th:if="${not #strings.isEmpty(child.actionUri)}" th:href="${child.actionUri}" th:text="${child.displayLabel}">Link Item</a>-->
+    <!--            <div th:replace="fragments/submenu :: submenu(menu=${child}, depth=depth+1)" th:remove="tag" />-->
+    <!--        </li>-->
+    <!--    </ul>-->
+    <li>
+        <a th:href="${menu.url}" th:text="${menu.heading}"></a>
+        <p th:text="${menu.depth}"></p>
+    </li>
+    <ul>
+        <div th:each="item : ${menu.children}">
+            <div th:replace="fragments/navBarSubMenu :: navBarSubMenu(menu=${item})"></div>
+        </div>
+    </ul>
+</div>
+</body>
+</html>

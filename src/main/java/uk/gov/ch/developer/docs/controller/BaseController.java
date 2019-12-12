@@ -2,10 +2,9 @@ package uk.gov.ch.developer.docs.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import uk.gov.ch.developer.docs.models.NavBarModel;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
-
-import java.util.*;
 
 @Controller
 public abstract class BaseController {
@@ -25,5 +24,10 @@ public abstract class BaseController {
 
     @ModelAttribute("templateTitle")
     public abstract String getTemplateTitle();
+
+    @ModelAttribute("navBarModel")
+    public NavBarModel getNavBar() {
+        return new NavBarModel();
+    }
 
 }
