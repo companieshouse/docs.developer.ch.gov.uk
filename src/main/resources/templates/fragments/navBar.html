@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html class="govuk-template" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:fragment="navBar">
+    <aside class="app-related-items" role="complementary">
+        <h2 class="govuk-heading-m" id="subsection-title">
+            Related content
+        </h2>
+        <nav aria-labelledby="subsection-title" role="navigation">
+            <ul class="govuk-list govuk-body-s">
+                <li>
+                    <a href="https://www.gov.uk/file-an-annual-return-with-companies-house">
+                        File your confirmation statement (annual return) with Companies House
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.gov.uk/running-a-limited-company">
+                        Running a limited company
+                    </a>
+                </li>
+                <li>
+                    <a class="govuk-!-w-bold" href="https://www.gov.uk/browse/business/limited-company">
+                        More
+                        <span class="visuallyhidden">Running a limited company</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+</th:block>
+</body>
+</html>

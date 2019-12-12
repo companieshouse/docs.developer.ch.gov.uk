@@ -42,7 +42,14 @@
     <div th:replace="fragments/userBar :: userBar"></div>
     <div th:replace="fragments/backButtonLink :: backButtonLink"></div>
     <main class="govuk-main-wrapper" id="content">
-      <div layout:fragment="content"></div>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-third">
+                <div th:replace="fragments/navBar :: navBar"></div>
+            </div>
+            <div class="govuk-grid-column-two-thirds">
+                <div layout:fragment="content"></div>
+            </div>
+        </div>
     </main>
   </div>
   <div class="push"></div>
