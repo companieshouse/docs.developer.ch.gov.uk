@@ -43,11 +43,11 @@ public class NavBarItem implements INavBarItem {
     }
 
     @Override
-    public List<NavBarItem> getChildren() {
+    public List<INavBarItem> getChildren() {
         return Collections.unmodifiableList(children);
     }
 
-    NavBarItem add(String heading, String url) {
+    public NavBarItem add(String heading, String url) {
         return new NavBarItem(heading, url, this);
     }
 

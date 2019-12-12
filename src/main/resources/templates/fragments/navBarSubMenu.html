@@ -7,22 +7,16 @@
 <body>
 
 <div th:fragment="navBarSubMenu (menu)" th:remove="tag">
-    <!--    <ul th:if="${not #lists.isEmpty(menu.children)}" th:class="${#objects.nullSafe(depth, 1) &gt; 1}? 'children'">-->
-    <!--        <li th:each="child : ${menu.children}">-->
-    <!--            <span th:if="${#strings.isEmpty(child.actionUri)}" th:text="${child.displayLabel}">Addons</span>-->
-    <!--            <a th:if="${not #strings.isEmpty(child.actionUri)}" th:href="${child.actionUri}" th:text="${child.displayLabel}">Link Item</a>-->
-    <!--            <div th:replace="fragments/submenu :: submenu(menu=${child}, depth=depth+1)" th:remove="tag" />-->
-    <!--        </li>-->
-    <!--    </ul>-->
-    <li>
-        <a th:href="${menu.url}" th:text="${menu.heading}"></a>
-        <p th:text="${menu.depth}"></p>
+    <li class="app-subnav__section-item app-subnav__section-item--current">
+        <a class="app-subnav__link govuk-link" th:href="${menu.url}" th:text="${menu.heading}"></a>
     </li>
-    <ul>
-        <div th:each="item : ${menu.children}">
-            <div th:replace="fragments/navBarSubMenu :: navBarSubMenu(menu=${item})"></div>
-        </div>
-    </ul>
+    <li th:if="${not #lists.isEmpty(menu.children)}">
+        <ul>
+            <li th:each="item : ${menu.children}" th:remove="tag">
+                <span th:replace="fragments/navBarSubMenu :: navBarSubMenu(menu=${item})"></span>
+            </li>
+        </ul>
+    </li>
 </div>
 </body>
 </html>

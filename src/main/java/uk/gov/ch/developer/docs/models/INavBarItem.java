@@ -9,7 +9,7 @@ public interface INavBarItem {
 
     NavBarItem getParent();
 
-    List<NavBarItem> getChildren();
+    List<INavBarItem> getChildren();
 
     int getDepth();
 }
