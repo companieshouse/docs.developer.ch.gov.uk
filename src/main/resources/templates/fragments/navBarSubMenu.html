@@ -7,7 +7,8 @@
 <body>
 
 <div th:fragment="navBarSubMenu (menu)" th:remove="tag">
-    <li class="app-subnav__section-item app-subnav__section-item--current">
+    <!-- This is expected to be called in the context of a list -->
+    <li class="app-subnav__section-item">
         <a class="app-subnav__link govuk-link" th:href="${menu.url}" th:text="${menu.heading}"></a>
     </li>
     <li th:if="${not #lists.isEmpty(menu.children)}">
