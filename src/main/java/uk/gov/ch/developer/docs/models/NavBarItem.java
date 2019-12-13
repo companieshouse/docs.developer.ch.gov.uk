@@ -38,10 +38,6 @@ public class NavBarItem implements INavBarItem {
         return parent;
     }
 
-    private void setParent(NavBarItem parent) {
-        this.parent = parent;
-    }
-
     @Override
     public List<INavBarItem> getChildren() {
         return Collections.unmodifiableList(children);

@@ -7,9 +7,6 @@ public class NavBarModel {
 
     private Map<String, NavItemList> sections = new LinkedHashMap<>();
 
-    public NavBarModel() {
-    }
-
     public Map<String, NavItemList> getSections() {
         return sections;
     }
@@ -17,7 +14,7 @@ public class NavBarModel {
     public NavItemList addHeading(String heading) {
         return sections.computeIfAbsent(
                 heading,
-                (k) -> new NavItemList()
+                k -> new NavItemList()
         );
     }
 }
