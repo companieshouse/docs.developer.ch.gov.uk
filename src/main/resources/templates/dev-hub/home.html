@@ -6,7 +6,8 @@
 <head>
   <title th:utext="${templateTitle}"></title>
 </head>
-<div id="temp-home-main-content" layout:fragment="content">
+<div 
+<div class="govuk-grid-column-two-thirds" id="temp-home-main-content" layout:fragment="content">
   <header class="page-header group">
     <h1 class="heading-xlarge">Companies House API</h1>
   </header>
@@ -27,5 +28,16 @@
     and examples provided there to help you.</p>
   <p>We also have a support <a href="https://forum.aws.chdev.org">forum</a> where you can discuss
     the API, find help and provide feedback.</p>
+</div>
+
+<div class="govuk-grid-column-two-thirds">
+  <h1 class="govuk-heading-xl">
+    The Companies House API overview
+  </h1>
+  <p>Companies House is an executive agency of the Department for Business Innovation and Skills. Our main functions are to incorporate and dissolve limited companies; examine and store company information delivered under the Companies Act and related
+    legislation; and make this information available to the public.</p>
+  <p>Companies House digitally records almost all information it receives, and makes this available to the public through its own website and through the Companies House RESTful API. Being RESTful, each record of information is assigned a globally
+    unique URI, and the operations available on each resource are directly mapped to HTTP verbs. Data can therefore be easily consumed by issuing simple GET requests on the required resource URI.</p>
+</div>
 </div>
 </html>

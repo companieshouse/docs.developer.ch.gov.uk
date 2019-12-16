@@ -33,7 +33,6 @@
     th:src="@{{cdnUrl}/javascripts/vendor/require.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 <script
     th:src="@{{cdnUrl}/javascripts/vendor/jquery-3.3.1.min.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
-<div class="entire-wrapper">
   <div id="skiplink-container">
     <a class="skiplink" href="#content">Skip to main content</a>
   </div>
@@ -53,9 +52,8 @@
         </div>
     </main>
   </div>
-  <div class="push"></div>
-</div>
-<div th:replace="fragments/footer :: footer"></div>
+    <div th:replace="fragments/footer :: footer"></div>
+
 
 <script
     th:src="@{{cdnUrl}/javascripts/app/js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
