@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en-GB"
+      layout:decorate="~{layouts/baseLayout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:utext="${templateTitle}"></title>
+</head>
+<body>
+
+<div layout:fragment="content">
+  <h1 class="govuk-heading-xl">Developer guidelines</h1>
+
+  <p class="govuk-body-l">To help achieve the successful development of your application, when using
+    the
+    Companies House API you should adhere to a few simple guidelines:</p>
+
+  <ol class="govuk-list govuk-list--number">
+    <li><a href="#resources" class="govuk-link">Data resources</a></li>
+    <li><a href="#security" class="govuk-link">Security</a></li>
+    <li><a href="#keysecurity" class="govuk-link">Securing API keys</a></li>
+  </ol>
+
+  <section id="resources">
+    <h2 class="govuk-heading-m">Data resources</h2>
+    <p class="govuk-body">Data is mostly returned as JSON documents. Your application must tolerate
+      the
+      order of document members changing over time, and expect to receive members it hasn't seen
+      before.</p>
+  </section>
+  <section id="security">
+    <h2 class="govuk-heading-m">Security</h2>
+    <p class="govuk-body">The API can only be accessed over TLS. We recommend using TLS 1.2.</p>
+  </section>
+  <section id="keysecurity">
+    <h2 class="govuk-heading-m">Securing API keys</h2>
+    <p class="govuk-body">It is important to keep your API keys secure, to prevent them being
+      discovered, your
+      account being compromised and your rate-limit quota being exceeded. There are a few best
+      practices that can help with this:</p>
+    <ol class="govuk-list govuk-list--bullet">
+      <li><h3 class="govuk-heading-s">Do not embed API keys in your code</h3>
+        <p class="govuk-body">Storing keys in your application code increases the risk that they
+          will be discovered, particularly if any of your source code is made public, or can
+          be viewed by people who should not have access to the key. Instead,
+          you should consider storing them inside environment variables or configuration.</p>
+      </li>
+      <li><h3 class="govuk-heading-s">Do not store API keys in your source tree</h3>
+        <p class="govuk-body">If you store API keys in files, perhaps inside a configuration or
+          environment file,
+          these should not be stored inside the application source tree, just in case part or all
+          of the source is made public or can be viewed by people who should not have access to
+          the key.</p>
+      </li>
+      <li><h3 class="govuk-heading-s">Restrict API key use by IP address and domain</h3>
+        <p class="govuk-body">Limiting the use of a key to a specific IP address or domain will
+          reduce the usefulness
+          of a key that becomes compromised.</p>
+      </li>
+      <li><h3 class="govuk-heading-s">Regenerate your API keys</h3>
+        <p class="govuk-body">By regenerating your API keys regularly, and certainly with each
+          application release, you
+          can lessen the chance that a key will be discovered.</p>
+      </li>
+      <li><h3 class="govuk-heading-s">Delete API keys when no longer required</h3>
+        <p class="govuk-body">Removing obsolete keys from your Developer Hub registered-applications
+          page limits the
+          number of entry points into your account.
+        <p>
+      </li>
+    </ol>
+  </section>
+</div>
+</body>
+</html>

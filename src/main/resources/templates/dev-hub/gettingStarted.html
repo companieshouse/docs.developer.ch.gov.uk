@@ -4,133 +4,156 @@
       layout:decorate="~{layouts/baseLayout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <title th:utext="${templateTitle}"></title>
 </head>
 <body>
 <div layout:fragment="content">
+  <h1 class="govuk-heading-xl">
+    Getting started with the Companies House API
+  </h1>
+  <p class="govuk-body">The Companies House API lets you retrieve information about limited
+    companies (and other companies that fall within the Companies Act 2006). The data returned is
+    live and real-time, and is simple to use and understand.</p>
+  <h2 class="govuk-heading-l">Quick start</h2>
+  <p class="govuk-body">If you are already familiar with JSON RESTful APIs, then you can jump
+    straight in with the quick start guide.</p>
+  <p class="govuk-body">Otherwise, read on for a quick tour of the essentials.</p>
+  <h2 class="govuk-heading-l">First steps</h2>
 
-  <h1>Getting started with the Companies House API</h1>
-  <p>The Companies House API lets you retrieve information about limited companies (and other
-    companies that fall within the Companies Act 2006). The data returned is live and real-time, and
-    is simple to
-    use and understand.
-  </p>
-
-  <h2 class="heading-medium">Quick start</h2>
-
-  <p>If you are already familiar with JSON RESTful APIs, then you can
-    jump straight in with the <a href="https://www.example.com/">quick start guide</a>.</p>
-
-  <p>Otherwise, read on for a quick tour of the essentials.</p>
-
-  <h2 class="heading-medium">First steps</h2>
-
-  <ol class="list-number">
-    <li><a
-        th:href="@{{createAccountUrl}/(createAccountUrl=${@environment.getProperty('createAccount.url')})}">Set
-      up a Companies House account.</a></li>
-    <li><a href="#overview">Read the Companies House API overview.</a></li>
-    <li><a href="#restservices">Gain an understanding of REST web services.</a></li>
-    <li><a href="#jsondata">Learn about the JSON data format.</a></li>
-    <li><a href="#authentication">Learn about authentication.</a></li>
-    <li><a href="#exporeapi">Explore the Companies House API.</a></li>
-    <li><a href="#guidelines">Developer guidelines.</a></li>
-    <li><a href="#ratelimiting">Rate limiting.</a></li>
-    <li><a href="#enumuration">Enumerated types.</a></li>
+  <ol class="govuk-list govuk-list--number">
+    <li>
+      <a class="govuk-link"
+         th:href="@{{createAccountUrl}/(createAccountUrl=${@environment.getProperty('createAccount.url')})}">Set
+        up a Companies House account.</a>
+    </li>
+    <li>
+      <a class="govuk-link" href="#overview">Read the Companies House API overview.</a>
+    </li>
+    <li>
+      <a class="govuk-link" href="#restservices">Gain an understanding of REST web services.</a>
+    </li>
+    <li>
+      <a class="govuk-link" href="#jsondata">Learn about the JSON data format.</a>
+    </li>
+    <li>
+      <a class="govuk-link" href="#authentication">Learn about authentication.</a>
+    </li>
+    <li>
+      <a class="govuk-link" href="#exporeapi">Explore the Companies House API.</a>
+    </li>
+    <li>
+      <a class="govuk-link" href="#guidelines">Developer guidelines.</a>
+    </li>
+    <li>
+      <a class="govuk-link" href="#ratelimiting">Rate limiting.</a>
+    </li>
+    <li>
+      <a class="govuk-link" href="#enumuration">Enumerated types.</a>
+    </li>
   </ol>
 
   <section id="overview">
-    <h3 class="heading-small">Overview</h3>
-    <p>The Companies House API
-      <a href="https://www.example.com/">overview</a> describes the basic operation of the API.</p>
+    <h3 class="govuk-heading-m">Overview</h3>
+    <p class="govuk-body">The Companies House API
+      <a class="govuk-link" href="https://www.example.com/">overview</a>
+      describes the basic operation of the API.</p>
   </section>
 
   <section id="restservices">
-    <h3 class="heading-small">REST web services</h3>
-    <p>REST, or <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">Representational
-      State Transfer</a>, is an architectural software style in which standard HTTP requests
-      are used to provide a simple and consistent approach to requesting and modifying data.</p>
+    <h3 class="govuk-heading-m">REST web services</h3>
+    <p class="govuk-body">REST, or
+      <a class="govuk-link" href="http://en.wikipedia.org/wiki/Representational_state_transfer">Representational
+        State Transfer</a>, is an architectural software style in which standard HTTP requests are
+      used to provide a simple and consistent approach to requesting and modifying data.</p>
 
-    <p>In a RESTful style of API, data resources are allocated unique URLs and
-      manipulated through standard HTTP verbs such as <code>GET</code> to request a resource,
-      <code>POST</code> to create a resource, <code>PUT</code> to change a resource, and
-      <code>DELETE</code> to remove a resource.</p>
+    <p class="govuk-body">In a RESTful style of API, data resources are allocated unique URLs and
+      manipulated through standard HTTP verbs such as
+      <code>GET</code>
+      to request a resource,
+      <code>POST</code>
+      to create a resource,
+      <code>PUT</code>
+      to change a resource, and
+      <code>DELETE</code>
+      to remove a resource.</p>
 
-    <p>Further details on how the Companies House REST API works can be found in
-      the <a href="https://www.example.com/">introduction</a> page.
+    <p class="govuk-body">Further details on how the Companies House REST API works can be found in
+      the
+      <a class="govuk-link"
+         th:href="@{{startUrl}/(startUrl=${@environment.getProperty('gettingStarted.url')})}">introduction</a>
+      page.
     </p>
   </section>
 
   <section id="jsondata">
-    <h3 class="heading-small">The JSON data format</h3>
-    <p>JSON, or <a href="https://en.wikipedia.org/wiki/JSON">JavaScript Object Notation</a>, is an
-      open, standard format for storing and exchanging data. It is easier to use than XML, is more
-      compact,
-      and can be used as a data format by any programming language. This makes it ideal for
-      HTTP-based API services.</p>
-    <p>Further information can be found at <a href="http://www.json.org">json.org</a>.</p>
+    <h3 class="govuk-heading-m">The JSON data format</h3>
+    <p class="govuk-body">JSON, or
+      <a class="govuk-link" href="https://en.wikipedia.org/wiki/JSON">JavaScript Object Notation</a>,
+      is an open, standard format for storing and exchanging data. It is easier to use than XML, is
+      more compact, and can be used as a data format by any programming language. This makes it
+      ideal for HTTP-based API services.</p>
+    <p class="govuk-body">Further information can be found at
+      <a class="govuk-link" href="http://www.json.org">json.org</a>.</p>
   </section>
 
   <section id="authentication">
-    <h3 class="heading-small">Authentication</h3>
-    <p>Access to all API services requires authentication.
-      The <a id="obtainApiKey-link"
-             th:href="@{{obtainApiUrl}/(obtainApiUrl=${@environment.getProperty('howToObtainAPIKey.url')})}">Authorisation</a>
-      page describes the authorisation
-      mechanism used by the
-      Companies House API, and how to register your application.</p>
+    <h3 class="govuk-heading-m">Authentication</h3>
+    <p class="govuk-body">Access to all API services requires authentication. The
+      <a class="govuk-link" href="https://www.example.com/">Authorisation</a>
+      page describes the authorisation mechanism used by the Companies House API, and how to
+      register your application.</p>
+
+    <!-- At a minimum, API key authentication can be used to gain read-only access to public data. -->
+    <p class="govuk-body"></p>
+    <!-- <p>Full details of the Companies House API authentication models can be found on <a href="/account/docs/oauth2/oauth2.html">Authentication</a> page.</p> -->
   </section>
 
   <section id="exporeapi">
-    <h3 class="heading-small">Explore the API</h3>
-    <p>Each Companies House API reference page contains
-      an embedded "explorer" that allows the reader to try out the service
+    <h3 class="govuk-heading-m">Explore the API</h3>
+    <p class="govuk-body">Each Companies House API reference page contains an embedded "explorer"
+      that allows the reader to try out the service
       <em>in-situ</em>, without having to write any client code at all.
     </p>
   </section>
 
   <section id="guidelines">
-    <h3 class="heading-small">Developer guidelines</h3>
-    <p>There are some simple
-      <a href="https://www.example.com/">developer guidelines</a>
+    <h3 class="govuk-heading-m">Developer guidelines</h3>
+    <p class="govuk-body">There are some simple developer
+      <a class="govuk-link"
+         th:href="@{{devGuideURL}/(devGuideURL=${@environment.getProperty('developerGuidelines.url')})}">guidelines</a>
       you can follow to help you achieve success with the Companies House API.
     </p>
   </section>
 
   <section id="ratelimiting">
-    <h3 class="heading-small">API rate limits</h3>
-    <p>The Companies House API is subject to
-      <a href="https://www.example.com/">rate limiting</a> to protect the quality of service for all
-      users.
+    <h3 class="govuk-heading-m">API rate limits</h3>
+    <p class="govuk-body">The Companies House API is subject to
+      <a class="govuk-link" href="https://www.example.com/">rate limiting</a>
+      to protect the quality of service for all users.
     </p>
   </section>
 
   <section id="enumuration">
-    <h3 class="heading-small">Enumerated types</h3>
-    <p>A majority of the resources returned by the Companies House API contain members that
-      reference
-      <a href="https://en.wikipedia.org/wiki/Enumerated_type">enumuration types</a>. This helps make
-      the
-      resources self-documenting, and allow clients to interpret the meaning of a resource member
-      without
-      needing to otherwise parse a text description. Enumeration types are frequently used to
-      supplement
-      or replace a text description, which allows clients to display their own version of a
-      description,
-      more fitting their use case, or provide descriptions in multiple languages.</p>
-    <p>The collection of enumuration types used by Companies House are available on
-      <a href="https://github.com/companieshouse/api-enumerations">GitHub</a>. These
-      files provide a mapping between enumuration type and text description, and are divided into
-      sets or classes. Each API resource member will define which class of enumuration is being
+    <h3 class="govuk-heading-m">Enumerated types</h3>
+    <p class="govuk-body">A majority of the resources returned by the Companies House API contain
+      members that reference
+      <a class="govuk-link" href="https://en.wikipedia.org/wiki/Enumerated_type">enumuration
+        types</a>. This helps make the resources self-documenting, and allow clients to interpret
+      the meaning of a resource member without needing to otherwise parse a text description.
+      Enumeration types are frequently used to supplement or replace a text description, which
+      allows clients to display their own version of a description, more fitting their use case, or
+      provide descriptions in multiple languages.</p>
+    <p class="govuk-body">The collection of enumuration types used by Companies House are available
+      on
+      <a class="govuk-link" href="https://github.com/companieshouse/api-enumerations">GitHub</a>.
+      These files provide a mapping between enumuration type and text description, and are divided
+      into sets or classes. Each API resource member will define which class of enumuration is being
       returned.</p>
-    <p>A planned enhancement to the enumuration scheme is the provision of API endpoints that will
-      return the enumuration class catalogue. This avoids having enumurations hard-coded within a
-      client,
-      and by periodically checking for change through ETags, avoids clients having to download the
-      full
-      catalogue unnecessarily.</p>
+    <p class="govuk-body">A planned enhancement to the enumuration scheme is the provision of API
+      endpoints that will return the enumuration class catalogue. This avoids having enumurations
+      hard-coded within a client, and by periodically checking for change through ETags,
+      avoids clients having to download the full catalogue unnecessarily.</p>
   </section>
 </div>
 </body>
