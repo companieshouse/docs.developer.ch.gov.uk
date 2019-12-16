@@ -9,7 +9,7 @@ import uk.gov.ch.developer.docs.controller.AbstractPageController;
 @RequestMapping("${developerGuidelines.url}")
 public class DeveloperGuidelinesController extends AbstractPageController {
 
-    private static final String TITLE = "How to Obtain an API Key";
+    private static final String TITLE = "Developer Guidelines";
 
     @Value("${developerGuidelines.path}")
     private String path;
