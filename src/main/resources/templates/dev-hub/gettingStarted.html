@@ -94,7 +94,8 @@
   <section id="guidelines">
     <h3 class="heading-small">Developer guidelines</h3>
     <p>There are some simple
-      <a href="https://www.example.com/">developer guidelines</a>
+      <a href="https://www.example.com/"
+         th:href="@{{devGuideURL}/(devGuideURL=${@environment.getProperty('developerGuidelines.url')})}">developer guidelines</a>
       you can follow to help you achieve success with the Companies House API.
     </p>
   </section>
