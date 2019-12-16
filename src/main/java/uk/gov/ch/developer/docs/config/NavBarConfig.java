@@ -9,6 +9,7 @@ import uk.gov.ch.developer.docs.models.NavItemList;
 
 @Configuration
 public class NavBarConfig {
+
     @Value("${gettingStarted.url}")
     private String gettingStartedURL;
     @Value("${home.url}")
