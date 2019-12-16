@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html class="govuk-template" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="navBarSubMenu (menu)" th:remove="tag">
+    <!-- This is expected to be called in the context of a list -->
+    <li class="app-subnav__section-item">
+        <a class="app-subnav__link govuk-link" th:href="${menu.url}" th:text="${menu.heading}"></a>
+    </li>
+    <li th:if="${not #lists.isEmpty(menu.children)}">
+        <ul>
+            <li th:each="item : ${menu.children}" th:remove="tag">
+                <span th:replace="fragments/navBarSubMenu :: navBarSubMenu(menu=${item})"></span>
+            </li>
+        </ul>
+    </li>
+</div>
+</body>
+</html>

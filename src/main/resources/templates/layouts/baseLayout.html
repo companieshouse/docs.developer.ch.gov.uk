@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
   <title layout:title-pattern="$CONTENT_TITLE"></title>
 
   <link
@@ -16,13 +16,14 @@
       rel="stylesheet"
       th:href="@{{cdnUrl}/stylesheets/assets-digital-cabinet-office-gov-uk-static/govuk-template.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
       type="text/css"/>
+    <link href="../static/css/application.css" rel="stylesheet" th:href="@{/css/application.css}" type="text/css"
+    />
   <link
       rel="icon"
       th:href="@{{cdnUrl}/images/favicon.ico?0.17.3(cdnUrl=${@environment.getProperty('cdn.url')})}"
       type="image/x-icon"/>
-
 </head>
-<body>
+<body class="govuk-template__body">
 <div hidden id="templateName" th:attr="data-id=${templateName},data-metadata=${metadata}"></div>
 <script crossorigin="anonymous"
         src="https://polyfill.io/v3/polyfill.min.js?features=default%2CNumber.isInteger"></script>
@@ -42,7 +43,14 @@
     <div th:replace="fragments/userBar :: userBar"></div>
     <div th:replace="fragments/backButtonLink :: backButtonLink"></div>
     <main class="govuk-main-wrapper" id="content">
-      <div layout:fragment="content"></div>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-third">
+                <div th:replace="fragments/navBar :: navBar"></div>
+            </div>
+            <div class="govuk-grid-column-two-thirds">
+                <div layout:fragment="content"></div>
+            </div>
+        </div>
     </main>
   </div>
   <div class="push"></div>
