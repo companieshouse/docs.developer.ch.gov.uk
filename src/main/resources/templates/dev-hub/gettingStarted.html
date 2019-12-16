@@ -78,7 +78,7 @@
         to remove a resource.</p>
 
       <p class="govuk-body">Further details on how the Companies House REST API works can be found in the
-        <a href="@{{startUrl}/(startUrl=${@environment.getProperty('gettingStarted.url')})}">introduction</a>
+        <a th:href="@{{startUrl}/(startUrl=${@environment.getProperty('gettingStarted.url')})}">introduction</a>
         page.
       </p>
     </section>
@@ -112,7 +112,7 @@
     <section id="guidelines">
       <h3 class="govuk-heading-m">Developer guidelines</h3>
       <p class="govuk-body">There are some simple developer
-        <a href="@{{devGuideURL}/(devGuideURL=${@environment.getProperty('developerGuidelines.url')})}">guidelines</a>
+        <a th:href="@{{devGuideURL}/(devGuideURL=${@environment.getProperty('developerGuidelines.url')})}">guidelines</a>
         you can follow to help you achieve success with the Companies House API.
       </p>
     </section>
