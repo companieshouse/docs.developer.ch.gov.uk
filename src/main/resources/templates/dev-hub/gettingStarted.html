@@ -4,7 +4,6 @@
       layout:decorate="~{layouts/baseLayout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <title th:utext="${templateTitle}"></title>
 </head>
@@ -52,14 +51,14 @@
     <section id="createaccount">
       <h3 class="govuk-heading-m">Set up a Companies House account</h3>
       <p class="govuk-body">To be able to explore and perform tests with the Companies House API, you need to register a
-        <a href="/developer/signin">user account</a>
+          <a href="http://example.com">user account</a>
         with Companies House.</p>
     </section>
 
     <section id="overview">
       <h3 class="govuk-heading-m">Overview</h3>
       <p class="govuk-body">The Companies House API
-        <a href="/api/docs/index/gettingStarted/companiesHouseAPI.html">overview</a>
+          <a href="http://example.com">overview</a>
         describes the basic operation of the API.</p>
     </section>
 
@@ -79,7 +78,7 @@
         to remove a resource.</p>
 
       <p class="govuk-body">Further details on how the Companies House REST API works can be found in the
-        <a href="/api/docs/index/gettingStarted/introductionToAPI.html">introduction</a>
+          <a th:href="@{{startUrl}/(startUrl=${@environment.getProperty('gettingStarted.url')})}">introduction</a>
         page.
       </p>
     </section>
@@ -95,7 +94,7 @@
     <section id="authentication">
       <h3 class="govuk-heading-m">Authentication</h3>
       <p class="govuk-body">Access to all API services requires authentication. The
-        <a href="/api/docs/index/gettingStarted/apikey_authorisation.html">Authorisation</a>
+          <a href="http://example.com">Authorisation</a>
         page describes the authorisation mechanism used by the Companies House API, and how to register your application.</p>
 
       <!-- At a minimum, API key authentication can be used to gain read-only access to public data. -->
@@ -112,8 +111,9 @@
 
     <section id="guidelines">
       <h3 class="govuk-heading-m">Developer guidelines</h3>
-      <p class="govuk-body">There are some simple developer
-        <a href="/api/docs/index/gettingStarted/developerGuidelines.html">guidelines</a>
+        <p class="govuk-body">There are some simple
+            <a th:href="@{{devGuideURL}/(devGuideURL=${@environment.getProperty('developerGuidelines.url')})}">developer
+                guidelines</a>
         you can follow to help you achieve success with the Companies House API.
       </p>
     </section>
@@ -121,7 +121,7 @@
     <section id="ratelimiting">
       <h3 class="govuk-heading-m">API rate limits</h3>
       <p class="govuk-body">The Companies House API is subject to
-        <a href="/api/docs/index/gettingStarted/rateLimiting.html">rate limiting</a>
+          <a href="http://example.com">rate limiting</a>
         to protect the quality of service for all users.
       </p>
     </section>
