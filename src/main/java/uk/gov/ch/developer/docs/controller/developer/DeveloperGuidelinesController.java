@@ -6,16 +6,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.ch.developer.docs.controller.AbstractPageController;
 
 @Controller
-@RequestMapping("${howToObtainAPIKey.url}")
-public class HowToObtainAPIKeyController extends AbstractPageController {
+@RequestMapping("${developerGuidelines.url}")
+public class DeveloperGuidelinesController extends AbstractPageController {
 
     private static final String TITLE = "How to Obtain an API Key";
 
-    @Value("${howToObtainAPIKey.path}")
+    @Value("${developerGuidelines.path}")
     private String path;
 
 
-    public HowToObtainAPIKeyController() {
+    public DeveloperGuidelinesController() {
         super(TITLE);
     }
 
