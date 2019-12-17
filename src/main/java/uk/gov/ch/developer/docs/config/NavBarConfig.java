@@ -17,6 +17,8 @@ public class NavBarConfig {
     private String createAccountURL;
     @Value("${howToObtainAPIKey.url}")
     private String obtainAPIURL;
+    @Value("${authentication.url}")
+    private String authenticationUrl;
 
     @Bean
     public NavBarModel getNavBarModel() {
@@ -33,6 +35,7 @@ public class NavBarConfig {
         NavBarItem gettingStarted = documentation.add("Getting Started", gettingStartedURL);
         gettingStarted.add("Create Account", createAccountURL);
         gettingStarted.add("Obtain an API Key", obtainAPIURL);
+        gettingStarted.add("Authentication", authenticationUrl);
         documentation.add("API Documentation", homeURL);
 
         NavItemList manageAccounts = model.addHeading("Manage account");
