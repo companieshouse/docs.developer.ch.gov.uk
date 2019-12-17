@@ -16,6 +16,8 @@ public class NavBarConfig {
     private String homeURL;
     @Value("${createAccount.url}")
     private String createAccountURL;
+    @Value("${authentication.url}")
+    private String authenticationUrl;
     @Value("${developerGuidelines.url}")
     private String devGuideURL;
 
@@ -33,6 +35,7 @@ public class NavBarConfig {
         documentation.add("Overview", homeURL);
         NavBarItem gettingStarted = documentation.add("Getting Started", gettingStartedURL);
         gettingStarted.add("Create Account", createAccountURL);
+        gettingStarted.add("Authentication", authenticationUrl);
         gettingStarted.add("Developer Guidelines", devGuideURL);
         documentation.add("API Documentation", homeURL);
 
