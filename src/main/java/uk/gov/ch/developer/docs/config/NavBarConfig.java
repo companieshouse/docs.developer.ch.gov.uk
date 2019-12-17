@@ -9,16 +9,17 @@ import uk.gov.ch.developer.docs.models.NavItemList;
 
 @Configuration
 public class NavBarConfig {
+
     @Value("${gettingStarted.url}")
     private String gettingStartedURL;
     @Value("${home.url}")
     private String homeURL;
     @Value("${createAccount.url}")
     private String createAccountURL;
-    @Value("${howToObtainAPIKey.url}")
-    private String obtainAPIURL;
     @Value("${authentication.url}")
     private String authenticationUrl;
+    @Value("${developerGuidelines.url}")
+    private String devGuideURL;
 
     @Bean
     public NavBarModel getNavBarModel() {
@@ -34,8 +35,8 @@ public class NavBarConfig {
         documentation.add("Overview", homeURL);
         NavBarItem gettingStarted = documentation.add("Getting Started", gettingStartedURL);
         gettingStarted.add("Create Account", createAccountURL);
-        gettingStarted.add("Obtain an API Key", obtainAPIURL);
         gettingStarted.add("Authentication", authenticationUrl);
+        gettingStarted.add("Developer Guidelines", devGuideURL);
         documentation.add("API Documentation", homeURL);
 
         NavItemList manageAccounts = model.addHeading("Manage account");

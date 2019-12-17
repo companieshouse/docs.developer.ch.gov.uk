@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html class="govuk-template" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
 </head>
 <body>
 
 <th:block th:fragment="navBar">
-    <nav class="app-subnav app-hide-mobile">
-        <div th:if="${navBarModel != null}" th:remove="tag">
-            <div th:each="section : ${navBarModel.sections}" th:remove="tag">
-                <h4 class="app-subnav__theme" th:text="${section.key}"></h4>
-                <ul class="app-subnav__section">
+  <nav class="app-subnav app-hide-mobile">
+    <div th:if="${navBarModel != null}" th:remove="tag">
+      <div th:each="section : ${navBarModel.sections}" th:remove="tag">
+        <h4 class="app-subnav__theme" th:text="${section.key}"></h4>
+        <ul class="app-subnav__section">
                     <span th:each="item : ${section.value}" th:remove="tag"> <!-- This is a self deleting tag to manage
                                                                                     thymeleaf structure-->
                         <li th:replace="fragments/navBarSubMenu :: navBarSubMenu(menu=${item})"> Text</li>
                     </span>
-                </ul>
-            </div>
-        </div>
-        <div th:if="${navBarModel == null}" th:remove="tag">
-            <h4 class="app-subnav__theme">Navigation Menu not available</h4>
-        </div>
-    </nav>
+        </ul>
+      </div>
+    </div>
+    <div th:if="${navBarModel == null}" th:remove="tag">
+      <h4 class="app-subnav__theme">Navigation Menu not available</h4>
+    </div>
+  </nav>
 </th:block>
 </body>
 </html>
