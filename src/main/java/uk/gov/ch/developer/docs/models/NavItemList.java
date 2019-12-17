@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class NavItemList implements Iterable<INavBarItem> {
+
     private List<INavBarItem> list = new ArrayList<>();
 
     public NavBarItem add(String heading, String url) {

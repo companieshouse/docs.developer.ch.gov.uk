@@ -6,38 +6,49 @@
 <head>
   <title th:utext="${templateTitle}"></title>
 </head>
-<div 
-<div class="govuk-grid-column-two-thirds" id="temp-home-main-content" layout:fragment="content">
+<div id="temp-home-main-content" layout:fragment="content">
   <header class="page-header group">
-    <h1 class="heading-xlarge">Companies House API</h1>
+    <h1 class="govuk-heading-xl">Companies House API Overview</h1>
   </header>
-  <aside><Strong>This is only a temporary landing page based on the prior developer hub</Strong>
-  </aside>
-  <h2 class="heading-medium">Beta release</h2>
-  <p>The Companies House API and Developer Hub are currently at a
-    <a href="https://en.wikipedia.org/wiki/Software_release_life_cycle">beta release</a>.
+  <p class="govuk-body">Companies House is an executive agency of the Department for Business
+    Innovation and Skills.
+    Our main functions are to incorporate and dissolve limited companies; examine and store company
+    information delivered under the Companies Act and related
+    legislation; and make this information available to the public.</p>
+  <p class="govuk-body">Companies House digitally records almost all information it receives, and
+    makes this available
+    to the public through its own website and through the Companies House RESTful API. Being
+    RESTful, each record of information is assigned a globally
+    unique URI, and the operations available on each resource are directly mapped to HTTP verbs.
+    Data can therefore be easily consumed by issuing simple GET requests on the required resource
+    URI.</p>
+  <h2 class="govuk-heading-l">Beta release</h2>
+  <p class="govuk-body">The Companies House API and Developer Hub are currently at a
+    <a class="govuk-link" href="https://en.wikipedia.org/wiki/Software_release_life_cycle">beta
+      release</a>.
     We are going through a process of user engagement to improve the API and documentation.</p>
-  <p>Please refer to the <a href="http://forum.aws.chdev.org/">Developer Hub Forum</a> for ongoing
-    feature
-    and documentation discussions, and announcements on upcoming feature releases.</p>
+  <p class="govuk-body">Please refer to the <a href="http://forum.aws.chdev.org/">Developer Hub
+    Forum</a> for ongoing
+    feature and documentation discussions, and announcements on upcoming feature releases.</p>
 
-  <h2 class="heading-medium">Getting started</h2>
-  <p>If you are new to the Companies House API, we recommend you take a look at the
-    <a th:href="@{{startUrl}/(startUrl=${@environment.getProperty('gettingStarted.url')})}">getting
+  <h2 class="govuk-heading-l">Getting started</h2>
+  <p class="govuk-body">If you are new to the Companies House API, we recommend you take a look at
+    the
+    <a class="govuk-link"
+       th:href="@{{startUrl}/(startUrl=${@environment.getProperty('gettingStarted.url')})}">getting
       started</a> guide, with the resources
     and examples provided there to help you.</p>
-  <p>We also have a support <a href="https://forum.aws.chdev.org">forum</a> where you can discuss
+  <p class="govuk-body">We also have a support <a class="govuk-link"
+                                                  href="https://forum.aws.chdev.org">forum</a> where
+    you can discuss
     the API, find help and provide feedback.</p>
-</div>
 
-<div class="govuk-grid-column-two-thirds">
-  <h1 class="govuk-heading-xl">
-    The Companies House API overview
-  </h1>
-  <p>Companies House is an executive agency of the Department for Business Innovation and Skills. Our main functions are to incorporate and dissolve limited companies; examine and store company information delivered under the Companies Act and related
-    legislation; and make this information available to the public.</p>
-  <p>Companies House digitally records almost all information it receives, and makes this available to the public through its own website and through the Companies House RESTful API. Being RESTful, each record of information is assigned a globally
-    unique URI, and the operations available on each resource are directly mapped to HTTP verbs. Data can therefore be easily consumed by issuing simple GET requests on the required resource URI.</p>
-</div>
+  <h2 class="govuk-heading-l">Developer Guidlines</h2>
+  <p class="govuk-body">There are some simple developer
+    <a class="govuk-link"
+       th:href="@{{devGuideURL}/(devGuideURL=${@environment.getProperty('developerGuidelines.url')})}">guidelines</a>
+    you can follow to help you achieve success with the Companies House API.
+  </p>
+
 </div>
 </html>

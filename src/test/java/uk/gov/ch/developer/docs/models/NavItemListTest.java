@@ -1,11 +1,10 @@
 package uk.gov.ch.developer.docs.models;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.Iterator;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import java.util.Iterator;
+import org.junit.jupiter.api.Test;
 
 class NavItemListTest {
 
