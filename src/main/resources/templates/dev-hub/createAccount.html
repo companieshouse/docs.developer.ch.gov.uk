@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-GB"
       layout:decorate="~{layouts/baseLayout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -9,8 +10,9 @@
 <body>
 <div layout:fragment="content">
   <h1 class="govuk-heading-xl" th:utext="${templateTitle}">Set up a CH Account</h1>
-  <p>To be able to explore and perform tests with the Companies House API, you
-    need to register a <a href="http://www.example.com">user account</a> with Companies House.</p>
+  <p class="govuk-body">To be able to explore and perform tests with the Companies House API, you
+    need to register a <a class="govuk-link" href="http://www.example.com">user account</a> with
+    Companies House.</p>
 </div>
 </body>
 </html>
