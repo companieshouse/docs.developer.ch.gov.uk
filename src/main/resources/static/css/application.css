@@ -165,6 +165,7 @@
   }
 }
 
+/* The following is a work around, so that a valid logo is discovered in a suitable location */
 .govuk-footer__copyright-logo {
     background-image: url("/assets/images/govuk-crest.png");
     @include govuk-device-pixel-ratio {
@@ -172,6 +173,11 @@
     }
   }
 
+/* These reverse out breaking changes to GDS styles, made by the "_chs-hacked-es.scss */
   body {
       height:auto;
+  }
+
+  footer {
+       height: auto;
   }
