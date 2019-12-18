@@ -164,3 +164,14 @@
     display: inline;
   }
 }
+
+.govuk-footer__copyright-logo {
+    background-image: url("/assets/images/govuk-crest.png");
+    @include govuk-device-pixel-ratio {
+      background-image: url("/assets/images/govuk-crest-2x.png");
+    }
+  }
+
+  body {
+      height:auto;
+  }
