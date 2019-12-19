@@ -306,7 +306,7 @@ table span.value {
   font-family: "proxima_nova", Arial, sans-serif;
   font-weight: 400;
   text-transform: none;
-  font-size: 12px;
+  font-size: 0.7rem;
   line-height: 1.25;
   font-family: "Courier New", Courier, monospace;
   white-space: pre;
@@ -326,7 +326,7 @@ table span.value {
   table td.resource,
   table td code,
   table span.value {
-    font-size: 14px;
+    font-size: 0.9rem;
     line-height: 1.42857;
   }
 }
@@ -335,5 +335,5 @@ pre code {
   border: 0;
 }
 pre {
-  margin-bottom: -40px;
+  margin-bottom: -2.5rem;
 }
