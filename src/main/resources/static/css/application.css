@@ -172,12 +172,3 @@
       background-image: url("/assets/images/govuk-crest-2x.png");
     }
   }
-
-/* These reverse out breaking changes to GDS styles, made by the "_chs-hacked-es.scss */
-  body {
-      height:auto;
-  }
-
-  footer {
-       height: auto;
-  }
