@@ -1,0 +1,13 @@
+/* These reverse out breaking changes to GDS styles, made by the "_chs-hacked-styles.scss
+TODO Remove this sheet and its reference in the base layout when the rogue sheet is gone */
+  body {
+      height:auto;
+  }
+
+  footer {
+       height: auto;
+  }
+
+#footer nav {
+    border-top: none;
+}

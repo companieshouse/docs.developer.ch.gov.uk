@@ -4,8 +4,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
-  font-size: 14px;
-  font-size: .875rem;
+  font-size: .875em;
   line-height: 1.14286;
 }
 @media print {
@@ -15,8 +14,7 @@
 }
 @media (min-width: 40.0625em) {
   .app-subnav {
-    font-size: 16px;
-    font-size: 1rem;
+    font-size: 1em;
     line-height: 1.25;
   }
 }
@@ -73,8 +71,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
-  font-size: 16px;
-  font-size: 1rem;
+  font-size: 1em;
   line-height: 1.25;
 }
 @media print {
@@ -85,7 +82,7 @@
 @media (min-width: 40.0625em) {
   .app-subnav__theme {
     font-size: 19px;
-    font-size: 1.1875rem;
+    font-size: 1.1875em;
     line-height: 1.31579;
   }
 }
@@ -95,6 +92,21 @@
     line-height: 1.15;
   }
 }
+.govuk-header {
+  border-bottom: 10px solid rgb(0, 94, 165);
+}
+.govuk-header__container {
+  border-bottom: 0;
+  padding-bottom: 7px;
+}
+
+/* The following is a work around, so that a valid logo is discovered in a suitable location */
+.govuk-footer__copyright-logo {
+  background-image:
+   url("/assets/images/govuk-crest-2x.png"),
+   url("/assets/images/govuk-crest.png");
+}
+
 @media (max-width: 40.0525em) {
   .app-hide-mobile {
     display: none;
