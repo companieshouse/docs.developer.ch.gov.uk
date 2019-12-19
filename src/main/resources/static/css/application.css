@@ -103,8 +103,8 @@
 /* The following is a work around, so that a valid logo is discovered in a suitable location */
 .govuk-footer__copyright-logo {
   background-image:
-   url("/assets/images/govuk-crest.png"),
-   url("/assets/images/govuk-crest-2x.png");
+   url("/assets/images/govuk-crest-2x.png"),
+   url("/assets/images/govuk-crest.png");
 }
 
 @media (max-width: 40.0525em) {
