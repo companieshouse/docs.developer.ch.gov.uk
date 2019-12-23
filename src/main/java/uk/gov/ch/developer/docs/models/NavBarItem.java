@@ -33,7 +33,7 @@ public class NavBarItem implements INavBarItem {
         return url;
     }
 
-    static String checkedUrl(String originalUrl) {
+    private static String checkedUrl(String originalUrl) {
         if (originalUrl == null || originalUrl.trim().isEmpty()) {
             return "/";
         }
