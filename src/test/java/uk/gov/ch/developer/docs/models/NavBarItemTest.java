@@ -51,4 +51,29 @@ class NavBarItemTest {
         assertEquals(2, grandChild.getDepth());
         assertEquals(3, grandGrandChild.getDepth());
     }
+
+
+    @Test
+    void navBarItem_checkedUrl_returnsSlashIfUrlIsNull() {
+        NavBarItem item = new NavBarItem(
+                HEADING, null
+        );
+        assertEquals("/", item.getUrl());
+    }
+
+    @Test
+    void navBarItem_checkedUrl_returnsSlashIfUrlIsEmpty() {
+        NavBarItem item = new NavBarItem(
+                HEADING, ""
+        );
+        assertEquals("/", item.getUrl());
+    }
+
+    @Test
+    void navBarItem_checkedUrl_returnsSlashIfUrlIsBlankString() {
+        NavBarItem item = new NavBarItem(
+                HEADING, "      "
+        );
+        assertEquals("/", item.getUrl());
+    }
 }

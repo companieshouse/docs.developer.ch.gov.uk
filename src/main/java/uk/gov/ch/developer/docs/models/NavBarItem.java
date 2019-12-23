@@ -13,7 +13,7 @@ public class NavBarItem implements INavBarItem {
 
     NavBarItem(final String heading, final String url) {
         this.heading = heading;
-        this.url = url;
+        this.url = checkedUrl(url);
         this.children = new ArrayList<>();
     }
 
@@ -31,6 +31,13 @@ public class NavBarItem implements INavBarItem {
     @Override
     public String getUrl() {
         return url;
+    }
+
+    static String checkedUrl(String originalUrl) {
+        if (originalUrl == null || originalUrl.trim().isEmpty()) {
+            return "/";
+        }
+        return originalUrl;
     }
 
     @Override
