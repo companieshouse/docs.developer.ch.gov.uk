@@ -52,7 +52,6 @@ class NavBarItemTest {
         assertEquals(3, grandGrandChild.getDepth());
     }
 
-
     @Test
     void navBarItem_checkedUrl_returnsSlashIfUrlIsNull() {
         NavBarItem item = new NavBarItem(
