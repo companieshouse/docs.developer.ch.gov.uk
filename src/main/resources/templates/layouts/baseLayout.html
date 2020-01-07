@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
   <title layout:title-pattern="$CONTENT_TITLE"></title>
-  <!--[if lte IE 8]><link href="@{{cdnUrl}/app/assets/stylesheets/govuk-frontend/v2.12.0/govuk-frontend-ie8-2.12.0.min.css(cdnUrl=${@environment.getProperty('cdn.url')})}" rel="stylesheet" type="text/css" /><![endif]-->
+  <!--[if lte IE 8]><link href="@{{cdnUrl}/stylesheets/govuk-frontend/v2.12.0/govuk-frontend-ie8-2.12.0.min.css(cdnUrl=${@environment.getProperty('cdn.url')})}" rel="stylesheet" type="text/css" /><![endif]-->
   <link
       media="all"
       rel="stylesheet"
@@ -15,18 +15,18 @@
         type="text/css"/>
   <link
       rel="icon"
-      th:href="@{{cdnUrl}/app/assets/stylesheets/govuk-frontend/v2.12.0/assets/images/favicon.ico(cdnUrl=${@environment.getProperty('cdn.url')})}"
+      th:href="@{{cdnUrl}/images/favicon.ico?0.17.3(cdnUrl=${@environment.getProperty('cdn.url')})}"
       type="image/png"/>
-<script crossorigin="anonymous"
-        src="https://polyfill.io/v3/polyfill.min.js?features=default%2CNumber.isInteger"></script>
-<script
-    th:src="@{{cdnUrl}/javascripts/app/body-js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
-<script
-    th:src="@{{cdnUrl}/javascripts/vendor/require.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
-<script
-    th:src="@{{cdnUrl}/javascripts/vendor/jquery-3.3.1.min.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
+  <script crossorigin="anonymous"
+          src="https://polyfill.io/v3/polyfill.min.js?features=default%2CNumber.isInteger"></script>
   <script
-      th:src="@{{cdnUrl}/app/assets/stylesheets/govuk-frontend/v2.12.0/govuk-frontend-2.12.0.min.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
+      th:src="@{{cdnUrl}/javascripts/app/body-js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
+  <script
+      th:src="@{{cdnUrl}/javascripts/vendor/require.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
+  <script
+      th:src="@{{cdnUrl}/javascripts/vendor/jquery-3.3.1.min.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
+  <script
+      th:src="@{{cdnUrl}/stylesheets/govuk-frontend/v2.12.0/govuk-frontend-2.12.0.min.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 </head>
 <body class="govuk-template__body">
 <div hidden id="templateName" th:attr="data-id=${templateName},data-metadata=${metadata}"></div>
