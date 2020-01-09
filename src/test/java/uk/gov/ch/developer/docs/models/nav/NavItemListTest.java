@@ -1,4 +1,4 @@
-package uk.gov.ch.developer.docs.models;
+package uk.gov.ch.developer.docs.models.nav;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
