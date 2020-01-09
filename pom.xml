@@ -21,22 +21,6 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
-  <properties>
-    <common-web-java.version>1.1.0-rc1</common-web-java.version>
-    <java.version>1.8</java.version>
-    <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
-    <mockito-junit-jupiter.version>3.1.0</mockito-junit-jupiter.version>
-    <structured-logging.version>1.5.0-rc2</structured-logging.version>
-    <!--    These versions are earlier than in the Parent POM-->
-    <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
-    <thymeleaf-extras-java8time.version>3.0.1.RELEASE</thymeleaf-extras-java8time.version>
-
-    <artifactoryResolveSnapshotRepo>libs-snapshot-local</artifactoryResolveSnapshotRepo>
-    <artifactoryResolveReleaseRepo>virtual-release</artifactoryResolveReleaseRepo>
-  </properties>
-
   <dependencies>
     <dependency>
       <artifactId>jackson-databind</artifactId>
@@ -101,7 +85,49 @@
       <artifactId>common-web-java</artifactId>
       <version>${common-web-java.version}</version>
     </dependency>
+
+    <dependency>
+      <artifactId>java-session-handler</artifactId>
+      <groupId>uk.gov.companieshouse</groupId>
+      <version>${java-session-handler.version}</version>
+    </dependency>
+
+    <!-- Security dependencies -->
+    <dependency>
+      <artifactId>spring-security-core</artifactId>
+      <groupId>org.springframework.security</groupId>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-security-web</artifactId>
+      <groupId>org.springframework.security</groupId>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-security-config</artifactId>
+      <groupId>org.springframework.security</groupId>
+    </dependency>
   </dependencies>
+
+  <properties>
+    <common-web-java.version>1.1.0-rc1</common-web-java.version>
+    <java.version>1.8</java.version>
+    <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <mockito-junit-jupiter.version>3.1.0</mockito-junit-jupiter.version>
+    <structured-logging.version>1.5.0-rc2</structured-logging.version>
+    <!--    These versions are earlier than in the Parent POM-->
+    <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
+    <thymeleaf-extras-java8time.version>3.0.1.RELEASE</thymeleaf-extras-java8time.version>
+
+    <artifactoryResolveSnapshotRepo>libs-snapshot-local</artifactoryResolveSnapshotRepo>
+    <artifactoryResolveReleaseRepo>virtual-release</artifactoryResolveReleaseRepo>
+
+    <java-session-handler.version>2.2.0</java-session-handler.version>
+
+    <web-security-java.version>1.1.0-rc1</web-security-java.version>
+  </properties>
 
   <build>
     <plugins>
