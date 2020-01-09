@@ -11,7 +11,8 @@ public interface IUserModel {
      * Returns the selected unique identifer for this user.
      *
      * @return current user id.
-     * @throws IllegalAccessException if user not logged in. {@inheritDoc}
+     * @throws IllegalAccessException if user not logged in.
+     * {@inheritDoc}
      */
     String getId() throws IllegalAccessException;
 
@@ -19,7 +20,8 @@ public interface IUserModel {
      * Return the email address for this user.
      *
      * @return current user email address.
-     * @throws IllegalAccessException if user not logged in. {@inheritDoc}
+     * @throws IllegalAccessException if user not logged in.
+     * {@inheritDoc}
      */
     String getEmail() throws IllegalAccessException;
 
@@ -34,14 +36,16 @@ public interface IUserModel {
     /**
      * Method used to update user model with values taken from session context.
      *
-     * @return this <code>IUserModel</code>. {@inheritDoc}
+     * @return this <code>IUserModel</code>.
+     * {@inheritDoc}
      */
     IUserModel populateUserDetails(Session session);
 
     /**
      * Method used to signout and invalidate this IUserModel.
      *
-     * @return this <code>IUserModel</code>. {@inheritDoc}
+     * @return this <code>IUserModel</code>.
+     * {@inheritDoc}
      */
     IUserModel clear();
 }

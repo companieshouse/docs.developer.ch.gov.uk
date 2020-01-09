@@ -98,22 +98,6 @@
       <groupId>uk.gov.companieshouse</groupId>
       <version>${java-session-handler.version}</version>
     </dependency>
-
-    <!-- Security dependencies -->
-    <dependency>
-      <artifactId>spring-security-core</artifactId>
-      <groupId>org.springframework.security</groupId>
-    </dependency>
-
-    <dependency>
-      <artifactId>spring-security-web</artifactId>
-      <groupId>org.springframework.security</groupId>
-    </dependency>
-
-    <dependency>
-      <artifactId>spring-security-config</artifactId>
-      <groupId>org.springframework.security</groupId>
-    </dependency>
   </dependencies>
   <description>Static content for the developer hub,
     such as "getting started" and "introduction" documentation

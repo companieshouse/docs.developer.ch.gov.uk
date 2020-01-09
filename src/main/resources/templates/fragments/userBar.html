@@ -7,8 +7,9 @@
 <div class="js-toggle-nav" id="global-nav" th:fragment="userBar">
   <nav class="content">
     <ul class="mobile-hidden" id="navigation">
-      <ul class="mobile-hidden" th:if="${userEmail!=null}">
-        <li class="user" id="signed-in-user" th:text="${userEmail + ':'}"></li>
+      <ul class="mobile-hidden"
+          th:if="${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(user)}">
+        <li class="user" id="signed-in-user" th:text="${user.getId() + ':'}"></li>
         <li><a
             class="piwik-event"
             data-event-id="Your details - top menu" id="your-details"
@@ -25,7 +26,8 @@
           out
         </a></li>
       </ul>
-      <ul th:if="${userEmail==null}">
+      <ul th:if="!${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(user)}">
+        <!--  -->
         <a class="piwik-event" data-event-id="Sign In" href="/signin" id="user-signin">Sign in</a>
       </ul>
     </ul>

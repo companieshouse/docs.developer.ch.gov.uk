@@ -2,25 +2,20 @@ package uk.gov.ch.developer.docs.models.user;
 
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.model.SignInInfo;
-import uk.gov.companieshouse.session.model.UserProfile;
 
 public class UserModel implements IUserModel {
 
     private SignInInfo signIn;
-    private UserProfile userProfile;
 
-    public String getId() throws IllegalAccessException {
-        runIfSignedIn(
-                () -> null
-        );
-    }
-
-    private void runIfSignedIn(Object o) {
-    }
-
-    private String getString() {
-        String ret = signIn.getUserProfile().getId();
-        return ret != null ? ret : signIn.getUserProfile().getEmail();
+    /**
+     * Static method used in thymeleaf to handle null users in a readable fashion.
+     *
+     * @param user user who is
+     * @return <code>true</code> if user is not null and is signed in. Otherwise returns
+     * <code>false</code>.
+     */
+    public static boolean isUserSignedIn(final UserModel user) {
+        return user != null && user.isSignedIn();
     }
 
     public String getEmail() throws IllegalAccessException {
@@ -32,9 +27,10 @@ public class UserModel implements IUserModel {
         return signIn != null && signIn.isSignedIn();
     }
 
-    public IUserModel populateUserDetails(final Session sessionData) {
-        signIn = sessionData.getSignInInfo();
-        return this;
+    public String getId() throws IllegalAccessException {
+        throwIfNotSignedIn();
+        String ret = signIn.getUserProfile().getId();
+        return ret != null ? ret : signIn.getUserProfile().getEmail();
     }
 
     public IUserModel clear() {
@@ -42,9 +38,23 @@ public class UserModel implements IUserModel {
         return this;
     }
 
+    public IUserModel populateUserDetails(final Session sessionData) {
+        if (sessionData == null) {
+            clear();
+        } else {
+            signIn = sessionData.getSignInInfo();
+        }
+        return this;
+    }
+
+    /**
+     * Method used to remove common boilerplate from accessor methods.
+     *
+     * @throws IllegalAccessException if the user is not signed in.
+     */
     private void throwIfNotSignedIn() throws IllegalAccessException {
         if (!isSignedIn()) {
-            throw new IllegalAccessException("User logged out");
+            throw new IllegalAccessException("User not signed in.");
         }
     }
 }
