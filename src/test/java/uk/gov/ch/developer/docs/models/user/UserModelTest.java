@@ -48,7 +48,7 @@ class UserModelTest {
 
         userModel.populateUserDetails(mockSession);
 
-        assertThrows(IllegalAccessException.class, () -> userModel.getEmail());
+        assertThrows(IllegalAccessException.class, () -> userModel.getId());
         assertThrows(IllegalAccessException.class, () -> userModel.getEmail());
         verify(loggedOutInfo, never()).getUserProfile();
     }
@@ -59,7 +59,7 @@ class UserModelTest {
         userModel.populateUserDetails(mockSession);
 
         assertEquals(email, userModel.getEmail());
-        assertEquals(id, userModel.getId());
+        assertEquals(email, userModel.getId());
     }
 
     private void loggedOutMocker() {
@@ -69,7 +69,6 @@ class UserModelTest {
     private void loggedInMocker() {
         when(loggedInInfo.getUserProfile()).thenReturn(loggedInProfile);
 
-        when(loggedInProfile.getId()).thenReturn("id");
         when(loggedInProfile.getEmail()).thenReturn(email);
         when(loggedInInfo.isSignedIn()).thenReturn(true);
     }
@@ -81,7 +80,7 @@ class UserModelTest {
         void badSession_cannotBeAccessed() {
             userModel.populateUserDetails(null);
 
-            assertThrows(IllegalAccessException.class, () -> userModel.getEmail());
+            assertThrows(IllegalAccessException.class, () -> userModel.getId());
             assertThrows(IllegalAccessException.class, () -> userModel.getEmail());
         }
 
@@ -105,7 +104,7 @@ class UserModelTest {
 
                 userModel.populateUserDetails(mockSession);
 
-                assertThrows(IllegalAccessException.class, () -> userModel.getEmail());
+                assertThrows(IllegalAccessException.class, () -> userModel.getId());
                 assertThrows(IllegalAccessException.class, () -> userModel.getEmail());
             }
 

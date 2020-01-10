@@ -12,7 +12,6 @@ public interface IUserModel {
      *
      * @return current user id.
      * @throws IllegalAccessException if user not logged in.
-     * {@inheritDoc}
      */
     String getId() throws IllegalAccessException;
 
@@ -21,7 +20,6 @@ public interface IUserModel {
      *
      * @return current user email address.
      * @throws IllegalAccessException if user not logged in.
-     * {@inheritDoc}
      */
     String getEmail() throws IllegalAccessException;
 
@@ -29,7 +27,6 @@ public interface IUserModel {
      * Checks if user is logged in.
      *
      * @return <code>true</code> if user logged in, otherwise <code>false</code>.
-     * {@inheritDoc}
      */
     boolean isSignedIn();
 
@@ -37,7 +34,6 @@ public interface IUserModel {
      * Method used to update user model with values taken from session context.
      *
      * @return this <code>IUserModel</code>.
-     * {@inheritDoc}
      */
     IUserModel populateUserDetails(Session session);
 
@@ -45,7 +41,6 @@ public interface IUserModel {
      * Method used to signout and invalidate this IUserModel.
      *
      * @return this <code>IUserModel</code>.
-     * {@inheritDoc}
      */
     IUserModel clear();
 }
