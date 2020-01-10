@@ -1,4 +1,4 @@
-package uk.gov.ch.developer.docs.models;
+package uk.gov.ch.developer.docs.models.nav;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
