@@ -12,6 +12,7 @@ public class NavBarModel {
 
     /**
      * Retrieves map of all headings and their Navigation Item Lists. Used by Thymeleaf.
+     *
      * @return Map of current sections.
      */
     @SuppressWarnings("WeakerAccess")

@@ -30,12 +30,14 @@ public interface INavBarItem {
 
     /**
      * Navigation Items that are nested underneath this object.
+     *
      * @return List of children
      */
     List<INavBarItem> getChildren();
 
     /**
      * Returns the number of parents are chained until the highest level.
+     *
      * @return 0 based integer that counts the number of nested parents.
      */
     int getDepth();

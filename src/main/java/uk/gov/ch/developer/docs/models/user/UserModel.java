@@ -34,8 +34,7 @@ public class UserModel implements IUserModel {
     }
 
     /**
-     * {@inheritDoc}
-     * Returns users email as display id per acceptance criteria.
+     * {@inheritDoc} Returns users email as display id per acceptance criteria.
      */
     public String getId() throws IllegalAccessException {
         return getEmail();
