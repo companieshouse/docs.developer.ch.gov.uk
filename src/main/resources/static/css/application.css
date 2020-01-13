@@ -349,3 +349,12 @@ pre code {
 pre {
   margin-bottom: -2.5rem;
 }
+
+#global-header a#logo {
+  padding: 3px 0 2px 0px;
+}
+
+.app-subnav__section ul {
+  list-style-type: none;
+  padding-inline-start: 20px;
+}

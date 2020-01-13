@@ -3,9 +3,9 @@ package uk.gov.ch.developer.docs.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import uk.gov.ch.developer.docs.models.NavBarItem;
-import uk.gov.ch.developer.docs.models.NavBarModel;
-import uk.gov.ch.developer.docs.models.NavItemList;
+import uk.gov.ch.developer.docs.models.nav.NavBarItem;
+import uk.gov.ch.developer.docs.models.nav.NavBarModel;
+import uk.gov.ch.developer.docs.models.nav.NavItemList;
 
 @Configuration
 public class NavBarConfig {
