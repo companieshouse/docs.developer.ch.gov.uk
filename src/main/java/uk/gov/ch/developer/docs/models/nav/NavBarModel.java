@@ -11,9 +11,11 @@ public class NavBarModel {
     private Map<String, NavItemList> sections = new LinkedHashMap<>();
 
     /**
-     * Retreives map of all headings and their Navigation Item Lists.
+     * Retrieves map of all headings and their Navigation Item Lists. Used by Thymeleaf.
+     * @return Map of current sections.
      */
-    Map<String, NavItemList> getSections() {
+    @SuppressWarnings("WeakerAccess")
+    public Map<String, NavItemList> getSections() {
         return sections;
     }
 
