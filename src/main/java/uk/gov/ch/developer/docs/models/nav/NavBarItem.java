@@ -50,6 +50,7 @@ public class NavBarItem implements INavBarItem {
      *
      * @return this so that further operations can be chained.
      */
+    @SuppressWarnings("WeakerAccess")
     public NavBarItem requireLoggedInUser() {
         this.requiresLoggedIn = true;
         return this;
@@ -73,12 +74,12 @@ public class NavBarItem implements INavBarItem {
      *
      * @return new child.
      */
-    public NavBarItem add(String heading, String url) {
+    NavBarItem add(String heading, String url) {
         return new NavBarItem(heading, url, requiresLoggedIn, this);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public String getHeading() {
@@ -86,7 +87,7 @@ public class NavBarItem implements INavBarItem {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public String getUrl() {
@@ -94,7 +95,7 @@ public class NavBarItem implements INavBarItem {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public NavBarItem getParent() {
@@ -110,7 +111,7 @@ public class NavBarItem implements INavBarItem {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public int getDepth() {
@@ -124,7 +125,7 @@ public class NavBarItem implements INavBarItem {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public boolean isLoggedInOnly() {
