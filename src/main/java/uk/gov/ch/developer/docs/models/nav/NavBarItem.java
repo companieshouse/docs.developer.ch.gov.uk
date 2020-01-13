@@ -74,7 +74,7 @@ public class NavBarItem implements INavBarItem {
      *
      * @return new child.
      */
-    NavBarItem add(String heading, String url) {
+    public NavBarItem add(String heading, String url) {
         return new NavBarItem(heading, url, requiresLoggedIn, this);
     }
 
