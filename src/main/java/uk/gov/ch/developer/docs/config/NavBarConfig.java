@@ -26,23 +26,23 @@ public class NavBarConfig {
 
         NavBarModel model = new NavBarModel();
         NavItemList manageApplications = model
-                .addHeading("Manage Applications", UserRequired.userRequired);
+                .addHeading("Manage Applications", UserRequired.USER_REQUIRED);
 
         manageApplications.add("View all applications", "example.com");
         manageApplications.add("Add an application", "example.com");
 
         NavItemList documentation = model
-                .addHeading("General Documentation", UserRequired.userNotRequired);
+                .addHeading("General Documentation", UserRequired.USER_NOT_REQUIRED);
         documentation.add("Getting Started", gettingStartedURL);
         documentation.add("Companies House REST API overview", homeURL);
         documentation.add("Overview", homeURL);
         documentation.add("Developer Guidelines", devGuideURL);
 
-        NavItemList manageAccounts = model.addHeading("Manage account", UserRequired.userRequired);
+        NavItemList manageAccounts = model.addHeading("Manage account", UserRequired.USER_REQUIRED);
         manageAccounts.add("Manage Profile", homeURL);
         manageAccounts.add("Change Password", homeURL);
 
-        NavItemList help = model.addHeading("Help", UserRequired.userRequired);
+        NavItemList help = model.addHeading("Help", UserRequired.USER_REQUIRED);
         help.add("Developer Hub Forum", homeURL);
 
         return model;

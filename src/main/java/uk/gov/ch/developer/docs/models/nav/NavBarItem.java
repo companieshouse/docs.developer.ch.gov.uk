@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class NavBarItem implements INavBarItem {
 
-    private final String DEFAULT_URL = System.getProperties().getProperty("home.url");
+    private final String DEFAULTURL = System.getProperties().getProperty("home.url");
 
     private final String heading;
     private final String url;
@@ -39,7 +39,7 @@ public class NavBarItem implements INavBarItem {
      */
     private String checkedUrl(String originalUrl) {
         if (originalUrl == null || originalUrl.trim().isEmpty()) {
-            return DEFAULT_URL;
+            return DEFAULTURL;
         }
         return originalUrl;
     }
@@ -74,6 +74,7 @@ public class NavBarItem implements INavBarItem {
      *
      * @return new child.
      */
+    @SuppressWarnings("WeakerAccess")
     public NavBarItem add(String heading, String url) {
         return new NavBarItem(heading, url, requiresLoggedIn, this);
     }
