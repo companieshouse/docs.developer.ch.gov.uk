@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class NavBarItem implements INavBarItem {
 
-    private final String DEFAULTURL = System.getProperties().getProperty("home.url");
+    private final String defaultUrl = System.getProperties().getProperty("home.url");
 
     private final String heading;
     private final String url;
@@ -39,7 +39,7 @@ public class NavBarItem implements INavBarItem {
      */
     private String checkedUrl(String originalUrl) {
         if (originalUrl == null || originalUrl.trim().isEmpty()) {
-            return DEFAULTURL;
+            return defaultUrl;
         }
         return originalUrl;
     }

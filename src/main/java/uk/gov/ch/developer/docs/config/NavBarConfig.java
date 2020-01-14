@@ -33,9 +33,9 @@ public class NavBarConfig {
 
         NavItemList documentation = model
                 .addHeading("General Documentation", UserRequired.USER_NOT_REQUIRED);
-        documentation.add("Getting Started", gettingStartedURL);
+        documentation.add("Get Started", gettingStartedURL);
         documentation.add("Companies House REST API overview", homeURL);
-        documentation.add("Overview", homeURL);
+        documentation.add("How to add an API key", homeURL);
         documentation.add("Developer Guidelines", devGuideURL);
 
         NavItemList manageAccounts = model.addHeading("Manage account", UserRequired.USER_REQUIRED);
