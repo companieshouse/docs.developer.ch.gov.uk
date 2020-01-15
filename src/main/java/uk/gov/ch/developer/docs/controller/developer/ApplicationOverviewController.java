@@ -8,9 +8,9 @@ import uk.gov.ch.developer.docs.controller.AbstractPageController;
 @Controller
 @RequestMapping("${manageApplications.url}")
 public class ApplicationOverviewController extends AbstractPageController {
-    
+
     private static final String TITLE = "Application Overview";
-    
+
     @Value("${manageApplications.path}")
     private String path;
 
