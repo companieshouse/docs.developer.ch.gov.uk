@@ -7,29 +7,32 @@
 <div class="js-toggle-nav" id="global-nav" th:fragment="userBar">
   <nav class="content">
     <ul class="mobile-hidden" id="navigation">
-      <ul class="mobile-hidden"
-          th:if="${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(user)}">
-        <li class="user" id="signed-in-user" th:text="${user.getId() + ':'}"></li>
-        <li><a
-            class="piwik-event"
-            data-event-id="Your details - top menu" id="your-details"
-            th:href="@{{chsAccountUrl}/user/account(chsAccountUrl=${@environment.getProperty('account.url')})}">Your
-          details
-        </a></li>
-        <li><a
-            class="piwik-event"
-            data-event-id="Your Applications" id="your-applications"
-            th:href="@{{manageApplicationsUrl}/(manageApplicationsUrl=${@environment.getProperty('manageApplications.url')})}">Your
-          Applications
-        </a></li>
-        <li><a class="piwik-event" data-event-id="Sign out" href="/signout" id="user-signout">Sign
-          out
-        </a></li>
-      </ul>
-      <ul th:if="!${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(user)}">
+      <li>
+        <ul class="mobile-hidden"
+            th:if="${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(user)}">
+          <li class="user" id="signed-in-user" th:text="${user.getId() + ':'}"></li>
+          <li><a
+              class="piwik-event"
+              data-event-id="Your details - top menu" id="your-details"
+              th:href="@{{chsAccountUrl}/user/account(chsAccountUrl=${@environment.getProperty('account.url')})}">Your
+            details
+          </a></li>
+          <li><a
+              class="piwik-event"
+              data-event-id="Your Applications" id="your-applications"
+              th:href="@{{manageApplicationsUrl}/(manageApplicationsUrl=${@environment.getProperty('manageApplications.url')})}">Your
+            Applications
+          </a></li>
+          <li><a class="piwik-event" data-event-id="Sign out" href="/signout" id="user-signout">Sign
+            out
+          </a></li>
+        </ul>
+      </li>
+      <li th:if="!${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(user)}">
         <!--  -->
-        <a class="piwik-event" data-event-id="Sign In" href="/signin" id="user-signin">Sign in</a>
-      </ul>
+        <a class="piwik-event govuk-link" data-event-id="Sign In" href="/signin" id="user-signin">Sign in /
+          Register</a>
+      </li>
     </ul>
   </nav>
 </div>

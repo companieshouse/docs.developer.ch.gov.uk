@@ -9,6 +9,7 @@ public class UserModel implements IUserModel {
 
     /**
      * Static method used in thymeleaf to handle null users in a readable fashion.
+     *
      * @param user user who is
      * @return <code>true</code> if user is not null and is signed in. Otherwise returns
      * <code>false</code>.
@@ -48,7 +49,9 @@ public class UserModel implements IUserModel {
         return this;
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     public IUserModel populateUserDetails(final Session sessionData) {
         if (sessionData == null) {
             clear();

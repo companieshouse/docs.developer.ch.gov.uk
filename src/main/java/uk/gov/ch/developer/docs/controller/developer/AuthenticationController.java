@@ -10,7 +10,7 @@ import uk.gov.ch.developer.docs.controller.AbstractPageController;
 public class AuthenticationController extends AbstractPageController {
 
     private static final String TITLE = "Authentication";
-    
+
     @Value("${authentication.path}")
     private String path;
 
