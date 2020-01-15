@@ -1,5 +1,6 @@
 package uk.gov.ch.developer.docs.models.nav;
 
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -9,6 +10,13 @@ import java.util.Map;
 public class NavBarModel {
 
     private Map<String, NavItemList> sections = new LinkedHashMap<>();
+
+    NavBarModel() {
+    }
+
+    NavBarModel(LinkedHashMap<String, NavItemList> ret) {
+        sections = ret;
+    }
 
     /**
      * Retrieves map of all headings and their Navigation Item Lists. Used by Thymeleaf.
@@ -24,15 +32,15 @@ public class NavBarModel {
      * Retrieve heading that matches the key, or creates and returns a new one.
      *
      * @param heading String that acts as key and display title for user.
-     * @param defaultRequiresLoggedIn if a new heading is created, does it require a logged in user
+     * @param defaultRestrictions if a new heading is created, does it require a logged in user
      * to see by default.
      * @return NavItemList or null if no value is found.
      */
-    public NavItemList addHeading(final String heading,
-            final UserRequired defaultRequiresLoggedIn) {
+    NavItemList addHeading(final String heading,
+            final EnumSet<DisplayRestrictions> defaultRestrictions) {
         return sections.computeIfAbsent(
                 heading,
-                k -> new NavItemList(defaultRequiresLoggedIn.isRequired())
+                k -> new NavItemList(defaultRestrictions)
         );
     }
 

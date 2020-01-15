@@ -2,8 +2,10 @@ package uk.gov.ch.developer.docs.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import uk.gov.ch.developer.docs.models.nav.NavBarModel;
+import uk.gov.ch.developer.docs.models.nav.NavBarModelBuilder;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -16,9 +18,9 @@ public abstract class BaseController {
     protected static final String ERROR_VIEW = "error";
 
     @Autowired
-    private NavBarModel navbar;
+    private NavBarModelBuilder navbarFactory;
 
-    protected BaseController() {
+    BaseController() {
 
     }
 
@@ -29,8 +31,8 @@ public abstract class BaseController {
     public abstract String getTemplateTitle();
 
     @ModelAttribute("navBarModel")
-    public NavBarModel getNavBar() {
-        return navbar;
+    public NavBarModel getNavBar(ModelMap model) {
+        return navbarFactory.build(model);
     }
 
 }

@@ -3,8 +3,8 @@ package uk.gov.ch.developer.docs.models.nav;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
+import java.util.EnumSet;
 import java.util.Iterator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.ui.ModelMap;
 import uk.gov.ch.developer.docs.models.user.IUserModel;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,6 +24,8 @@ class NavItemListTest {
     private static final String ALT_URL = "Alternate url";
     @Mock
     private IUserModel mockUser;
+    @Mock
+    ModelMap mockModelMap;
 
     @Nested
     @DisplayName("Add Tests:")
@@ -31,13 +34,13 @@ class NavItemListTest {
         @Test
         @DisplayName("Items are created with correct values.")
         void NavItemList_Add_CreatesItem_WithCorrectValues_test() {
-            NavItemList list = new NavItemList(true);
+            NavItemList list = new NavItemList(EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             NavBarItem item = list.add(HEADING, URL);
             assertEquals(HEADING, item.getHeading());
             assertEquals(URL, item.getUrl());
             assertTrue(item.isLoggedInOnly());
 
-            list = new NavItemList(false);
+            list = new NavItemList(DisplayRestrictions.NONE());
             item = list.add(ALT_HEADING, ALT_URL);
             assertEquals(ALT_HEADING, item.getHeading());
             assertEquals(ALT_URL, item.getUrl());
@@ -52,7 +55,7 @@ class NavItemListTest {
         @Test
         @DisplayName("- Items can be retrieved")
         void NavItemList_CreatedItems_CanBeAccessed_test() {
-            NavItemList list = new NavItemList(true);
+            NavItemList list = new NavItemList(EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             NavBarItem item = list.add(HEADING, URL);
             Iterator<INavBarItem> iter = list.iterator();
             assertEquals(item, iter.next());
@@ -66,7 +69,7 @@ class NavItemListTest {
         @Test
         @DisplayName("- Items are retrieved in ordered fashion")
         void NavItemList_CreatedItems_CanBeAccessedInAnOrderedWay_test() {
-            NavItemList list = new NavItemList(true);
+            NavItemList list = new NavItemList(EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             for (int i = 0; i < 20; i++) {
                 String value = String.valueOf(i);
                 NavBarItem item = list.add(value, value);
@@ -90,35 +93,40 @@ class NavItemListTest {
         @Test
         @DisplayName("- Returns False if list is empty")
         void NavItemList_hasDrawableChildren_ReturnsFalse_IfNoChildren_test() {
-            NavItemList list = new NavItemList(true);
-            assertFalse(list.hasDrawableChildren(mockUser));
+            NavItemList list = new NavItemList(EnumSet.of(DisplayRestrictions.USER_REQUIRED));
+            assertFalse(list.hasDrawableChildren(EnumSet.allOf(DisplayRestrictions.class)));
         }
 
         @Test
         @DisplayName("- Returns True if list has values and doesn't require log in.")
         void NavItemList_hasDrawableChildren_ReturnsTrue_IfChildren_test() {
-            when(mockUser.isSignedIn()).thenReturn(false);
-            NavItemList list = new NavItemList(false);
+            NavItemList list = new NavItemList(DisplayRestrictions.NONE());
             list.add(HEADING, URL);
-            assertTrue(list.hasDrawableChildren(mockUser));
+            assertTrue(list.hasDrawableChildren(EnumSet.allOf(DisplayRestrictions.class)));
         }
 
         @Test
         @DisplayName("- Returns False if list values require log in and user not logged in.")
         void NavItemList_hasDrawableChildren_ReturnsFalse_IfChildrenRequireSignIn_AndUserLoggedOut_test() {
-            when(mockUser.isSignedIn()).thenReturn(false);
-            NavItemList list = new NavItemList(true);
+            NavItemList list = new NavItemList(EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             list.add(HEADING, URL);
-            assertFalse(list.hasDrawableChildren(mockUser));
+            assertFalse(list.hasDrawableChildren(DisplayRestrictions.NONE()));
         }
 
         @Test
         @DisplayName("- Returns True if list values require log in and user logged in.")
         void NavItemList_hasDrawableChildren_ReturnsTrue_IfChildrenRequireSignIn_AndUserSignedIn_test() {
-            when(mockUser.isSignedIn()).thenReturn(true);
-            NavItemList list = new NavItemList(true);
+            NavItemList list = new NavItemList(EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             list.add(HEADING, URL);
-            assertTrue(list.hasDrawableChildren(mockUser));
+            assertTrue(list.hasDrawableChildren(EnumSet.of(DisplayRestrictions.USER_REQUIRED)));
+        }
+
+        @Test
+        @DisplayName("- Returns True if list values require log in and user logged in.")
+        void NavItemList_hasDrawableChildren_ReturnsTrue_IfChildrenRequireSignIn_AndUserSignedIn_b_test() {
+            NavItemList list = new NavItemList(EnumSet.of(DisplayRestrictions.USER_REQUIRED));
+            list.add(HEADING, URL);
+            assertTrue(list.hasDrawableChildren(EnumSet.of(DisplayRestrictions.USER_REQUIRED)));
         }
     }
 }

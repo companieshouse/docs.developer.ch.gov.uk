@@ -8,19 +8,16 @@
 
 <!-- This is expected to be called in the context of a list -->
 <div th:fragment="navBarSubMenu (menu)" th:remove="tag">
-  <th:block
-      th:with="draw = ${!menu.isLoggedInOnly() || T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(user)}">
-    <li class="app-subnav__section-item" th:if="${draw}">
+  <li class="app-subnav__section-item">
     <a class="app-subnav__link govuk-link" th:href="${menu.url}" th:text="${menu.heading}"></a>
   </li>
-    <li th:if="${not #lists.isEmpty(menu.children) and draw}">
+  <li th:if="${not #lists.isEmpty(menu.children)}">
     <ul>
       <li th:each="item : ${menu.children}" th:remove="tag">
         <span th:replace="fragments/navBarSubMenu :: navBarSubMenu(menu=${item})"></span>
       </li>
     </ul>
   </li>
-  </th:block>
 </div>
 </body>
 </html>

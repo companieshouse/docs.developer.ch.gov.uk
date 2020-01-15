@@ -1,5 +1,6 @@
 package uk.gov.ch.developer.docs.models.nav;
 
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -31,9 +32,17 @@ public interface INavBarItem {
     /**
      * Navigation Items that are nested underneath this object.
      *
-     * @return List of children
+     * @return Unmodifiable list of children
      */
     List<INavBarItem> getChildren();
+
+    /**
+     * Navigation Items that are nested underneath this object, which are drawable given the model
+     * attributes.
+     *
+     * @return Unmodifiable list of children
+     */
+    List<INavBarItem> getChildren(EnumSet<DisplayRestrictions> restrictions);
 
     /**
      * Returns the number of parents are chained until the highest level.
@@ -48,4 +57,20 @@ public interface INavBarItem {
      * @return <code>true</code> if it should only
      */
     boolean isLoggedInOnly();
+
+    /**
+     * Retrieves set of flags that must be valid in order for this to be visible. Does this remove
+     * the value of isLoggedInOnly?
+     *
+     * @return EnumSet of DisplayRestrictions. An empty set means always visible.
+     */
+    EnumSet<DisplayRestrictions> getRestrictions();
+
+    /**
+     * Given the current visibility restrictions, can this item be displayed.
+     *
+     * @param restrictions set of flags which are currently valid
+     * @return true if visible. Otherwise false.
+     */
+    boolean isVisible(EnumSet<DisplayRestrictions> restrictions);
 }

@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.EnumSet;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -24,7 +25,8 @@ class NavBarModelTest {
         @DisplayName("Creates new list if heading doesn't exist.")
         void NavBarModel_addHeading_CreatesAList_test() {
             NavBarModel model = new NavBarModel();
-            NavItemList created = model.addHeading("Test", UserRequired.USER_REQUIRED);
+            NavItemList created = model
+                    .addHeading("Test", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             assertNotNull(created);
         }
 
@@ -32,8 +34,10 @@ class NavBarModelTest {
         @DisplayName("Returns existing list if heading exists.")
         void NavBarModel_addHeading_ReturnsTheSameValues_ForTheSameInput_test() {
             NavBarModel model = new NavBarModel();
-            NavItemList created = model.addHeading("Test", UserRequired.USER_REQUIRED);
-            NavItemList retrieved = model.addHeading("Test", UserRequired.USER_REQUIRED);
+            NavItemList created = model
+                    .addHeading("Test", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
+            NavItemList retrieved = model
+                    .addHeading("Test", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             assertEquals(created, retrieved);
         }
 
@@ -41,8 +45,9 @@ class NavBarModelTest {
         @DisplayName("Doesn't just always return the same list.")
         void NavBarModel_addHeading_ReturnsDifferentValues_ForDifferentInputs_test() {
             NavBarModel model = new NavBarModel();
-            NavItemList created = model.addHeading("Test", UserRequired.USER_REQUIRED);
-            NavItemList retrieved = model.addHeading("TestB", UserRequired.USER_NOT_REQUIRED);
+            NavItemList created = model
+                    .addHeading("Test", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
+            NavItemList retrieved = model.addHeading("TestB", DisplayRestrictions.NONE());
             assertNotEquals(created, retrieved);
         }
     }
@@ -55,7 +60,7 @@ class NavBarModelTest {
         @DisplayName("Returns null if header doesn't exist.")
         void NavBarModel_getHeading_returnsNull_IfHeaderDoesntExist_test() {
             NavBarModel model = new NavBarModel();
-            model.addHeading("Test", UserRequired.USER_REQUIRED);
+            model.addHeading("Test", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             NavItemList retrieved = model.getHeading("TestB");
             assertNull(retrieved);
         }
@@ -64,7 +69,8 @@ class NavBarModelTest {
         @DisplayName("Returns value if header does exist.")
         void NavBarModel_getHeading_returnsValue_IfHeaderDoesExist_test() {
             NavBarModel model = new NavBarModel();
-            NavItemList created = model.addHeading("Test", UserRequired.USER_REQUIRED);
+            NavItemList created = model
+                    .addHeading("Test", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             NavItemList retrieved = model.getHeading("Test");
             assertEquals(created, retrieved);
         }
@@ -86,7 +92,8 @@ class NavBarModelTest {
         @DisplayName("Returns map with correct values when there are sections.")
         void NavBarModel_getSections_retrieves_aMapContainingValuesCreated_test() {
             NavBarModel model = new NavBarModel();
-            NavItemList created = model.addHeading("Test", UserRequired.USER_REQUIRED);
+            NavItemList created = model
+                    .addHeading("Test", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             Map<String, NavItemList> sections = model.getSections();
             assertThat(sections, aMapWithSize(1));
             assertThat(sections, hasEntry("Test", created));

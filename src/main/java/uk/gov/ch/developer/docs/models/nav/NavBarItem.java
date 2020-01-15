@@ -2,7 +2,9 @@ package uk.gov.ch.developer.docs.models.nav;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Basic implementation of the INavBarItem.
@@ -13,22 +15,31 @@ public class NavBarItem implements INavBarItem {
 
     private final String heading;
     private final String url;
-    private final List<NavBarItem> children;
+    private final ArrayList<INavBarItem> children;
+    private final EnumSet<DisplayRestrictions> displaySettings;
     private NavBarItem parent;
-    private boolean requiresLoggedIn;
 
-    NavBarItem(final String heading, final String url, boolean requiresLoggedIn) {
+    private NavBarItem(final String heading, final String url,
+            final EnumSet<DisplayRestrictions> displaySettings,
+            final NavBarItem parent) {
+        this(heading, url, displaySettings);
+        this.parent = parent;
+        parent.children.add(this);
+    }
+
+    NavBarItem(final String heading, final String url,
+            final EnumSet<DisplayRestrictions> displaySettings) {
         this.heading = heading;
         this.url = checkedUrl(url);
-        this.requiresLoggedIn = requiresLoggedIn;
+        this.displaySettings = displaySettings;
         this.children = new ArrayList<>();
     }
 
-    private NavBarItem(final String heading, final String url, boolean requiresLoggedIn,
-            final NavBarItem parent) {
-        this(heading, url, requiresLoggedIn);
-        this.parent = parent;
-        parent.children.add(this);
+    NavBarItem(INavBarItem clonedFrom, ArrayList<INavBarItem> clonedChildren) {
+        this.displaySettings = DisplayRestrictions.NONE();
+        this.heading = clonedFrom.getHeading();
+        this.url = clonedFrom.getUrl();
+        this.children = clonedChildren;
     }
 
     /**
@@ -52,7 +63,7 @@ public class NavBarItem implements INavBarItem {
      */
     @SuppressWarnings("WeakerAccess")
     public NavBarItem requireLoggedInUser() {
-        this.requiresLoggedIn = true;
+        this.displaySettings.add(DisplayRestrictions.USER_REQUIRED);
         return this;
     }
 
@@ -64,7 +75,7 @@ public class NavBarItem implements INavBarItem {
      */
     @SuppressWarnings("WeakerAccess")
     public NavBarItem doNotrequireLoggedInUser() {
-        this.requiresLoggedIn = false;
+        this.displaySettings.remove(DisplayRestrictions.USER_REQUIRED);
         return this;
     }
 
@@ -76,7 +87,7 @@ public class NavBarItem implements INavBarItem {
      */
     @SuppressWarnings("WeakerAccess")
     public NavBarItem add(String heading, String url) {
-        return new NavBarItem(heading, url, requiresLoggedIn, this);
+        return new NavBarItem(heading, url, displaySettings.clone(), this);
     }
 
     /**
@@ -104,11 +115,22 @@ public class NavBarItem implements INavBarItem {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public List<INavBarItem> getChildren() {
         return Collections.unmodifiableList(children);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<INavBarItem> getChildren(EnumSet<DisplayRestrictions> restrictions) {
+        List<? extends INavBarItem> ret = children.stream()
+                .filter(item -> item.isVisible(restrictions)).collect(
+                        Collectors.toList());
+        return Collections.unmodifiableList(ret);
     }
 
     /**
@@ -130,6 +152,23 @@ public class NavBarItem implements INavBarItem {
      */
     @Override
     public boolean isLoggedInOnly() {
-        return requiresLoggedIn;
+        return displaySettings.contains(DisplayRestrictions.USER_REQUIRED);
+    }
+
+    @Override
+    public EnumSet<DisplayRestrictions> getRestrictions() {
+        return displaySettings;
+    }
+
+    /**
+     * Checks whether this item should be displayed
+     *
+     * @param flagsTriggered set of DisplayRestrictions which have passed the criteria to be shown.
+     * @return true if, the items display conditions are a subset of the valid flags. Otherwise
+     * false.
+     */
+    @Override
+    public boolean isVisible(EnumSet<DisplayRestrictions> flagsTriggered) {
+        return flagsTriggered.containsAll(this.displaySettings);
     }
 }

@@ -1,11 +1,12 @@
 package uk.gov.ch.developer.docs.config;
 
+import java.util.EnumSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import uk.gov.ch.developer.docs.models.nav.NavBarModel;
+import uk.gov.ch.developer.docs.models.nav.DisplayRestrictions;
+import uk.gov.ch.developer.docs.models.nav.NavBarModelBuilder;
 import uk.gov.ch.developer.docs.models.nav.NavItemList;
-import uk.gov.ch.developer.docs.models.nav.UserRequired;
 
 @Configuration
 public class NavBarConfig {
@@ -22,27 +23,28 @@ public class NavBarConfig {
     private String devGuideURL;
 
     @Bean
-    public NavBarModel getNavBarModel() {
+    public NavBarModelBuilder getNavBarModelBuilder() {
 
-        NavBarModel model = new NavBarModel();
+        NavBarModelBuilder model = new NavBarModelBuilder();
         NavItemList manageApplications = model
-                .addHeading("Manage Applications", UserRequired.USER_REQUIRED);
+                .addHeading("Manage Applications", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
 
         manageApplications.add("View all applications", "example.com");
         manageApplications.add("Add an application", "example.com");
 
         NavItemList documentation = model
-                .addHeading("General Documentation", UserRequired.USER_NOT_REQUIRED);
+                .addHeading("General Documentation", DisplayRestrictions.NONE());
         documentation.add("Get Started", gettingStartedURL);
         documentation.add("Companies House REST API overview", homeURL);
         documentation.add("How to add an API key", homeURL);
         documentation.add("Developer Guidelines", devGuideURL);
 
-        NavItemList manageAccounts = model.addHeading("Manage account", UserRequired.USER_REQUIRED);
+        NavItemList manageAccounts = model
+                .addHeading("Manage account", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
         manageAccounts.add("Manage Profile", homeURL);
         manageAccounts.add("Change Password", homeURL);
 
-        NavItemList help = model.addHeading("Help", UserRequired.USER_REQUIRED);
+        NavItemList help = model.addHeading("Help", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
         help.add("Developer Hub Forum", homeURL);
 
         return model;
