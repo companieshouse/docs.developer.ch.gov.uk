@@ -18,8 +18,9 @@ public class DocsWebApplication implements WebMvcConfigurer {
     private UserDetailsInterceptor userDetailsInterceptor;
 
     @Autowired
-    public DocsWebApplication(LoggingInterceptor loggingInterceptor) {
+    public DocsWebApplication(LoggingInterceptor loggingInterceptor, UserDetailsInterceptor userDetailsInterceptor) {
         this.loggingInterceptor = loggingInterceptor;
+        this.userDetailsInterceptor = userDetailsInterceptor;
     }
 
     public static void main(String[] args) {
