@@ -22,5 +22,4 @@ public class HomeController extends AbstractPageController {
     public String getPath() {
         return path;
     }
-
 }
