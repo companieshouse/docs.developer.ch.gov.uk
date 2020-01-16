@@ -10,6 +10,10 @@ import uk.gov.ch.developer.docs.models.user.UserModel;
 import uk.gov.companieshouse.session.model.SignInInfo;
 import uk.gov.companieshouse.session.model.UserProfile;
 
+/**
+ * This is a temporary controller to assist in testing, intended to be deleted after login and
+ * logout are implemented correctly.
+ */
 @Controller
 public class DummyLoginController {
 
@@ -29,8 +33,10 @@ public class DummyLoginController {
         signInInfo.setUserProfile(userProfile);
 
         Field siField = user.getClass().getDeclaredField("signIn");
-        siField.setAccessible(true);
-        siField.set(user, signInInfo);
+        //Sonar is understandably concerned about reflective coding however as this is temporary
+        // and static we are not concerned that this represents a security vulnerability.
+        siField.setAccessible(true);//NOSONAR
+        siField.set(user, signInInfo);//NOSONAR
 
         m.getModel().put("user", user);
         m.getModel().put("navBarModel", navbarFactory.build(m.getModelMap()));
