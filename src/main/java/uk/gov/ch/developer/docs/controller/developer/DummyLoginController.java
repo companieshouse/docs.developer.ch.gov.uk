@@ -22,7 +22,7 @@ public class DummyLoginController {
         final UserModel user = new UserModel();
 
         final UserProfile userProfile = new UserProfile();
-        userProfile.setEmail("Forced@login.gmail.com");
+        userProfile.setEmail("Forced@login.companieshouse.gov.uk");
 
         final SignInInfo signInInfo = new SignInInfo();
         signInInfo.setSignedIn(true);
