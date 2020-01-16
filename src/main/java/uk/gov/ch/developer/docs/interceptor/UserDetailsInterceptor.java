@@ -3,7 +3,6 @@ package uk.gov.ch.developer.docs.interceptor;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -24,12 +23,14 @@ public class UserDetailsInterceptor extends HandlerInterceptorAdapter {
     private SessionService sessionService;
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+            @Nullable ModelAndView modelAndView) throws Exception {
 
         if (modelAndView != null && modelAndView.getViewName() != null
                 && (request.getMethod().equalsIgnoreCase("GET")
                 || (request.getMethod().equalsIgnoreCase("POST")
-                && !modelAndView.getViewName().startsWith(UrlBasedViewResolver.REDIRECT_URL_PREFIX)))) {
+                && !modelAndView.getViewName()
+                .startsWith(UrlBasedViewResolver.REDIRECT_URL_PREFIX)))) {
 
             Map<String, Object> sessionData = sessionService.getSessionDataFromContext();
             Map<String, Object> signInInfo = (Map<String, Object>) sessionData.get(SIGN_IN_KEY);

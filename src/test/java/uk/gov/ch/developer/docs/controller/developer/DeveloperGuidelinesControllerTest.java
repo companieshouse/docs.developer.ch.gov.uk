@@ -27,12 +27,11 @@ class DeveloperGuidelinesControllerTest {
     private static final String PATH = "/developer-guidelines";
     private static final String VIEW = "dev-hub/developerGuidelines";
 
-    private MockMvc mockMvc;
-
     static {
         TestUtils.setUpEnviromentProperties();
     }
 
+    private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext context;
     @InjectMocks

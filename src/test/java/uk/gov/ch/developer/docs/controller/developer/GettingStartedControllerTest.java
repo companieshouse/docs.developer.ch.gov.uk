@@ -26,12 +26,11 @@ class GettingStartedControllerTest {
     private static final String PATH = "/getting-started";
     private static final String VIEW = "dev-hub/gettingStarted";
 
-    private MockMvc mockMvc;
-
     static {
         TestUtils.setUpEnviromentProperties();
     }
 
+    private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext context;
     @InjectMocks

@@ -3,6 +3,7 @@ package uk.gov.ch.developer.docs.controller.developer;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,12 +26,11 @@ class AuthenticationControllerTest {
     private static final String PATH = "/authentication";
     private static final String VIEW = "dev-hub/authentication";
 
-    private MockMvc mockMvc;
-
     static {
         TestUtils.setUpEnviromentProperties();
     }
 
+    private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext context;
     @InjectMocks

@@ -23,6 +23,13 @@ public class NavBarItem implements INavBarItem {
         parent.children.add(this);
     }
 
+    private static String checkedUrl(String originalUrl) {
+        if (originalUrl == null || originalUrl.trim().isEmpty()) {
+            return "/";
+        }
+        return originalUrl;
+    }
+
     @Override
     public String getHeading() {
         return heading;
@@ -31,13 +38,6 @@ public class NavBarItem implements INavBarItem {
     @Override
     public String getUrl() {
         return url;
-    }
-
-    private static String checkedUrl(String originalUrl) {
-        if (originalUrl == null || originalUrl.trim().isEmpty()) {
-            return "/";
-        }
-        return originalUrl;
     }
 
     @Override

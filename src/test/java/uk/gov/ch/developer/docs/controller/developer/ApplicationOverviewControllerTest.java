@@ -3,6 +3,7 @@ package uk.gov.ch.developer.docs.controller.developer;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -24,12 +25,11 @@ class ApplicationOverviewControllerTest {
     private static final String PATH = "/manage-applications";
     private static final String VIEW = "dev-hub/manageApplications";
 
-    private MockMvc mockMvc;
-
     static {
         TestUtils.setUpEnviromentProperties();
     }
 
+    private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
@@ -44,10 +44,11 @@ class ApplicationOverviewControllerTest {
     void TestGetRequestReturnsSuccessForCorrectPath() throws Exception {
         this.mockMvc.perform(get(PATH)).andExpect(status().isOk()).andExpect(view().name(VIEW));
     }
-    
+
     @Test
     void TestGetRequestReturnsErrorForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH)).andExpect(status().isNotFound());
+        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
+                .andExpect(status().isNotFound());
     }
-    
+
 }

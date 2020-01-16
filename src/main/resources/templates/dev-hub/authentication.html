@@ -1,65 +1,66 @@
 <!DOCTYPE html>
 <html lang="en-GB" layout:decorate="~{layouts/baseLayout}"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    xmlns:th="http://www.thymeleaf.org">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title th:utext="${templateTitle}"></title>
+  <title th:utext="${templateTitle}"></title>
 </head>
 
 <body>
 
-    <div layout:fragment="content">
-        <h1 class="govuk-heading-xl">Authentication</h1>
-        <h2 class="govuk-heading-l">API key authentication</h2>
+<div layout:fragment="content">
+  <h1 class="govuk-heading-xl">Authentication</h1>
+  <h2 class="govuk-heading-l">API key authentication</h2>
 
-        <p class="govuk-body">The Companies House API requires
-            authentication credentials, in the form of an API key, to be
-            sent with each request.</p>
+  <p class="govuk-body">The Companies House API requires
+    authentication credentials, in the form of an API key, to be
+    sent with each request.</p>
 
-        <p class="govuk-body">
-            To obtain an API key, go to <a href=https://www.example.com
-                class="govuk-link">Your applications</a> and register
-            the application with the Companies House Developer Hub as an
-            <code>API Key</code>
-            application. This will allocate a unique key to the
-            application which can be sent with any
-            <code>GET</code>
-            request for a public resource served by the Companies House
-            API.
-        </p>
+  <p class="govuk-body">
+    To obtain an API key, go to <a class="govuk-link"
+                                   href=https://www.example.com>Your applications</a> and register
+    the application with the Companies House Developer Hub as an
+    <code>API Key</code>
+    application. This will allocate a unique key to the
+    application which can be sent with any
+    <code>GET</code>
+    request for a public resource served by the Companies House
+    API.
+  </p>
 
-        <h3 class="govuk-heading-m">Sending the API key</h3>
-        <p class="govuk-body">
-            The Companies House API uses <a
-                href="http://en.wikipedia.org/wiki/Basic_access_authentication" class="govuk-link">HTTP
-                Basic Authentication</a> to transmit an API key between the
-            client application and the server. Basic authentication is
-            usually made up of a username and password pair; the
-            Companies House API takes the username as the API key and
-            ignores the password, so can be left blank.
-        </p>
+  <h3 class="govuk-heading-m">Sending the API key</h3>
+  <p class="govuk-body">
+    The Companies House API uses <a
+      class="govuk-link" href="http://en.wikipedia.org/wiki/Basic_access_authentication">HTTP
+    Basic Authentication</a> to transmit an API key between the
+    client application and the server. Basic authentication is
+    usually made up of a username and password pair; the
+    Companies House API takes the username as the API key and
+    ignores the password, so can be left blank.
+  </p>
 
-        <h2 class="govuk-heading-l">Example</h2>
-        <h3 class="govuk-heading-m">HTTP Basic Authentication</h3>
-        <p class="govuk-body">
-            For an API key of my_api_key, the following curl request
-            demonstrates the setting of the
-            <code>Authorization</code>
-            HTTP request header, as defined by <a
-                href="https://tools.ietf.org/html/rfc2617" class="govuk-link">RFC2617</a>.
-        </p>
-        
-        <pre>
+  <h2 class="govuk-heading-l">Example</h2>
+  <h3 class="govuk-heading-m">HTTP Basic Authentication</h3>
+  <p class="govuk-body">
+    For an API key of my_api_key, the following curl request
+    demonstrates the setting of the
+    <code>Authorization</code>
+    HTTP request header, as defined by <a
+      class="govuk-link" href="https://tools.ietf.org/html/rfc2617">RFC2617</a>.
+  </p>
+
+  <pre>
             <code>curl -XGET -u my_api_key: https:<span>//api.companieshouse.gov.uk/company/00000006</span>
             </code>
         </pre>
-        <pre>
-            <code class="http"><span class="request">GET <span class="string">/company/00000006</span> HTTP/1.1</span>
+  <pre>
+            <code class="http"><span class="request">GET <span
+                class="string">/company/00000006</span> HTTP/1.1</span>
 <span class="attribute">Host</span>: <span class="string">api.companieshouse.gov.uk</span>
 <span class="attribute">Authorization</span>: <span class="string">Basic bXlfYXBpX2tleTo=</span>
             </code>
         </pre>
-    </div>
+</div>
 </body>
 </html>

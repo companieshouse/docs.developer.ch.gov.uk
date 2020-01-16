@@ -1,5 +1,16 @@
 package uk.gov.ch.developer.docs.interceptor;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,24 +21,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.ModelAndView;
 import uk.gov.ch.developer.docs.session.SessionService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
-
 @ExtendWith(MockitoExtension.class)
 public class UserDetailsInterceptorTest {
 
     private static final String USER_EMAIL = "userEmail";
-
     private static final String SIGN_IN_KEY = "signin_info";
     private static final String USER_PROFILE_KEY = "user_profile";
     private static final String EMAIL_KEY = "email";
@@ -68,7 +65,8 @@ public class UserDetailsInterceptorTest {
         when(httpServletRequest.getMethod()).thenReturn(HttpMethod.GET.toString());
         when(modelAndView.getViewName()).thenReturn(MODEL_VIEW_NAME);
 
-        userDetailsInterceptor.postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView);
+        userDetailsInterceptor
+                .postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView);
 
         verify(modelAndView, times(1)).addObject(USER_EMAIL, TEST_EMAIL_ADDRESS);
     }
@@ -88,7 +86,8 @@ public class UserDetailsInterceptorTest {
         when(httpServletRequest.getMethod()).thenReturn(HttpMethod.POST.toString());
         when(modelAndView.getViewName()).thenReturn("error");
 
-        userDetailsInterceptor.postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView);
+        userDetailsInterceptor
+                .postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView);
 
         verify(modelAndView, times(1)).addObject(USER_EMAIL, TEST_EMAIL_ADDRESS);
     }
@@ -100,7 +99,8 @@ public class UserDetailsInterceptorTest {
         when(httpServletRequest.getMethod()).thenReturn(HttpMethod.POST.toString());
         when(modelAndView.getViewName()).thenReturn("redirect:abc");
 
-        userDetailsInterceptor.postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView);
+        userDetailsInterceptor
+                .postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView);
 
         verify(modelAndView, never()).addObject(anyString(), any());
     }
@@ -113,7 +113,8 @@ public class UserDetailsInterceptorTest {
         when(httpServletRequest.getMethod()).thenReturn(HttpMethod.GET.toString());
         when(modelAndView.getViewName()).thenReturn(MODEL_VIEW_NAME);
 
-        userDetailsInterceptor.postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView);
+        userDetailsInterceptor
+                .postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView);
 
         verify(modelAndView, never()).addObject(anyString(), any());
     }
