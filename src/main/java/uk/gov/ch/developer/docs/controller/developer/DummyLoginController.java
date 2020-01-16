@@ -16,7 +16,7 @@ public class DummyLoginController {
     @Autowired
     private NavBarModelBuilder navbarFactory;
 
-    @RequestMapping("forceLogin")
+    @RequestMapping({"forceLogin", "signin"})
     public ModelAndView forceLogin(ModelAndView m)
             throws NoSuchFieldException, IllegalAccessException {
         final UserModel user = new UserModel();
@@ -38,7 +38,7 @@ public class DummyLoginController {
         return m;
     }
 
-    @RequestMapping("forceLogout")
+    @RequestMapping({"forceLogout", "signout"})
     public ModelAndView forceLogOut(ModelAndView m) {
         final UserModel user = new UserModel();
 
