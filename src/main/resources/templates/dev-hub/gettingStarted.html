@@ -100,7 +100,8 @@
   <section id="authentication">
     <h3 class="govuk-heading-m">Authentication</h3>
     <p class="govuk-body">Access to all API services requires authentication. The
-      <a class="govuk-link" th:href="@{{authenticationUrl}/(authenticationUrl=${@environment.getProperty('authentication.url')})}">Authentication</a>
+      <a class="govuk-link"
+         th:href="@{{authenticationUrl}/(authenticationUrl=${@environment.getProperty('authentication.url')})}">Authentication</a>
       page describes the authorisation mechanism used by the Companies House API, and how to
       register your application.</p>
 
