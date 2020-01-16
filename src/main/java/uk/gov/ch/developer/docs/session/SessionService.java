@@ -6,6 +6,7 @@ import uk.gov.companieshouse.session.handler.SessionHandler;
 
 @Component
 public class SessionService {
+
     public Map<String, Object> getSessionDataFromContext() {
         return SessionHandler.getSessionDataFromContext();
     }
