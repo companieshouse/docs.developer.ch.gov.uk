@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import uk.gov.ch.developer.docs.interceptor.LoggingInterceptor;
+import uk.gov.ch.developer.docs.interceptor.UserDetailsInterceptor;
 
 @SpringBootApplication
 public class DocsWebApplication implements WebMvcConfigurer {
@@ -14,6 +15,7 @@ public class DocsWebApplication implements WebMvcConfigurer {
 
 
     private LoggingInterceptor loggingInterceptor;
+    private UserDetailsInterceptor userDetailsInterceptor;
 
     @Autowired
     public DocsWebApplication(LoggingInterceptor loggingInterceptor) {
@@ -27,5 +29,6 @@ public class DocsWebApplication implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loggingInterceptor);
+        registry.addInterceptor(userDetailsInterceptor);
     }
 }

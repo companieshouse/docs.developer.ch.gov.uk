@@ -9,7 +9,7 @@
     <ul class="mobile-hidden" id="navigation">
       <ul class="mobile-hidden"
           th:if="${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(user)}">
-<!--        <li class="user" id="signed-in-user" th:text="${user.getId() + ':'}"></li>-->
+        <li class="user" id="signed-in-user" th:text="${user.getId() + ':'}"></li>
         <li><a
             class="piwik-event"
             data-event-id="Your details - top menu" id="your-details"
