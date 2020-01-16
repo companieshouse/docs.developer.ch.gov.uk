@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.springframework.ui.ModelMap;
 
 /**
@@ -113,15 +115,11 @@ public class NavBarModelBuilder {
             final EnumSet<DisplayRestrictions> currentRestrictions) {
         INavBarItem ret = null;
         if (value.isVisible(currentRestrictions)) {
-            final Iterator<INavBarItem> children = value.getChildren(currentRestrictions)
-                    .iterator();
-            final List<INavBarItem> clonedChildren = new LinkedList<>();
-            while (children.hasNext()) {
-                INavBarItem clonedChild = cloneItemIfVisible(children.next(), currentRestrictions);
-                if (clonedChild != null) {
-                    clonedChildren.add(clonedChild);
-                }
-            }
+            final List<INavBarItem> clonedChildren = value.getChildren(currentRestrictions)
+                    .stream()
+                    .map(child -> cloneItemIfVisible(child, currentRestrictions))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
             ret = new NavBarItem(value, clonedChildren);
         }
         return ret;

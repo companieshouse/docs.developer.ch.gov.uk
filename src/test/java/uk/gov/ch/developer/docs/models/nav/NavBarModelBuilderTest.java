@@ -372,6 +372,7 @@ class NavBarModelBuilderTest {
         void cloneItem_returnsMatchingItem_WithoutChildren_IfChildrenArentVisible_test() {
             NavBarItem navBarItem = new NavBarItem(HEADING, URL, DisplayRestrictions.none());
             NavBarItem child = navBarItem.add(CHILD_HEADING, CHILD_URL);
+            NavBarItem grandchild = child.add(CHILD_HEADING, CHILD_URL);
             child.requireLoggedInUser();
             NavBarModelBuilder builder = new NavBarModelBuilder();
             INavBarItem clonedItem = builder
