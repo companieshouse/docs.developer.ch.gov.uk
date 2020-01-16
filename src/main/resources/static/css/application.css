@@ -358,3 +358,232 @@ pre {
   list-style-type: none;
   padding-inline-start: 20px;
 }
+
+#global-nav {
+  font-family: 'proxima_nova', Arial, sans-serif;
+  font-weight: 400;
+  text-transform: none;
+  font-size: 14px;
+  line-height: 1.14286;
+  margin: 0;
+  position: relative;
+  z-index: 60;
+}
+
+@media (min-width: 641px) {
+  #global-nav {
+    font-size: 16px;
+    line-height: 1.25;
+  }
+}
+
+@media (max-width: 640px) {
+  #global-nav {
+    margin: 0 -15px 1em;
+  }
+}
+
+@media (min-width: 641px) {
+  #global-nav {
+    margin: 0;
+  }
+}
+
+@media (min-width: 769px) {
+  #global-nav {
+    text-align: right;
+  }
+}
+
+#global-nav .inner {
+  padding: 0;
+}
+
+@media (min-width: 769px) {
+  #global-nav .inner {
+    padding: 0 30px;
+  }
+}
+
+@media (min-width: 641px) {
+  #global-nav .inner {
+    padding-bottom: 0;
+  }
+}
+
+#global-nav .js-header-toggle,
+#global-nav .sign-in {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: #dee0e2;
+  padding: 1em;
+}
+
+@media (min-width: 641px) {
+  #global-nav .js-header-toggle,
+  #global-nav .sign-in {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  #global-nav .js-header-toggle,
+  #global-nav .sign-in {
+    display: none;
+  }
+}
+
+#global-nav .js-header-toggle:focus,
+#global-nav .js-header-toggle:hover,
+#global-nav .sign-in:focus,
+#global-nav .sign-in:hover {
+  text-decoration: underline;
+}
+
+#global-nav .home a {
+  display: block;
+  float: left;
+  padding-left: 0;
+}
+
+#global-nav .jump-link {
+  float: right;
+}
+
+@media (min-width: 769px) {
+  #global-nav .jump-link {
+    position: absolute;
+    left: -99999em;
+  }
+}
+
+#global-nav .js-header-toggle:focus {
+  outline: none;
+}
+
+#global-nav .js-header-toggle:after {
+  display: inline-block;
+  font-size: 8px;
+  height: 8px;
+  padding-left: 5px;
+  vertical-align: middle;
+  content: ' \25BC';
+}
+
+#global-nav.open .js-header-toggle:after {
+  content: ' \25B2';
+}
+
+#global-nav nav {
+  border-bottom: 1px solid #bfc1c3;
+}
+
+@media (min-width: 769px) {
+  #global-nav nav {
+    padding: 10px 0;
+  }
+}
+
+@media (min-width: 769px) {
+  #global-nav nav {
+    clear: none;
+    background: transparent;
+    position: static;
+    margin-bottom: 0;
+  }
+}
+
+#global-nav nav #navigation {
+  margin: 0;
+  padding: 0 0 1em;
+}
+
+@media (min-width: 641px) {
+  #global-nav nav #navigation {
+    padding: 10px 0;
+  }
+}
+
+@media (min-width: 769px) {
+  #global-nav nav #navigation {
+    padding: 0;
+  }
+}
+
+#global-nav nav .current {
+  color: #fff;
+}
+
+#global-nav nav a {
+  text-decoration: underline;
+}
+
+#global-nav nav li {
+  padding: 10px 0 10px 16px;
+  margin-bottom: 0;
+  display: block;
+  position: relative;
+}
+
+@media (max-width: 640px) {
+  #global-nav nav li {
+    padding: 1em 1em 0;
+  }
+}
+
+@media (min-width: 641px) {
+  #global-nav nav li {
+    display: inline;
+  }
+}
+
+@media (max-width: 640px) {
+  #global-nav nav li.user {
+    display: none;
+  }
+}
+
+@media (min-width: 641px) {
+  #global-nav nav li.user {
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 641px) {
+  #global-nav nav li.unauthenticated {
+    padding-left: 0;
+  }
+}
+
+#global-nav .home a {
+  position: relative;
+}
+
+#global-nav .home a small {
+  position: absolute;
+  top: .8em;
+  text-transform: uppercase;
+  color: white;
+  -webkit-font-smoothing: subpixel-antialiased;
+  background-color: #dee0e2;
+  padding: 2px 5px 0;
+  margin-left: 10px;
+}
+
+#global-nav .home a small.alpha {
+  background-color: #d53880;
+}
+
+#global-nav .home a small.beta {
+  background-color: #f47738;
+}
+
+@media (min-width:48.0625em) {
+  .govuk-header__logo {
+    width: 38.33%;
+  }
+  .govuk-header__content {
+    width: 61.66%;
+  }
+}
