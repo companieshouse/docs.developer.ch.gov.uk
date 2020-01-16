@@ -24,8 +24,8 @@ public class NavBarModelBuilder {
      * Retrieve heading that matches the key, or creates and returns a new one.
      *
      * @param heading String that acts as key and display title for user.
-     * @param restrictions if a new heading is created, does it require a logged in user to see by
-     * default.
+     * @param restrictions if a new heading is created, does it require conditions to be met to be
+     * seen.
      * @return NavItemList or null if no value is found.
      */
     //Using No Sonar to disable code smell about relying on EnumSet rather than Set. EnumSet is required.
@@ -37,6 +37,14 @@ public class NavBarModelBuilder {
         );
     }
 
+    /**
+     * Retrieve heading that matches the key, or creates and returns a new one.
+     *
+     * @param heading String that acts as key and display title for user.
+     * @param restrictions if a new heading is created, does it require conditions to be met to be
+     * seen.
+     * @return NavItemList or null if no value is found.
+     */
     public NavItemList addHeading(final String heading,
             final DisplayRestrictions... restrictions) { //NOSONAR
         EnumSet<DisplayRestrictions> set = EnumSet.noneOf(DisplayRestrictions.class);
