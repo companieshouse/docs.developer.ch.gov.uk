@@ -3,8 +3,7 @@ package uk.gov.ch.developer.docs.controller.developer;
 import java.lang.reflect.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import uk.gov.ch.developer.docs.models.nav.NavBarModelBuilder;
 import uk.gov.ch.developer.docs.models.user.UserModel;
@@ -21,7 +20,7 @@ public class DummyLoginController {
     @Autowired
     private NavBarModelBuilder navbarFactory;
 
-    @RequestMapping(value = {"forceLogin", "signin"}, method = RequestMethod.GET)
+    @GetMapping(value = {"forceLogin", "signin"})
     public ModelAndView forceLogin(final ModelAndView modelAndView)
             throws NoSuchFieldException, IllegalAccessException {
         final UserModel user = new UserModel();
@@ -45,7 +44,7 @@ public class DummyLoginController {
         return modelAndView;
     }
 
-    @RequestMapping(value = {"forceLogout", "signout"}, method = RequestMethod.GET)
+    @GetMapping(value = {"forceLogout", "signout"})
     public ModelAndView forceLogOut(final ModelAndView modelAndView) {
         final UserModel user = new UserModel();
 
