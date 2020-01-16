@@ -15,7 +15,7 @@ public enum DisplayRestrictions {
 
     private final Predicate<ModelMap> condition;
 
-    DisplayRestrictions(Predicate<ModelMap> test) {
+    DisplayRestrictions(final Predicate<ModelMap> test) {
         condition = test;
     }
 
@@ -30,7 +30,7 @@ public enum DisplayRestrictions {
      * @param m current parameters on the model.
      * @return true if restriction is satisfied otherwise false.
      */
-    public boolean test(ModelMap m) {
+    public boolean test(final ModelMap m) {
         return condition.test(m);
     }
 }

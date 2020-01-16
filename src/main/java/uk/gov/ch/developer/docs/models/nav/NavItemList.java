@@ -1,9 +1,9 @@
 package uk.gov.ch.developer.docs.models.nav;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,13 +12,14 @@ import java.util.List;
 public class NavItemList implements Iterable<INavBarItem> {
 
     private EnumSet<DisplayRestrictions> defaultDisplaySettings;
-    private List<INavBarItem> list = new ArrayList<>();
+    private final List<INavBarItem> list;
 
-    NavItemList(EnumSet<DisplayRestrictions> defaultDisplaySettings) {
+    NavItemList(final EnumSet<DisplayRestrictions> defaultDisplaySettings) {
         this.defaultDisplaySettings = defaultDisplaySettings;
+        list = new LinkedList<>();
     }
 
-    NavItemList(ArrayList<INavBarItem> clonedChildren) {
+    NavItemList(final List<INavBarItem> clonedChildren) {
         this.list = clonedChildren;
     }
 
@@ -30,7 +31,7 @@ public class NavItemList implements Iterable<INavBarItem> {
      * @param url link address of the sub menu item.
      * @return the newly created child item.
      */
-    public NavBarItem add(String heading, String url) {
+    public NavBarItem add(final String heading, final String url) {
         NavBarItem newItem = new NavBarItem(heading, url, defaultDisplaySettings.clone());
         list.add(newItem);
         return newItem;
@@ -51,7 +52,7 @@ public class NavItemList implements Iterable<INavBarItem> {
      * @return <code>true</code> if the sub items of this list contains at least one item that
      * should be drawn. Otherwise returns <code>false</code>.
      */
-    boolean hasDrawableChildren(EnumSet<DisplayRestrictions> flagsTripped) {
+    boolean hasDrawableChildren(final EnumSet<DisplayRestrictions> flagsTripped) {
         return list.stream()
                 .anyMatch(item -> item.isVisible(flagsTripped));
     }

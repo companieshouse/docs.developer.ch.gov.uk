@@ -40,14 +40,14 @@ class NavBarItemTest {
         void navBarItem_Constructs_test() {
             NavBarItem item = new NavBarItem(HEADING, URL,
                     EnumSet.of(DisplayRestrictions.USER_REQUIRED));
-            assertTrue(item.isLoggedInOnly());
+            assertTrue(item.getRestrictions().contains(DisplayRestrictions.USER_REQUIRED));
             assertEquals(HEADING, item.getHeading());
             assertEquals(URL, item.getUrl());
             assertNull(item.getParent());
             assertThat(item.getChildren(), is(empty()));
 
             item = new NavBarItem(HEADING, URL, DisplayRestrictions.none());
-            assertFalse(item.isLoggedInOnly());
+            assertFalse(item.getRestrictions().contains(DisplayRestrictions.USER_REQUIRED));
             assertEquals(HEADING, item.getHeading());
             assertEquals(URL, item.getUrl());
             assertNull(item.getParent());
@@ -87,7 +87,7 @@ class NavBarItemTest {
             NavBarItem parent = new NavBarItem(HEADING, URL,
                     EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             NavBarItem child = parent.add(HEADING, URL);
-            assertTrue(child.isLoggedInOnly());
+            assertTrue(child.getRestrictions().contains(DisplayRestrictions.USER_REQUIRED));
             assertEquals(parent, child.getParent());
             assertThat(parent.getChildren(), contains(child));
             assertThat(parent.getChildren(), hasSize(1));
@@ -180,9 +180,9 @@ class NavBarItemTest {
         @DisplayName("- sets false to true")
         void navBarItem_requireLoggedIn_Sets_isLoggedInOnly_ToTrue_test() {
             NavBarItem item = new NavBarItem(HEADING, URL, DisplayRestrictions.none());
-            assertFalse(item.isLoggedInOnly());
+            assertFalse(item.getRestrictions().contains(DisplayRestrictions.USER_REQUIRED));
             item.requireLoggedInUser();
-            assertTrue(item.isLoggedInOnly());
+            assertTrue(item.getRestrictions().contains(DisplayRestrictions.USER_REQUIRED));
         }
 
         @Test
@@ -190,9 +190,9 @@ class NavBarItemTest {
         void navBarItem_doNotRequireLoggedIn_Sets_isLoggedInOnly_ToFalse_test() {
             NavBarItem item = new NavBarItem(HEADING, URL,
                     EnumSet.of(DisplayRestrictions.USER_REQUIRED));
-            assertTrue(item.isLoggedInOnly());
+            assertTrue(item.getRestrictions().contains(DisplayRestrictions.USER_REQUIRED));
             item.doNotRequireLoggedInUser();
-            assertFalse(item.isLoggedInOnly());
+            assertFalse(item.getRestrictions().contains(DisplayRestrictions.USER_REQUIRED));
         }
     }
 

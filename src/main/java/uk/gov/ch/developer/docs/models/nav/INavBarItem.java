@@ -42,7 +42,7 @@ public interface INavBarItem {
      *
      * @return Unmodifiable list of children
      */
-    List<INavBarItem> getChildren(EnumSet<DisplayRestrictions> restrictions);
+    List<INavBarItem> getChildren(final EnumSet<DisplayRestrictions> restrictions);
 
     /**
      * Returns the number of parents are chained until the highest level.
@@ -52,15 +52,7 @@ public interface INavBarItem {
     int getDepth();
 
     /**
-     * Checks if this link should only be displayed if a user is logged in.
-     *
-     * @return <code>true</code> if it should only
-     */
-    boolean isLoggedInOnly();
-
-    /**
-     * Retrieves set of flags that must be valid in order for this to be visible. Does this remove
-     * the value of isLoggedInOnly?
+     * Retrieves set of flags that must be valid in order for this to be visible.
      *
      * @return EnumSet of DisplayRestrictions. An empty set means always visible.
      */
@@ -72,5 +64,5 @@ public interface INavBarItem {
      * @param restrictions set of flags which are currently valid
      * @return true if visible. Otherwise false.
      */
-    boolean isVisible(EnumSet<DisplayRestrictions> restrictions);
+    boolean isVisible(final EnumSet<DisplayRestrictions> restrictions);
 }

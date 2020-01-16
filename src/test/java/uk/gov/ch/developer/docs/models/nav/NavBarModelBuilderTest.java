@@ -33,6 +33,14 @@ import uk.gov.companieshouse.session.model.UserProfile;
 @ExtendWith(MockitoExtension.class)
 class NavBarModelBuilderTest {
 
+    private static final String USER_MODELATTRIBUTE = "user";
+
+    private static final String TEST = "test";
+    private static final String TEST_B = "TestB";
+    private static final String HEADING = "heading";
+    private static final String CHILD_HEADING = "childHeading";
+    private static final String URL = "url";
+    private static final String CHILD_URL = "childUrl";
     @Mock
     private ModelMap mockModel;
     @Mock
@@ -46,7 +54,7 @@ class NavBarModelBuilderTest {
         @DisplayName("Creates new list if heading doesn't exist.")
         void NavBarModel_addHeading_CreatesAList_test() {
             NavBarModelBuilder model = new NavBarModelBuilder();
-            NavItemList created = model.addHeading("Test", DisplayRestrictions.none());
+            NavItemList created = model.addHeading(TEST, DisplayRestrictions.none());
             assertNotNull(created);
         }
 
@@ -54,8 +62,8 @@ class NavBarModelBuilderTest {
         @DisplayName("Returns existing list if heading exists.")
         void NavBarModel_addHeading_ReturnsTheSameValues_ForTheSameInput_test() {
             NavBarModelBuilder model = new NavBarModelBuilder();
-            NavItemList created = model.addHeading("Test", DisplayRestrictions.none());
-            NavItemList retrieved = model.addHeading("Test", DisplayRestrictions.none());
+            NavItemList created = model.addHeading(TEST, DisplayRestrictions.none());
+            NavItemList retrieved = model.addHeading(TEST, DisplayRestrictions.none());
             assertEquals(created, retrieved);
         }
 
@@ -63,10 +71,46 @@ class NavBarModelBuilderTest {
         @DisplayName("Doesn't just always return the same list.")
         void NavBarModel_addHeading_ReturnsDifferentValues_ForDifferentInputs_test() {
             NavBarModelBuilder model = new NavBarModelBuilder();
-            NavItemList created = model.addHeading("Test", DisplayRestrictions.none());
+            NavItemList created = model.addHeading(TEST, DisplayRestrictions.none());
             NavItemList retrieved = model
-                    .addHeading("TestB", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
+                    .addHeading(TEST_B, EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             assertNotEquals(created, retrieved);
+        }
+
+        @Test
+        @DisplayName("Add Heading by arbitrary Display Restrictions is equivilant to get by set.")
+        void addHeading_withArrayDisplayRestrictions_ReturnsTheSameAs_addHeading_bySet() {
+            NavBarModelBuilder model = new NavBarModelBuilder();
+            NavItemList createdWithSet = model.addHeading(HEADING, DisplayRestrictions.none());
+            NavItemList retrievedByArray = model.addHeading(HEADING);
+            assertEquals(createdWithSet, retrievedByArray);
+
+            NavItemList createdByArray = model
+                    .addHeading(HEADING, DisplayRestrictions.USER_REQUIRED);
+            NavItemList retrievedWithSet = model
+                    .addHeading(HEADING, EnumSet.of(DisplayRestrictions.USER_REQUIRED));
+            assertEquals(createdWithSet, retrievedByArray);
+        }
+
+        @Test
+        @DisplayName("Add Heading with no Display args, creates List with no default security.")
+        void addHeading_withArrayDisplayRestrictions_createsNoDefaultSecurity() {
+            NavBarModelBuilder model = new NavBarModelBuilder();
+            NavItemList noRequirements = model.addHeading(HEADING);
+            NavBarItem child = noRequirements.add(HEADING, URL);
+
+            assertEquals(DisplayRestrictions.none(), child.getRestrictions());
+        }
+
+        @Test
+        @DisplayName("Add Heading with Display args, creates List with correct default security.")
+        void addHeading_withArrayDisplayRestrictions_createsCorrectDefaultSecurity() {
+            NavBarModelBuilder model = new NavBarModelBuilder();
+            NavItemList noRequirements = model
+                    .addHeading(HEADING, DisplayRestrictions.USER_REQUIRED);
+            NavBarItem child = noRequirements.add(HEADING, URL);
+
+            assertEquals(EnumSet.of(DisplayRestrictions.USER_REQUIRED), child.getRestrictions());
         }
     }
 
@@ -78,7 +122,7 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Returns None if no user.")
         void noCurrentFlagsTripped_forLoggedOutUser_test() {
-            when(mockModel.getAttribute("user")).thenReturn(mockUser);
+            when(mockModel.getAttribute(USER_MODELATTRIBUTE)).thenReturn(mockUser);
             when(mockUser.isSignedIn()).thenReturn(false);
 
             NavBarModelBuilder navModelBuilder = new NavBarModelBuilder();
@@ -92,7 +136,7 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Returns None if null user.")
         void noCurrentFlagsTripped_forNullUser_test() {
-            when(mockModel.getAttribute("user")).thenReturn(null);
+            when(mockModel.getAttribute(USER_MODELATTRIBUTE)).thenReturn(null);
 
             NavBarModelBuilder navModelBuilder = new NavBarModelBuilder();
 
@@ -105,7 +149,7 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Returns None and User Required if a user is logged in.")
         void userFlagTripped_test() {
-            when(mockModel.getAttribute("user")).thenReturn(mockUser);
+            when(mockModel.getAttribute(USER_MODELATTRIBUTE)).thenReturn(mockUser);
             when(mockUser.isSignedIn()).thenReturn(true);
 
             NavBarModelBuilder navModelBuilder = new NavBarModelBuilder();
@@ -122,48 +166,53 @@ class NavBarModelBuilderTest {
     @DisplayName("End To End Tests: ")
     class endToEndTests {
 
+        static final String ALL_PERMISSIONS = "AllPermissions";
+        static final String USER_ONLY = "UserOnly";
+        static final String NO_USER = "no user";
+        static final String USER = "user";
+
         @Test
         @DisplayName("Does Builder create navigation bar.")
         void createNavBar() {
-            when(mockModel.getAttribute("user")).thenReturn(mockUser);
+            when(mockModel.getAttribute(USER_MODELATTRIBUTE)).thenReturn(mockUser);
             when(mockUser.isSignedIn()).thenReturn(false);
 
             NavBarModelBuilder navModelBuilder = new NavBarModelBuilder();
             NavItemList userOnly = navModelBuilder
-                    .addHeading("UserOnly", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
-            userOnly.add("test", "url");
+                    .addHeading(USER_ONLY, EnumSet.of(DisplayRestrictions.USER_REQUIRED));
+            userOnly.add(TEST, URL);
 
             NavItemList allPermissions = navModelBuilder
-                    .addHeading("AllPermissions", DisplayRestrictions.none());
-            allPermissions.add("test", "url");
+                    .addHeading(ALL_PERMISSIONS, DisplayRestrictions.none());
+            allPermissions.add(TEST, URL);
 
             NavBarModel navModel = navModelBuilder.build(mockModel);
             Map<String, NavItemList> sections = navModel.getSections();
 
             assertThat(sections.keySet(), hasSize(1));
-            assertThat(sections.keySet(), contains("AllPermissions"));
+            assertThat(sections.keySet(), contains(ALL_PERMISSIONS));
         }
 
         @Test
         @DisplayName("Does not return sub menu items that aren't drawable")
         void filterSubMenu_test() {
-            when(mockModel.getAttribute("user")).thenReturn(mockUser);
+            when(mockModel.getAttribute(USER_MODELATTRIBUTE)).thenReturn(mockUser);
             when(mockUser.isSignedIn()).thenReturn(false);
 
             NavBarModelBuilder navModelBuilder = new NavBarModelBuilder();
 
             NavItemList allPermissions = navModelBuilder
-                    .addHeading("AllPermissions", DisplayRestrictions.none());
-            NavBarItem noUserItem = allPermissions.add("no user", "url");
-            NavBarItem userItem = allPermissions.add("user", "url").requireLoggedInUser();
+                    .addHeading(ALL_PERMISSIONS, DisplayRestrictions.none());
+            NavBarItem noUserItem = allPermissions.add(NO_USER, URL);
+            NavBarItem userItem = allPermissions.add(USER, URL).requireLoggedInUser();
 
             NavBarModel navModel = navModelBuilder.build(mockModel);
             Map<String, NavItemList> sections = navModel.getSections();
 
             assertThat(sections.keySet(), hasSize(1));
-            assertThat(sections.keySet(), contains("AllPermissions"));
+            assertThat(sections.keySet(), contains(ALL_PERMISSIONS));
 
-            Iterator<INavBarItem> iter = sections.get("AllPermissions").iterator();
+            Iterator<INavBarItem> iter = sections.get(ALL_PERMISSIONS).iterator();
 
             ArrayList<INavBarItem> subItems = new ArrayList<>();
             assertTrue(iter.hasNext());//Has at least one value
@@ -172,11 +221,11 @@ class NavBarModelBuilderTest {
             }
             for (INavBarItem item : subItems) {
                 System.out.println(item.getHeading());
-                assertFalse(item.isLoggedInOnly());
+                assertFalse(item.getRestrictions().contains(DisplayRestrictions.USER_REQUIRED));
             }
             System.out.println(subItems);
             assertThat(subItems, hasSize(1));
-            assertEquals("no user", subItems.get(0).getHeading());
+            assertEquals(NO_USER, subItems.get(0).getHeading());
         }
 
 
@@ -270,7 +319,7 @@ class NavBarModelBuilderTest {
 
             sI.setAccessible(true);
             sI.set(ret, signInInfo);
-            modelMap.addAttribute("user", ret);
+            modelMap.addAttribute(USER_MODELATTRIBUTE, ret);
             return modelMap;
         }
     }
@@ -281,7 +330,7 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Clone Item returns null for not visible item.")
         void cloneItem_returnsNull_IfItemIsntVisible_test() {
-            NavBarItem navBarItem = new NavBarItem("heading", "url",
+            NavBarItem navBarItem = new NavBarItem(HEADING, URL,
                     EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             NavBarModelBuilder builder = new NavBarModelBuilder();
             INavBarItem clonedItem = builder
@@ -292,7 +341,7 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Clone Item returns new item with correct heading and url for visible item.")
         void cloneItem_returnsMatchingItem_IfItemIsntVisible_test() {
-            NavBarItem navBarItem = new NavBarItem("heading", "url",
+            NavBarItem navBarItem = new NavBarItem(HEADING, URL,
                     EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             NavBarModelBuilder builder = new NavBarModelBuilder();
             INavBarItem clonedItem = builder
@@ -306,8 +355,8 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Clone Item returns item with cloned children.")
         void cloneItem_returnsMatchingItem_WithChildren_IfChildrenAreVisible_test() {
-            NavBarItem navBarItem = new NavBarItem("heading", "url", DisplayRestrictions.none());
-            NavBarItem child = navBarItem.add("childHeading", "childUrl");
+            NavBarItem navBarItem = new NavBarItem(HEADING, URL, DisplayRestrictions.none());
+            NavBarItem child = navBarItem.add(CHILD_HEADING, CHILD_URL);
             NavBarModelBuilder builder = new NavBarModelBuilder();
             INavBarItem clonedItem = builder
                     .cloneItemIfVisible(navBarItem, DisplayRestrictions.none());
@@ -321,8 +370,8 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Clone Item returns item without non visible children.")
         void cloneItem_returnsMatchingItem_WithoutChildren_IfChildrenArentVisible_test() {
-            NavBarItem navBarItem = new NavBarItem("heading", "url", DisplayRestrictions.none());
-            NavBarItem child = navBarItem.add("childHeading", "childUrl");
+            NavBarItem navBarItem = new NavBarItem(HEADING, URL, DisplayRestrictions.none());
+            NavBarItem child = navBarItem.add(CHILD_HEADING, CHILD_URL);
             child.requireLoggedInUser();
             NavBarModelBuilder builder = new NavBarModelBuilder();
             INavBarItem clonedItem = builder
@@ -343,7 +392,7 @@ class NavBarModelBuilderTest {
         @DisplayName("Clone List returns a new List with cloned children")
         void cloneList_returnsNewList_IfChildrenAreVisible_test() {
             NavItemList list = new NavItemList(DisplayRestrictions.none());
-            NavBarItem item = list.add("heading", "url");
+            NavBarItem item = list.add(HEADING, URL);
             NavBarModelBuilder builder = new NavBarModelBuilder();
             NavItemList clonedList = builder.cloneListIfVisible(list, DisplayRestrictions.none());
             assertNotNull(clonedList);
@@ -359,7 +408,7 @@ class NavBarModelBuilderTest {
         @DisplayName("Clone List returns null if no children are visible")
         void cloneList_returnsNull_IfNoChildren_areVisible_test() {
             NavItemList list = new NavItemList(DisplayRestrictions.none());
-            NavBarItem item = list.add("heading", "url");
+            NavBarItem item = list.add(HEADING, URL);
             item.requireLoggedInUser();
             NavBarModelBuilder builder = new NavBarModelBuilder();
             NavItemList clonedList = builder.cloneListIfVisible(list, DisplayRestrictions.none());

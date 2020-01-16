@@ -1,8 +1,8 @@
 package uk.gov.ch.developer.docs.models.nav;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +15,7 @@ public class NavBarItem implements INavBarItem {
 
     private final String heading;
     private final String url;
-    private final ArrayList<INavBarItem> children;
+    private final List<INavBarItem> children;
     private final EnumSet<DisplayRestrictions> displaySettings;
     private NavBarItem parent;
 
@@ -32,10 +32,10 @@ public class NavBarItem implements INavBarItem {
         this.heading = heading;
         this.url = checkedUrl(url);
         this.displaySettings = displaySettings;
-        this.children = new ArrayList<>();
+        this.children = new LinkedList<>();
     }
 
-    NavBarItem(INavBarItem clonedFrom, ArrayList<INavBarItem> clonedChildren) {
+    NavBarItem(final INavBarItem clonedFrom, final List<INavBarItem> clonedChildren) {
         this.displaySettings = DisplayRestrictions.none();
         this.heading = clonedFrom.getHeading();
         this.url = clonedFrom.getUrl();
@@ -48,7 +48,7 @@ public class NavBarItem implements INavBarItem {
      * @param originalUrl the url to validate.
      * @return originalUrl if the url is valid or else the default url.
      */
-    private String checkedUrl(String originalUrl) {
+    private String checkedUrl(final String originalUrl) {
         if (originalUrl == null || originalUrl.trim().isEmpty()) {
             return defaultUrl;
         }
@@ -86,7 +86,7 @@ public class NavBarItem implements INavBarItem {
      * @return new child.
      */
     @SuppressWarnings("WeakerAccess")
-    public NavBarItem add(String heading, String url) {
+    public NavBarItem add(final String heading, final String url) {
         return new NavBarItem(heading, url, displaySettings.clone(), this);
     }
 
@@ -126,7 +126,7 @@ public class NavBarItem implements INavBarItem {
      * {@inheritDoc}
      */
     @Override
-    public List<INavBarItem> getChildren(EnumSet<DisplayRestrictions> restrictions) {
+    public List<INavBarItem> getChildren(final EnumSet<DisplayRestrictions> restrictions) {
         List<? extends INavBarItem> ret = children.stream()
                 .filter(item -> item.isVisible(restrictions)).collect(
                         Collectors.toList());
@@ -147,14 +147,6 @@ public class NavBarItem implements INavBarItem {
         return ret;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isLoggedInOnly() {
-        return displaySettings.contains(DisplayRestrictions.USER_REQUIRED);
-    }
-
     @Override
     public EnumSet<DisplayRestrictions> getRestrictions() {
         return displaySettings;
@@ -168,7 +160,7 @@ public class NavBarItem implements INavBarItem {
      * false.
      */
     @Override
-    public boolean isVisible(EnumSet<DisplayRestrictions> flagsTriggered) {
+    public boolean isVisible(final EnumSet<DisplayRestrictions> flagsTriggered) {
         return flagsTriggered.containsAll(this.displaySettings);
     }
 }

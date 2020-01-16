@@ -9,13 +9,14 @@ import java.util.Map;
  */
 public class NavBarModel {
 
-    private Map<String, NavItemList> sections = new LinkedHashMap<>();
+    private final Map<String, NavItemList> sections;
 
     NavBarModel() {
+        sections = new LinkedHashMap<>();
     }
 
-    NavBarModel(LinkedHashMap<String, NavItemList> ret) {
-        sections = ret;
+    NavBarModel(final LinkedHashMap<String, NavItemList> navMap) {
+        sections = navMap;
     }
 
     /**

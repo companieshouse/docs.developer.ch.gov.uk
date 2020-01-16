@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import uk.gov.ch.developer.docs.models.nav.NavBarModelBuilder;
 import uk.gov.ch.developer.docs.models.user.UserModel;
@@ -20,8 +21,8 @@ public class DummyLoginController {
     @Autowired
     private NavBarModelBuilder navbarFactory;
 
-    @RequestMapping({"forceLogin", "signin"})
-    public ModelAndView forceLogin(ModelAndView m)
+    @RequestMapping(value = {"forceLogin", "signin"}, method = RequestMethod.GET)
+    public ModelAndView forceLogin(final ModelAndView modelAndView)
             throws NoSuchFieldException, IllegalAccessException {
         final UserModel user = new UserModel();
 
@@ -38,19 +39,19 @@ public class DummyLoginController {
         siField.setAccessible(true);//NOSONAR
         siField.set(user, signInInfo);//NOSONAR
 
-        m.getModel().put("user", user);
-        m.getModel().put("navBarModel", navbarFactory.build(m.getModelMap()));
-        m.setViewName("dev-hub/home");
-        return m;
+        modelAndView.getModel().put("user", user);
+        modelAndView.getModel().put("navBarModel", navbarFactory.build(modelAndView.getModelMap()));
+        modelAndView.setViewName("dev-hub/home");
+        return modelAndView;
     }
 
-    @RequestMapping({"forceLogout", "signout"})
-    public ModelAndView forceLogOut(ModelAndView m) {
+    @RequestMapping(value = {"forceLogout", "signout"}, method = RequestMethod.GET)
+    public ModelAndView forceLogOut(final ModelAndView modelAndView) {
         final UserModel user = new UserModel();
 
-        m.getModel().put("user", user);
-        m.getModel().put("navBarModel", navbarFactory.build(m.getModelMap()));
-        m.setViewName("dev-hub/home");
-        return m;
+        modelAndView.getModel().put("user", user);
+        modelAndView.getModel().put("navBarModel", navbarFactory.build(modelAndView.getModelMap()));
+        modelAndView.setViewName("dev-hub/home");
+        return modelAndView;
     }
 }

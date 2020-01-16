@@ -38,13 +38,13 @@ class NavItemListTest {
             NavBarItem item = list.add(HEADING, URL);
             assertEquals(HEADING, item.getHeading());
             assertEquals(URL, item.getUrl());
-            assertTrue(item.isLoggedInOnly());
+            assertTrue(item.getRestrictions().contains(DisplayRestrictions.USER_REQUIRED));
 
             list = new NavItemList(DisplayRestrictions.none());
             item = list.add(ALT_HEADING, ALT_URL);
             assertEquals(ALT_HEADING, item.getHeading());
             assertEquals(ALT_URL, item.getUrl());
-            assertFalse(item.isLoggedInOnly());
+            assertFalse(item.getRestrictions().contains(DisplayRestrictions.USER_REQUIRED));
         }
     }
 

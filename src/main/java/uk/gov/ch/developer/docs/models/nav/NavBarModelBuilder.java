@@ -1,9 +1,11 @@
 package uk.gov.ch.developer.docs.models.nav;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.springframework.ui.ModelMap;
@@ -33,15 +35,23 @@ public class NavBarModelBuilder {
         );
     }
 
+    public NavItemList addHeading(final String heading,
+            final DisplayRestrictions... restrictions) { //NOSONAR
+        EnumSet<DisplayRestrictions> set = EnumSet.noneOf(DisplayRestrictions.class);
+        Collections.addAll(set, restrictions);
+        return addHeading(heading, set);
+    }
+
     /**
      * Identifies what restrictions apply to this modelMap.
      *
      * @return Returns an EnumSet that contains all restrictions that pass for the model.
      */
-    EnumSet<DisplayRestrictions> getCurrentRestrictions(ModelMap modelMap) {
-        EnumSet<DisplayRestrictions> satisfiedRestrictions = EnumSet
+    EnumSet<DisplayRestrictions> getCurrentRestrictions(final ModelMap modelMap) {
+        final EnumSet<DisplayRestrictions> satisfiedRestrictions = EnumSet
                 .noneOf(DisplayRestrictions.class);
-        EnumSet<DisplayRestrictions> allRestrictions = EnumSet.allOf(DisplayRestrictions.class);
+        final EnumSet<DisplayRestrictions> allRestrictions = EnumSet
+                .allOf(DisplayRestrictions.class);
         for (DisplayRestrictions restriction : allRestrictions) {
             if (restriction.test(modelMap)) {
                 satisfiedRestrictions.add(restriction);
@@ -58,7 +68,7 @@ public class NavBarModelBuilder {
      */
     public NavBarModel build(final ModelMap modelMap) {
         final EnumSet<DisplayRestrictions> currentRestrictions = getCurrentRestrictions(modelMap);
-        LinkedHashMap<String, NavItemList> ret = new LinkedHashMap<>();
+        final LinkedHashMap<String, NavItemList> ret = new LinkedHashMap<>();
         for (Entry<String, NavItemList> entry : sections.entrySet()) {
             NavItemList clone = cloneListIfVisible(entry.getValue(), currentRestrictions);
             if (clone != null) {
@@ -74,10 +84,10 @@ public class NavBarModelBuilder {
      * @param currentRestrictions flags that are currently displayable.
      * @return null if no children to display. Otherwise new list containing visible children.
      */
-    NavItemList cloneListIfVisible(NavItemList navItemList,
-            EnumSet<DisplayRestrictions> currentRestrictions) {
-        Iterator<INavBarItem> children = navItemList.iterator();
-        ArrayList<INavBarItem> clonedChildren = new ArrayList<>();
+    NavItemList cloneListIfVisible(final NavItemList navItemList,
+            final EnumSet<DisplayRestrictions> currentRestrictions) {
+        final Iterator<INavBarItem> children = navItemList.iterator();
+        final List<INavBarItem> clonedChildren = new LinkedList<>();
         while (children.hasNext()) {
             INavBarItem clonedChild = cloneItemIfVisible(children.next(), currentRestrictions);
             if (clonedChild != null) {
@@ -99,12 +109,13 @@ public class NavBarModelBuilder {
      * @return null if item is not displayable. Otherwise similar item with children filtered in the
      * same way.
      */
-    INavBarItem cloneItemIfVisible(INavBarItem value,
-            EnumSet<DisplayRestrictions> currentRestrictions) {
-        INavBarItem ret;
+    INavBarItem cloneItemIfVisible(final INavBarItem value,
+            final EnumSet<DisplayRestrictions> currentRestrictions) {
+        INavBarItem ret = null;
         if (value.isVisible(currentRestrictions)) {
-            Iterator<INavBarItem> children = value.getChildren(currentRestrictions).iterator();
-            ArrayList<INavBarItem> clonedChildren = new ArrayList<>();
+            final Iterator<INavBarItem> children = value.getChildren(currentRestrictions)
+                    .iterator();
+            final List<INavBarItem> clonedChildren = new LinkedList<>();
             while (children.hasNext()) {
                 INavBarItem clonedChild = cloneItemIfVisible(children.next(), currentRestrictions);
                 if (clonedChild != null) {
@@ -112,8 +123,6 @@ public class NavBarModelBuilder {
                 }
             }
             ret = new NavBarItem(value, clonedChildren);
-        } else {
-            ret = null;
         }
         return ret;
     }

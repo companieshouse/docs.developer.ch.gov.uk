@@ -1,6 +1,5 @@
 package uk.gov.ch.developer.docs.config;
 
-import java.util.EnumSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,8 +26,7 @@ public class NavBarConfig {
 
         NavBarModelBuilder model = new NavBarModelBuilder();
         NavItemList manageApplications = model
-                .addHeading("Manage Applications", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
-
+                .addHeading("Manage Applications", DisplayRestrictions.USER_REQUIRED);
         manageApplications.add("View all applications", "example.com");
         manageApplications.add("Add an application", "example.com");
 
@@ -40,11 +38,11 @@ public class NavBarConfig {
         documentation.add("Developer Guidelines", devGuideURL);
 
         NavItemList manageAccounts = model
-                .addHeading("Manage account", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
+                .addHeading("Manage account", DisplayRestrictions.USER_REQUIRED);
         manageAccounts.add("Manage Profile", homeURL);
         manageAccounts.add("Change Password", homeURL);
 
-        NavItemList help = model.addHeading("Help", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
+        NavItemList help = model.addHeading("Help", DisplayRestrictions.USER_REQUIRED);
         help.add("Developer Hub Forum", homeURL);
 
         return model;
