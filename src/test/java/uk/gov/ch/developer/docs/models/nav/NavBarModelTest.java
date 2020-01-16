@@ -47,7 +47,7 @@ class NavBarModelTest {
             NavBarModel model = new NavBarModel();
             NavItemList created = model
                     .addHeading("Test", EnumSet.of(DisplayRestrictions.USER_REQUIRED));
-            NavItemList retrieved = model.addHeading("TestB", DisplayRestrictions.NONE());
+            NavItemList retrieved = model.addHeading("TestB", DisplayRestrictions.none());
             assertNotEquals(created, retrieved);
         }
     }

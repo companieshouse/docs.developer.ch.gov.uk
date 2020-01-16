@@ -40,7 +40,7 @@ class NavItemListTest {
             assertEquals(URL, item.getUrl());
             assertTrue(item.isLoggedInOnly());
 
-            list = new NavItemList(DisplayRestrictions.NONE());
+            list = new NavItemList(DisplayRestrictions.none());
             item = list.add(ALT_HEADING, ALT_URL);
             assertEquals(ALT_HEADING, item.getHeading());
             assertEquals(ALT_URL, item.getUrl());
@@ -100,7 +100,7 @@ class NavItemListTest {
         @Test
         @DisplayName("- Returns True if list has values and doesn't require log in.")
         void NavItemList_hasDrawableChildren_ReturnsTrue_IfChildren_test() {
-            NavItemList list = new NavItemList(DisplayRestrictions.NONE());
+            NavItemList list = new NavItemList(DisplayRestrictions.none());
             list.add(HEADING, URL);
             assertTrue(list.hasDrawableChildren(EnumSet.allOf(DisplayRestrictions.class)));
         }
@@ -110,7 +110,7 @@ class NavItemListTest {
         void NavItemList_hasDrawableChildren_ReturnsFalse_IfChildrenRequireSignIn_AndUserLoggedOut_test() {
             NavItemList list = new NavItemList(EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             list.add(HEADING, URL);
-            assertFalse(list.hasDrawableChildren(DisplayRestrictions.NONE()));
+            assertFalse(list.hasDrawableChildren(DisplayRestrictions.none()));
         }
 
         @Test

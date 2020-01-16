@@ -33,7 +33,7 @@ public class NavBarConfig {
         manageApplications.add("Add an application", "example.com");
 
         NavItemList documentation = model
-                .addHeading("General Documentation", DisplayRestrictions.NONE());
+                .addHeading("General Documentation", DisplayRestrictions.none());
         documentation.add("Get Started", gettingStartedURL);
         documentation.add("Companies House REST API overview", homeURL);
         documentation.add("How to add an API key", homeURL);

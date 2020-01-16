@@ -36,7 +36,7 @@ public class NavBarItem implements INavBarItem {
     }
 
     NavBarItem(INavBarItem clonedFrom, ArrayList<INavBarItem> clonedChildren) {
-        this.displaySettings = DisplayRestrictions.NONE();
+        this.displaySettings = DisplayRestrictions.none();
         this.heading = clonedFrom.getHeading();
         this.url = clonedFrom.getUrl();
         this.children = clonedChildren;
@@ -74,7 +74,7 @@ public class NavBarItem implements INavBarItem {
      * @return this so that further operations can be chained.
      */
     @SuppressWarnings("WeakerAccess")
-    public NavBarItem doNotrequireLoggedInUser() {
+    public NavBarItem doNotRequireLoggedInUser() {
         this.displaySettings.remove(DisplayRestrictions.USER_REQUIRED);
         return this;
     }

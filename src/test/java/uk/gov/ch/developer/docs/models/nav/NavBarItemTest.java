@@ -1,6 +1,7 @@
 package uk.gov.ch.developer.docs.models.nav;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
@@ -45,7 +46,7 @@ class NavBarItemTest {
             assertNull(item.getParent());
             assertThat(item.getChildren(), is(empty()));
 
-            item = new NavBarItem(HEADING, URL, DisplayRestrictions.NONE());
+            item = new NavBarItem(HEADING, URL, DisplayRestrictions.none());
             assertFalse(item.isLoggedInOnly());
             assertEquals(HEADING, item.getHeading());
             assertEquals(URL, item.getUrl());
@@ -56,21 +57,21 @@ class NavBarItemTest {
         @Test
         @DisplayName("- replaces null url")
         void navBarItem_Constructor_replacesURLWithDefault_IfUrlIsNull_test() {
-            NavBarItem item = new NavBarItem(HEADING, null, DisplayRestrictions.NONE());
+            NavBarItem item = new NavBarItem(HEADING, null, DisplayRestrictions.none());
             assertEquals(DEFAULT_URL, item.getUrl());
         }
 
         @Test
         @DisplayName("- replaces empty string url")
         void navBarItem_Constructor_replacesURLWithDefault_IfUrlIsEmpty_test() {
-            NavBarItem item = new NavBarItem(HEADING, "", DisplayRestrictions.NONE());
+            NavBarItem item = new NavBarItem(HEADING, "", DisplayRestrictions.none());
             assertEquals(DEFAULT_URL, item.getUrl());
         }
 
         @Test
         @DisplayName("- replaces string of spaces url")
         void navBarItem_Constructor_replacesURLWithDefault_IfUrlIsBlankString_test() {
-            NavBarItem item = new NavBarItem(HEADING, "      ", DisplayRestrictions.NONE());
+            NavBarItem item = new NavBarItem(HEADING, "      ", DisplayRestrictions.none());
             assertEquals(DEFAULT_URL, item.getUrl());
         }
 
@@ -109,9 +110,9 @@ class NavBarItemTest {
         @Test
         @DisplayName("Get Children with restrictions returns visible children")
         void navBarItem_getChildren_withRestrictions_returnsValid_test() {
-            NavBarItem parent = new NavBarItem(HEADING, URL, DisplayRestrictions.NONE());
+            NavBarItem parent = new NavBarItem(HEADING, URL, DisplayRestrictions.none());
             NavBarItem child = parent.add(HEADING, URL);
-            final List<INavBarItem> children = parent.getChildren(DisplayRestrictions.NONE());
+            final List<INavBarItem> children = parent.getChildren(DisplayRestrictions.none());
             assertThat(children, hasSize(1));
             assertThat(children, contains(child));
         }
@@ -122,7 +123,7 @@ class NavBarItemTest {
             NavBarItem parent = new NavBarItem(HEADING, URL,
                     EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             NavBarItem child = parent.add(HEADING, URL);
-            final List<INavBarItem> children = parent.getChildren(DisplayRestrictions.NONE());
+            final List<INavBarItem> children = parent.getChildren(DisplayRestrictions.none());
             assertThat(children, hasSize(0));
         }
     }
@@ -134,9 +135,24 @@ class NavBarItemTest {
         @Test
         @DisplayName("Is Visible Returns True for any settings, if display is None")
         void isVisible_Returns_True_ForAnySettings() {
-            NavBarItem item = new NavBarItem(HEADING, URL, DisplayRestrictions.NONE());
+            NavBarItem item = new NavBarItem(HEADING, URL, DisplayRestrictions.none());
             assertTrue(item.isVisible(EnumSet.of(DisplayRestrictions.USER_REQUIRED)));
-            assertTrue(item.isVisible(DisplayRestrictions.NONE()));
+            assertTrue(item.isVisible(DisplayRestrictions.none()));
+        }
+
+
+        @Test
+        @DisplayName("Get Restrictions returns the expected values.")
+        void getRestrictions_Returns_correctValues() {
+            NavBarItem item = new NavBarItem(HEADING, URL,
+                    EnumSet.of(DisplayRestrictions.USER_REQUIRED));
+            assertThat(item.getRestrictions(), hasSize(1));
+            assertThat(item.getRestrictions(), contains(DisplayRestrictions.USER_REQUIRED));
+
+            item = new NavBarItem(HEADING, URL,
+                    DisplayRestrictions.none());
+            assertThat(item.getRestrictions(), hasSize(0));
+            assertThat(item.getRestrictions(), not(contains(DisplayRestrictions.USER_REQUIRED)));
         }
 
         @Test
@@ -152,7 +168,7 @@ class NavBarItemTest {
         void isVisible_Returns_False_ForUser_WhenUserLoggedOut() {
             NavBarItem item = new NavBarItem(HEADING, URL,
                     EnumSet.of(DisplayRestrictions.USER_REQUIRED));
-            assertFalse(item.isVisible(DisplayRestrictions.NONE()));
+            assertFalse(item.isVisible(DisplayRestrictions.none()));
         }
     }
 
@@ -163,7 +179,7 @@ class NavBarItemTest {
         @Test
         @DisplayName("- sets false to true")
         void navBarItem_requireLoggedIn_Sets_isLoggedInOnly_ToTrue_test() {
-            NavBarItem item = new NavBarItem(HEADING, URL, DisplayRestrictions.NONE());
+            NavBarItem item = new NavBarItem(HEADING, URL, DisplayRestrictions.none());
             assertFalse(item.isLoggedInOnly());
             item.requireLoggedInUser();
             assertTrue(item.isLoggedInOnly());
@@ -175,7 +191,7 @@ class NavBarItemTest {
             NavBarItem item = new NavBarItem(HEADING, URL,
                     EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             assertTrue(item.isLoggedInOnly());
-            item.doNotrequireLoggedInUser();
+            item.doNotRequireLoggedInUser();
             assertFalse(item.isLoggedInOnly());
         }
     }

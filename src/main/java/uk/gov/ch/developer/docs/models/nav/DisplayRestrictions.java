@@ -19,7 +19,8 @@ public enum DisplayRestrictions {
         condition = test;
     }
 
-    public static EnumSet<DisplayRestrictions> NONE() {
+    //No Sonar is used here to suppress code smell that we should return Set rather than EnumSet
+    public static EnumSet<DisplayRestrictions> none() {//NOSONAR
         return EnumSet.noneOf(DisplayRestrictions.class);
     }
 
