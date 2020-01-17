@@ -10,13 +10,12 @@
   <nav class="app-subnav app-hide-mobile">
     <div th:if="${navBarModel != null}" th:remove="tag">
       <div th:each="section : ${navBarModel.sections}" th:remove="tag">
-        <h4 class="app-subnav__theme" th:text="${section.key}"></h4>
-        <ul class="app-subnav__section">
-                    <span th:each="item : ${section.value}" th:remove="tag"> <!-- This is a self deleting tag to manage
-                                                                                    thymeleaf structure-->
+          <h4 class="app-subnav__theme" th:text="${section.key}"></h4>
+          <ul class="app-subnav__section">
+            <th:block th:each="item : ${section.value}">
                         <li th:replace="fragments/navBarSubMenu :: navBarSubMenu(menu=${item})"> Text</li>
-                    </span>
-        </ul>
+            </th:block>
+          </ul>
       </div>
     </div>
     <div th:if="${navBarModel == null}" th:remove="tag">
