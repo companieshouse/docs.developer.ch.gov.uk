@@ -31,6 +31,9 @@ public class DocsWebApplication implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loggingInterceptor);
+        /**
+         * The below should be uncommented when the login journey is successfully implemented
+         */
 //        registry.addInterceptor(userDetailsInterceptor);
     }
 }
