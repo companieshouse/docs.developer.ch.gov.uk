@@ -46,7 +46,7 @@ public class NavBarModelBuilder {
      * @return NavItemList or null if no value is found.
      */
     public NavItemList addHeading(final String heading,
-            final DisplayRestrictions... restrictions) { //NOSONAR
+            final DisplayRestrictions... restrictions) { 
         EnumSet<DisplayRestrictions> set = EnumSet.noneOf(DisplayRestrictions.class);
         Collections.addAll(set, restrictions);
         return addHeading(heading, set);
