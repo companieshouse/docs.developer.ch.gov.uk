@@ -21,7 +21,7 @@ import uk.gov.ch.developer.docs.utility.TestUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
-class GettingStartedControllerTest {
+class GetStartedControllerTest {
 
     private static final String PATH = "/getting-started";
     private static final String VIEW = "dev-hub/gettingStarted";
@@ -35,7 +35,7 @@ class GettingStartedControllerTest {
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
-    private GettingStartedController controller;
+    private GetStartedController controller;
 
     @BeforeEach
     void setUp() {

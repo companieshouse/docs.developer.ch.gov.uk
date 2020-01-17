@@ -6,15 +6,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.ch.developer.docs.controller.AbstractPageController;
 
 @Controller
-@RequestMapping("${gettingStarted.url}")
-public class GettingStartedController extends AbstractPageController {
+@RequestMapping("${getStarted.url}")
+public class GetStartedController extends AbstractPageController {
 
-    private static final String TITLE = "Getting started with the Companies House API";
+    private static final String TITLE = "Get started with the Companies House API";
 
-    @Value("${gettingStarted.path}")
+    @Value("${getStarted.path}")
     private String path;
 
-    public GettingStartedController() {
+    public GetStartedController() {
         super(TITLE);
     }
 

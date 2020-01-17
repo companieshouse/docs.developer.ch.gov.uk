@@ -34,7 +34,7 @@ class HomeControllerTest {
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
-    private GettingStartedController controller;
+    private GetStartedController controller;
 
     @BeforeEach
     void setUp() {
