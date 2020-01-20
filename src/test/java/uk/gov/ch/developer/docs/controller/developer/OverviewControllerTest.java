@@ -21,10 +21,10 @@ import uk.gov.ch.developer.docs.utility.TestUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
-class HomeControllerTest {
+class OverviewControllerTest {
 
     private static final String PATH = "/";
-    private static final String VIEW = "dev-hub/home";
+    private static final String VIEW = "dev-hub/overview";
 
     static {
         TestUtils.setUpEnviromentProperties();

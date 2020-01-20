@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  */
 public class NavBarItem implements INavBarItem {
 
-    private final String defaultUrl = System.getProperties().getProperty("home.url");
+    private final String defaultUrl = "/";
 
     private final String heading;
     private final String url;

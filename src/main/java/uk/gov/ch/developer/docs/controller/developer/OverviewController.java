@@ -7,14 +7,14 @@ import uk.gov.ch.developer.docs.controller.AbstractPageController;
 
 @Controller
 @RequestMapping("${home.url}")
-public class HomeController extends AbstractPageController {
+public class OverviewController extends AbstractPageController {
 
     private static final String TITLE = "Developer Hub Home";
 
     @Value("${home.path}")
     private String path;
 
-    public HomeController() {
+    public OverviewController() {
         super(TITLE);
     }
 

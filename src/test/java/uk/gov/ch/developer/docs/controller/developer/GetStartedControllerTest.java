@@ -23,8 +23,8 @@ import uk.gov.ch.developer.docs.utility.TestUtils;
 @SpringBootTest(classes = DocsWebApplication.class)
 class GetStartedControllerTest {
 
-    private static final String PATH = "/getting-started";
-    private static final String VIEW = "dev-hub/gettingStarted";
+    private static final String PATH = "/get-started";
+    private static final String VIEW = "dev-hub/getStarted";
 
     private MockMvc mockMvc;
 
