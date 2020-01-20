@@ -17,9 +17,6 @@ public abstract class BaseController {
 
     protected static final String ERROR_VIEW = "error";
 
-    @Autowired
-    private NavBarModelBuilder navbarFactory;
-
     BaseController() {
 
     }
@@ -29,10 +26,5 @@ public abstract class BaseController {
 
     @ModelAttribute("templateTitle")
     public abstract String getTemplateTitle();
-
-    @ModelAttribute("navBarModel")
-    public NavBarModel getNavBar(ModelMap model) {
-        return navbarFactory.build(model);
-    }
 
 }
