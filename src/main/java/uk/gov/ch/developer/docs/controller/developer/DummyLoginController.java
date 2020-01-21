@@ -40,7 +40,7 @@ public class DummyLoginController {
 
         modelAndView.getModel().put("user", user);
         modelAndView.getModel().put("navBarModel", navbarFactory.build(modelAndView.getModelMap()));
-        modelAndView.setViewName("dev-hub/home");
+        modelAndView.setViewName("dev-hub/overview");
         return modelAndView;
     }
 
@@ -50,7 +50,7 @@ public class DummyLoginController {
 
         modelAndView.getModel().put("user", user);
         modelAndView.getModel().put("navBarModel", navbarFactory.build(modelAndView.getModelMap()));
-        modelAndView.setViewName("dev-hub/home");
+        modelAndView.setViewName("dev-hub/overview");
         return modelAndView;
     }
 }

@@ -43,7 +43,7 @@ class GetStartedControllerTest {
     }
 
     @Test
-    @DisplayName("Get Getting Started Page - success path")
+    @DisplayName("Get Get Started Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
         this.mockMvc.perform(get(PATH))
                 .andExpect(status().isOk())
@@ -51,7 +51,7 @@ class GetStartedControllerTest {
     }
 
     @Test
-    @DisplayName("Get Getting Started Page - Failure path")
+    @DisplayName("Get Get Started Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
         this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
                 .andExpect(status().isNotFound());

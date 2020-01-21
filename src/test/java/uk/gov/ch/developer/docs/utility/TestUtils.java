@@ -19,7 +19,7 @@ public class TestUtils {
         p.setProperty("home.url", "/");
         p.setProperty("developerGuidelines.url", "${home.url}/developer-guidelines");
         p.setProperty("createAccount.url", "${home.url}/create-account");
-        p.setProperty("gettingStarted.url", "${home.url}/getting-started");
+        p.setProperty("getStarted.url", "${home.url}/get-started");
         System.setProperties(p);
     }
 }
