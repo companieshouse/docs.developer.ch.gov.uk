@@ -21,10 +21,10 @@ import uk.gov.ch.developer.docs.utility.TestUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
-class OverviewControllerTest {
+class HomeControllerTest {
 
-    private static final String PATH = "/overview";
-    private static final String VIEW = "dev-hub/overview";
+    private static final String PATH = "/";
+    private static final String VIEW = "dev-hub/home";
 
     static {
         TestUtils.setUpEnviromentProperties();
@@ -42,7 +42,7 @@ class OverviewControllerTest {
     }
 
     @Test
-    @DisplayName("Get Overview Page - success path")
+    @DisplayName("Get Dev-Hub Home Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
         this.mockMvc.perform(get(PATH))
                 .andExpect(status().isOk())
@@ -50,7 +50,7 @@ class OverviewControllerTest {
     }
 
     @Test
-    @DisplayName("Get Overview Page - Failure path")
+    @DisplayName("Get Dev-Hub Home Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
         this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
                 .andExpect(status().isNotFound());

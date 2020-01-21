@@ -17,6 +17,7 @@ public class TestUtils {
         p.setProperty("piwik.siteId", "//");
 
         p.setProperty("home.url", "/");
+        p.setProperty("overview.url", "/overview");
         p.setProperty("developerGuidelines.url", "${home.url}/developer-guidelines");
         p.setProperty("createAccount.url", "${home.url}/create-account");
         p.setProperty("getStarted.url", "${home.url}/get-started");
