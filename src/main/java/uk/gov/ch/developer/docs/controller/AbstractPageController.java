@@ -12,13 +12,11 @@ import uk.gov.ch.developer.docs.session.SessionService;
 
 public abstract class AbstractPageController extends BaseController {
 
+    private final String title;
     @Autowired
     private SessionService sessionService;
-
     @Autowired
     private NavBarModelBuilder navbarFactory;
-
-    private final String title;
 
     public AbstractPageController(final String title) {
         this.title = title;
@@ -42,21 +40,20 @@ public abstract class AbstractPageController extends BaseController {
     }
 
     @ModelAttribute(ModelAttributeNames.USER_MODEL)
-    public IUserModel getUser(){
+    public IUserModel getUser() {
         UserModel user = new UserModel();
         user.populateUserDetails(sessionService.getSessionFromContext());
         return user;
     }
 
     /**
-     *
-     * @param model
-     * @param iUserModel This injection ensures that the user model is built before the {@link NavBarModel}
-     * which depends on it.
+     * @param iUserModel This injection ensures that the user model is built before the {@link
+     * NavBarModel} which depends on it.
      * @return A {@link NavBarModel} which is sensitive to the login state of a user.
      */
     @ModelAttribute(ModelAttributeNames.NAV_BAR_MODEL)
-    public NavBarModel getNavBar(ModelMap model, @ModelAttribute(ModelAttributeNames.USER_MODEL) IUserModel iUserModel) {
+    public NavBarModel getNavBar(ModelMap model,
+            @ModelAttribute(ModelAttributeNames.USER_MODEL) IUserModel iUserModel) {
         return navbarFactory.build(model);
     }
 }

@@ -26,12 +26,11 @@ class AuthenticationControllerTest {
     private static final String PATH = "/authentication";
     private static final String VIEW = "dev-hub/authentication";
 
-    private MockMvc mockMvc;
-
     static {
         TestUtils.setUpEnviromentProperties();
     }
 
+    private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext context;
     @InjectMocks

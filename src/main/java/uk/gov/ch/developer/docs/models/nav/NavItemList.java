@@ -11,8 +11,8 @@ import java.util.List;
  */
 public class NavItemList implements Iterable<INavBarItem> {
 
-    private EnumSet<DisplayRestrictions> defaultDisplaySettings;
     private final List<INavBarItem> list;
+    private EnumSet<DisplayRestrictions> defaultDisplaySettings;
 
     NavItemList(final EnumSet<DisplayRestrictions> defaultDisplaySettings) {
         this.defaultDisplaySettings = defaultDisplaySettings;

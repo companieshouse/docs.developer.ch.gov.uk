@@ -25,12 +25,11 @@ class ApplicationOverviewControllerTest {
     private static final String PATH = "/manage-applications";
     private static final String VIEW = "dev-hub/manageApplications";
 
-    private MockMvc mockMvc;
-
     static {
         TestUtils.setUpEnviromentProperties();
     }
 
+    private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
