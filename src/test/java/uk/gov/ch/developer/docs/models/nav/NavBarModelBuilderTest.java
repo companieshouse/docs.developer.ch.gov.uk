@@ -25,6 +25,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import uk.gov.ch.developer.docs.controller.ModelAttributeNames;
 import uk.gov.ch.developer.docs.models.user.IUserModel;
 import uk.gov.ch.developer.docs.models.user.UserModel;
 import uk.gov.companieshouse.session.model.SignInInfo;
@@ -32,8 +34,6 @@ import uk.gov.companieshouse.session.model.UserProfile;
 
 @ExtendWith(MockitoExtension.class)
 class NavBarModelBuilderTest {
-
-    private static final String USER_MODELATTRIBUTE = "user";
 
     private static final String TEST = "test";
     private static final String TEST_B = "TestB";
@@ -48,7 +48,7 @@ class NavBarModelBuilderTest {
 
     @Nested
     @DisplayName("Add Heading Tests:")
-    class addTests {
+    class AddTests {
 
         @Test
         @DisplayName("Creates new list if heading doesn't exist.")
@@ -89,7 +89,7 @@ class NavBarModelBuilderTest {
                     .addHeading(HEADING, DisplayRestrictions.USER_REQUIRED);
             NavItemList retrievedWithSet = model
                     .addHeading(HEADING, EnumSet.of(DisplayRestrictions.USER_REQUIRED));
-            assertEquals(createdWithSet, retrievedByArray);
+            assertEquals(createdByArray, retrievedWithSet);
         }
 
         @Test
@@ -122,7 +122,7 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Returns None if no user.")
         void noCurrentFlagsTripped_forLoggedOutUser_test() {
-            when(mockModel.getAttribute(USER_MODELATTRIBUTE)).thenReturn(mockUser);
+            when(mockModel.getAttribute(ModelAttributeNames.USER_MODEL)).thenReturn(mockUser);
             when(mockUser.isSignedIn()).thenReturn(false);
 
             NavBarModelBuilder navModelBuilder = new NavBarModelBuilder();
@@ -136,7 +136,7 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Returns None if null user.")
         void noCurrentFlagsTripped_forNullUser_test() {
-            when(mockModel.getAttribute(USER_MODELATTRIBUTE)).thenReturn(null);
+            when(mockModel.getAttribute(ModelAttributeNames.USER_MODEL)).thenReturn(null);
 
             NavBarModelBuilder navModelBuilder = new NavBarModelBuilder();
 
@@ -149,7 +149,7 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Returns None and User Required if a user is logged in.")
         void userFlagTripped_test() {
-            when(mockModel.getAttribute(USER_MODELATTRIBUTE)).thenReturn(mockUser);
+            when(mockModel.getAttribute(ModelAttributeNames.USER_MODEL)).thenReturn(mockUser);
             when(mockUser.isSignedIn()).thenReturn(true);
 
             NavBarModelBuilder navModelBuilder = new NavBarModelBuilder();
@@ -174,7 +174,7 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Does Builder create navigation bar.")
         void createNavBar() {
-            when(mockModel.getAttribute(USER_MODELATTRIBUTE)).thenReturn(mockUser);
+            when(mockModel.getAttribute(ModelAttributeNames.USER_MODEL)).thenReturn(mockUser);
             when(mockUser.isSignedIn()).thenReturn(false);
 
             NavBarModelBuilder navModelBuilder = new NavBarModelBuilder();
@@ -196,7 +196,7 @@ class NavBarModelBuilderTest {
         @Test
         @DisplayName("Does not return sub menu items that aren't drawable")
         void filterSubMenu_test() {
-            when(mockModel.getAttribute(USER_MODELATTRIBUTE)).thenReturn(mockUser);
+            when(mockModel.getAttribute(ModelAttributeNames.USER_MODEL)).thenReturn(mockUser);
             when(mockUser.isSignedIn()).thenReturn(false);
 
             NavBarModelBuilder navModelBuilder = new NavBarModelBuilder();
@@ -319,7 +319,7 @@ class NavBarModelBuilderTest {
 
             sI.setAccessible(true);
             sI.set(ret, signInInfo);
-            modelMap.addAttribute(USER_MODELATTRIBUTE, ret);
+            modelMap.addAttribute(ModelAttributeNames.USER_MODEL, ret);
             return modelMap;
         }
     }
