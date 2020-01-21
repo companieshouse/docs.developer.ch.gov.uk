@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.ch.developer.docs.ApplicationVariables;
 import uk.gov.ch.developer.docs.DocsWebApplication;
-import uk.gov.ch.developer.docs.utility.TestUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
@@ -27,9 +26,6 @@ class DeveloperGuidelinesControllerTest {
     private static final String PATH = "/developer-guidelines";
     private static final String VIEW = "dev-hub/developerGuidelines";
 
-    static {
-        TestUtils.setUpEnviromentProperties();
-    }
 
     private MockMvc mockMvc;
     @Autowired
