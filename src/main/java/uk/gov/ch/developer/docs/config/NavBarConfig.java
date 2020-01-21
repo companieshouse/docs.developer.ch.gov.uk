@@ -20,6 +20,8 @@ public class NavBarConfig {
     private String authenticationUrl;
     @Value("${developerGuidelines.url}")
     private String devGuideURL;
+    @Value("${overview.url}")
+    private String overviewURL;
 
     /**
      * Constructs the entire model along with visibility restrictions.
@@ -38,7 +40,7 @@ public class NavBarConfig {
         NavItemList documentation = model
                 .addHeading("General Documentation", DisplayRestrictions.none());
         documentation.add("Get Started", getStartedURL);
-        documentation.add("Companies House REST API overview", homeURL);
+        documentation.add("Companies House REST API overview", overviewURL);
         documentation.add("How to add an API key", authenticationUrl);
         documentation.add("Developer Guidelines", devGuideURL);
 
