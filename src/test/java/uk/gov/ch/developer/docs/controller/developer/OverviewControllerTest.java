@@ -17,18 +17,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.ch.developer.docs.ApplicationVariables;
 import uk.gov.ch.developer.docs.DocsWebApplication;
-import uk.gov.ch.developer.docs.utility.TestUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
 class OverviewControllerTest {
 
-    private static final String PATH = "/overview";
+    private static final String URL = "/overview";
     private static final String VIEW = "dev-hub/overview";
-
-    static {
-        TestUtils.setUpEnviromentProperties();
-    }
 
     private MockMvc mockMvc;
     @Autowired
@@ -44,7 +39,7 @@ class OverviewControllerTest {
     @Test
     @DisplayName("Get Overview Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
-        this.mockMvc.perform(get(PATH))
+        this.mockMvc.perform(get(URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(VIEW));
     }
@@ -52,7 +47,7 @@ class OverviewControllerTest {
     @Test
     @DisplayName("Get Overview Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
+        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
                 .andExpect(status().isNotFound());
     }
 }

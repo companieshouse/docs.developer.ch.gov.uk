@@ -17,13 +17,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.ch.developer.docs.ApplicationVariables;
 import uk.gov.ch.developer.docs.DocsWebApplication;
-import uk.gov.ch.developer.docs.utility.TestUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
 class GetStartedControllerTest {
 
-    private static final String PATH = "/get-started";
+    private static final String URL = "/get-started";
     private static final String VIEW = "dev-hub/getStarted";
 
     private MockMvc mockMvc;
