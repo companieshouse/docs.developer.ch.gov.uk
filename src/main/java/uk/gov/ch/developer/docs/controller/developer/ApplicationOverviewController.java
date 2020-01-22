@@ -7,6 +7,7 @@ import uk.gov.ch.developer.docs.controller.AbstractPageController;
 
 @Controller
 @RequestMapping("${manageApplications.url}")
+//@RequestMapping("/manage-applications")
 public class ApplicationOverviewController extends AbstractPageController {
 
     private static final String TITLE = "Application Overview";

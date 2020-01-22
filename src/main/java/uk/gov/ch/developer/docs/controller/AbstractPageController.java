@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import uk.gov.ch.developer.docs.models.nav.NavBarModel;
 import uk.gov.ch.developer.docs.models.nav.NavBarModelBuilder;
 import uk.gov.ch.developer.docs.models.user.IUserModel;
-import uk.gov.ch.developer.docs.models.user.UserModel;
 import uk.gov.ch.developer.docs.session.SessionService;
 
 public abstract class AbstractPageController extends BaseController {
@@ -17,6 +16,8 @@ public abstract class AbstractPageController extends BaseController {
     private SessionService sessionService;
     @Autowired
     private NavBarModelBuilder navbarFactory;
+    @Autowired
+    private IUserModel userModel;
 
     public AbstractPageController(final String title) {
         this.title = title;
@@ -40,10 +41,9 @@ public abstract class AbstractPageController extends BaseController {
     }
 
     @ModelAttribute(ModelAttributeNames.USER_MODEL)
-    public IUserModel getUser() {
-        UserModel user = new UserModel();
-        user.populateUserDetails(sessionService.getSessionFromContext());
-        return user;
+    public IUserModel getUserModel() {
+        userModel.populateUserDetails(sessionService.getSessionFromContext());
+        return userModel;
     }
 
     /**

@@ -22,7 +22,7 @@ import uk.gov.ch.developer.docs.DocsWebApplication;
 @SpringBootTest(classes = DocsWebApplication.class)
 class GettingStartedControllerTest {
 
-    private static final String PATH = "/getting-started";
+    private static final String URL = "/getting-started";
     private static final String VIEW = "dev-hub/gettingStarted";
 
 
@@ -40,7 +40,7 @@ class GettingStartedControllerTest {
     @Test
     @DisplayName("Get Getting Started Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
-        this.mockMvc.perform(get(PATH))
+        this.mockMvc.perform(get(URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(VIEW));
     }
@@ -48,7 +48,7 @@ class GettingStartedControllerTest {
     @Test
     @DisplayName("Get Getting Started Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
+        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
                 .andExpect(status().isNotFound());
     }
 }

@@ -10,9 +10,8 @@ import uk.gov.ch.developer.docs.models.user.UserModel;
 public class DummyLogoutController extends HomeController {
 
     @Override
-    public IUserModel getUser() {
-        UserModel user = new UserModel();
-        return user;
+    public IUserModel getUserModel() {
+        return new UserModel();
     }
 
 }

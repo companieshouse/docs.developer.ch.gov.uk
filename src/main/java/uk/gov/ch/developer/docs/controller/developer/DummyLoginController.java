@@ -17,7 +17,7 @@ import uk.gov.companieshouse.session.model.UserProfile;
 public class DummyLoginController extends HomeController {
 
     @Override
-    public IUserModel getUser() {
+    public IUserModel getUserModel() {
         UserModel user = new UserModel();
         try {
             final UserProfile userProfile = new UserProfile();

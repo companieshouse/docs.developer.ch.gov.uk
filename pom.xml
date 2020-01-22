@@ -22,10 +22,13 @@
 
             <cdn.url>//</cdn.url>
             <chs.url>//</chs.url>
+
+            <account.url>//</account.url>
+
             <createAccount.url>${home.url}/create-account</createAccount.url>
             <developerGuidelines.url>${home.url}/developer-guidelines</developerGuidelines.url>
-
             <gettingStarted.url>${home.url}/getting-started</gettingStarted.url>
+            <manageApplications.url>${home.url}/manage-applications</manageApplications.url>
             <home.url>${home.url}</home.url>
             <piwik.siteId>//</piwik.siteId>
             <piwik.url>//</piwik.url>

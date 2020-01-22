@@ -22,7 +22,7 @@ import uk.gov.ch.developer.docs.DocsWebApplication;
 @SpringBootTest(classes = DocsWebApplication.class)
 class AuthenticationControllerTest {
 
-    private static final String PATH = "/authentication";
+    private static final String URL = "/authentication";
     private static final String VIEW = "dev-hub/authentication";
 
     private MockMvc mockMvc;
@@ -39,13 +39,13 @@ class AuthenticationControllerTest {
     @Test
     @DisplayName("Get Authentication page - Success path")
     void TestGetRequestReturnsSuccessForCorrectPath() throws Exception {
-        this.mockMvc.perform(get(PATH)).andExpect(status().isOk()).andExpect(view().name(VIEW));
+        this.mockMvc.perform(get(URL)).andExpect(status().isOk()).andExpect(view().name(VIEW));
     }
 
     @Test
     @DisplayName("Get Authentication Page - Failure path")
     void TestGetRequestReturnsErrorForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
+        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
                 .andExpect(status().isNotFound());
     }
 }
