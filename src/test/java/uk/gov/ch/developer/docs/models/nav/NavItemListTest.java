@@ -23,9 +23,9 @@ class NavItemListTest {
     private static final String ALT_HEADING = "Alternate heading";
     private static final String ALT_URL = "Alternate url";
     @Mock
-    private IUserModel mockUser;
-    @Mock
     ModelMap mockModelMap;
+    @Mock
+    private IUserModel mockUser;
 
     @Nested
     @DisplayName("Add Tests:")

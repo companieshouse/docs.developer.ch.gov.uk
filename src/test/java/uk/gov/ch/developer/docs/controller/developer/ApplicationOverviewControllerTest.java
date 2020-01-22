@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,21 +17,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.ch.developer.docs.ApplicationVariables;
 import uk.gov.ch.developer.docs.DocsWebApplication;
-import uk.gov.ch.developer.docs.utility.TestUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
 class ApplicationOverviewControllerTest {
 
-    private static final String PATH = "/manage-applications";
+    private static final String URL = "/manage-applications";
     private static final String VIEW = "dev-hub/manageApplications";
 
     private MockMvc mockMvc;
-
-    static {
-        TestUtils.setUpEnviromentProperties();
-    }
-
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
@@ -40,16 +35,19 @@ class ApplicationOverviewControllerTest {
     void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
-
     @Test
+    @DisplayName("Get Overview page - Success path")
     void TestGetRequestReturnsSuccessForCorrectPath() throws Exception {
-        this.mockMvc.perform(get(PATH)).andExpect(status().isOk()).andExpect(view().name(VIEW));
+        this.mockMvc.perform(get(URL))
+                .andExpect(status().isOk())
+                .andExpect(view().name(VIEW));
     }
-
     @Test
+    @DisplayName("Get Overview page - Failure path")
     void TestGetRequestReturnsErrorForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
+        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
                 .andExpect(status().isNotFound());
     }
+
 
 }

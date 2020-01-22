@@ -33,8 +33,8 @@ public class NavBarModel {
      * Retrieve heading that matches the key, or creates and returns a new one.
      *
      * @param heading String that acts as key and display title for user.
-     * @param defaultRestrictions if a new heading is created, does it require a logged in user
-     * to see by default.
+     * @param defaultRestrictions if a new heading is created, does it require a logged in user to
+     * see by default.
      * @return NavItemList or null if no value is found.
      */
     NavItemList addHeading(final String heading,

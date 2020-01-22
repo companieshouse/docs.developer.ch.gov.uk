@@ -3,6 +3,7 @@ package uk.gov.ch.developer.docs.models.nav;
 import java.util.EnumSet;
 import java.util.function.Predicate;
 import org.springframework.ui.ModelMap;
+import uk.gov.ch.developer.docs.controller.ModelAttributeNames;
 import uk.gov.ch.developer.docs.models.user.IUserModel;
 import uk.gov.ch.developer.docs.models.user.UserModel;
 
@@ -10,7 +11,8 @@ import uk.gov.ch.developer.docs.models.user.UserModel;
  * Enum made to make NavBarModel creation and config more explicit.
  */
 public enum DisplayRestrictions {
-    USER_REQUIRED(m -> UserModel.isUserSignedIn((IUserModel) m.getAttribute("user"))),
+    USER_REQUIRED(m -> UserModel.isUserSignedIn((IUserModel) m.getAttribute(
+            ModelAttributeNames.USER_MODEL))),
     NEVER(m -> false);
 
     private final Predicate<ModelMap> condition;

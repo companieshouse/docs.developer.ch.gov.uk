@@ -28,10 +28,6 @@ class GetStartedControllerTest {
 
     private MockMvc mockMvc;
 
-    static {
-        TestUtils.setUpEnviromentProperties();
-    }
-
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
@@ -45,7 +41,7 @@ class GetStartedControllerTest {
     @Test
     @DisplayName("Get Get Started Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
-        this.mockMvc.perform(get(PATH))
+        this.mockMvc.perform(get(URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(VIEW));
     }
@@ -53,7 +49,7 @@ class GetStartedControllerTest {
     @Test
     @DisplayName("Get Get Started Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
+        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
                 .andExpect(status().isNotFound());
     }
 }

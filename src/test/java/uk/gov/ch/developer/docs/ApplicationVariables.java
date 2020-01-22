@@ -6,5 +6,5 @@ public interface ApplicationVariables {
     String HOME_VIEW = "dev-hub/overview";
     String GETSTARTED_PATH = "/dev-hub/getstarted";
     String GETSTARTED_VIEW = "dev-hub/getStarted";
-    String BADREQUEST_PATH = "bad-path";
+    String BADREQUEST_URL = "bad-path";
 }

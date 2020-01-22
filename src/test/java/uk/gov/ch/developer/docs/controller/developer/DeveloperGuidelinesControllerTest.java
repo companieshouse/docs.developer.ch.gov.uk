@@ -18,21 +18,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.ch.developer.docs.ApplicationVariables;
 import uk.gov.ch.developer.docs.DocsWebApplication;
-import uk.gov.ch.developer.docs.utility.TestUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
 class DeveloperGuidelinesControllerTest {
 
-    private static final String PATH = "/developer-guidelines";
+    private static final String URL = "/developer-guidelines";
     private static final String VIEW = "dev-hub/developerGuidelines";
 
+
     private MockMvc mockMvc;
-
-    static {
-        TestUtils.setUpEnviromentProperties();
-    }
-
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
@@ -46,7 +41,7 @@ class DeveloperGuidelinesControllerTest {
     @Test
     @DisplayName("Get How To Obtain an API Home Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
-        this.mockMvc.perform(get(PATH))
+        this.mockMvc.perform(get(URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(VIEW));
     }
@@ -54,7 +49,7 @@ class DeveloperGuidelinesControllerTest {
     @Test
     @DisplayName("Get How To Obtain an API Home Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
+        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
                 .andExpect(status().isNotFound());
     }
 
