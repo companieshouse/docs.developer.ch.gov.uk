@@ -2,22 +2,19 @@
 <html lang="en-GB" layout:decorate="~{layouts/baseLayout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <title th:utext="${templateTitle}"></title>
 </head>
-
 <body>
-
 <div layout:fragment="content">
   <h1 class="govuk-heading-xl">How to add an API key</h1>
   <h2 class="govuk-heading-l">API key authentication</h2>
-
   <p class="govuk-body">The Companies House API requires authentication credentials to be sent with
-    each request, which take the form of an API key.</p>
+    each request, which take the form of an API key.
+  </p>
   <p class="govuk-body">To add an API key:
   </p>
-  <ol class="list list-number govuk-body">
+  <ol class="govuk-list govuk-list--number">
     <li>Go to <a href="https://www.example.com/">Application overview</a></li>
     <li>Select the application you’d like to add a key to, or select Add an application to create a
       new one.
@@ -29,28 +26,25 @@
       served by the Companies House API.
     </li>
   </ol>
-
-
   <h3 class="govuk-heading-m">Sending the API key</h3>
   <p class="govuk-body">
     The Companies House API uses HTTP basic access authentication to send an API key between the
     client application and the server.
-
-
+  </p>
+  <h3 class="govuk-heading-m">Sending the API key</h3>
+  <p class="govuk-body">
     Basic authentication is usually made up of a username and password. The Companies House API
     takes the username as the API key and ignores the password, so it can be left blank.
   </p>
-
   <h2 class="govuk-heading-l">Example</h2>
   <h3 class="govuk-heading-m">HTTP Basic Authentication</h3>
   <p class="govuk-body">For an API key of my_api_key, the following curl request demonstrates the
     setting of the <code>Authorization</code> HTTP request header, as defined by RFC2617.
   </p>
   <pre><code>curl -XGET -u my_api_key: https:<span>//api.companieshouse.gov.uk/company/00000006</span></code></pre>
-  <pre><code class="http">
-  <span class="request">GET <span class="string">/company/00000006</span> HTTP/1.1</span>
-  <span class="attribute">Host</span>: <span class="string">api.companieshouse.gov.uk</span>
-  <span class="attribute">Authorization</span>: <span class="string">Basic bXlfYXBpX2tleTo=</span>
+  <pre><code class="http"><span class="request">GET <span class="string">/company/00000006</span> HTTP/1.1</span>
+<span class="attribute">Host</span>: <span class="string">api.companieshouse.gov.uk</span>
+<span class="attribute">Authorization</span>: <span class="string">Basic bXlfYXBpX2tleTo=</span>
   </code></pre>
 </div>
 </body>

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  */
 public class NavBarItem implements INavBarItem {
 
-    private final String defaultUrl = "/";
+    private static final String DEFAULT_URL = "/";
 
     private final String heading;
     private final String url;
@@ -50,7 +50,7 @@ public class NavBarItem implements INavBarItem {
      */
     private String checkedUrl(final String originalUrl) {
         if (originalUrl == null || originalUrl.trim().isEmpty()) {
-            return defaultUrl;
+            return DEFAULT_URL;
         }
         return originalUrl;
     }
