@@ -1,11 +1,9 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
 import java.lang.reflect.Field;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
-import uk.gov.ch.developer.docs.models.nav.NavBarModelBuilder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import uk.gov.ch.developer.docs.models.user.IUserModel;
 import uk.gov.ch.developer.docs.models.user.UserModel;
 import uk.gov.companieshouse.session.model.SignInInfo;
 import uk.gov.companieshouse.session.model.UserProfile;
@@ -15,42 +13,30 @@ import uk.gov.companieshouse.session.model.UserProfile;
  * logout are implemented correctly.
  */
 @Controller
-public class DummyLoginController {
+@RequestMapping(value = {"forceLogin", "signin"})
+public class DummyLoginController extends HomeController {
 
-    @Autowired
-    private NavBarModelBuilder navbarFactory;
+    @Override
+    public IUserModel getUserModel() {
+        UserModel user = new UserModel();
+        try {
+            final UserProfile userProfile = new UserProfile();
+            userProfile.setEmail("Forced@login.companieshouse.gov.uk");
 
-    @GetMapping(value = {"forceLogin", "signin"})
-    public ModelAndView forceLogin(final ModelAndView modelAndView)
-            throws NoSuchFieldException, IllegalAccessException {
-        final UserModel user = new UserModel();
+            final SignInInfo signInInfo = new SignInInfo();
+            signInInfo.setSignedIn(true);
+            signInInfo.setUserProfile(userProfile);
 
-        final UserProfile userProfile = new UserProfile();
-        userProfile.setEmail("Forced@login.companieshouse.gov.uk");
 
-        final SignInInfo signInInfo = new SignInInfo();
-        signInInfo.setSignedIn(true);
-        signInInfo.setUserProfile(userProfile);
+            final Field siField = user.getClass().getDeclaredField("signIn");
+            //Sonar is understandably concerned about reflective coding however as this is temporary
+            // and static we are not concerned that this represents a security vulnerability.
+            siField.setAccessible(true);//NOSONAR
+            siField.set(user, signInInfo);//NOSONAR
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
-        Field siField = user.getClass().getDeclaredField("signIn");
-        //Sonar is understandably concerned about reflective coding however as this is temporary
-        // and static we are not concerned that this represents a security vulnerability.
-        siField.setAccessible(true);//NOSONAR
-        siField.set(user, signInInfo);//NOSONAR
-
-        modelAndView.getModel().put("user", user);
-        modelAndView.getModel().put("navBarModel", navbarFactory.build(modelAndView.getModelMap()));
-        modelAndView.setViewName("dev-hub/home");
-        return modelAndView;
-    }
-
-    @GetMapping(value = {"forceLogout", "signout"})
-    public ModelAndView forceLogOut(final ModelAndView modelAndView) {
-        final UserModel user = new UserModel();
-
-        modelAndView.getModel().put("user", user);
-        modelAndView.getModel().put("navBarModel", navbarFactory.build(modelAndView.getModelMap()));
-        modelAndView.setViewName("dev-hub/home");
-        return modelAndView;
+        return user;
     }
 }

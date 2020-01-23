@@ -15,11 +15,10 @@ import uk.gov.companieshouse.logging.util.RequestLogger;
 @Component
 public class LoggingInterceptor extends HandlerInterceptorAdapter {
 
+    private final Logger logger;
     private RequestLogger requestLogger = new RequestLogger() {
         // Implement Defaults
     };
-
-    private final Logger logger;
 
     public LoggingInterceptor() {
         this(LoggerFactory.getLogger(DocsWebApplication.APPLICATION_NAME_SPACE));

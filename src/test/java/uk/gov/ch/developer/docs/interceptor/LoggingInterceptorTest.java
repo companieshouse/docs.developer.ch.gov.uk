@@ -31,14 +31,13 @@ class LoggingInterceptorTest {
     HttpServletResponse mockResponse;
     @Mock
     Object mockHandler;
+    @Mock
+    ModelAndView mockModelAndView;
     /**
      * This is being done using mock() rather than through the annotation so that it is initalised
      * before @InjectMocks
      */
     private Logger mockLogger = mock(Logger.class);
-    @Mock
-    ModelAndView mockModelAndView;
-
     /**
      * This is initalised with the constructor due to LOGGER being a final field.
      */
