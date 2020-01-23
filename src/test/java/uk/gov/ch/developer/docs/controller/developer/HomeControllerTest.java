@@ -29,7 +29,7 @@ class HomeControllerTest {
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
-    private GetStartedController controller;
+    private HomeController controller;
 
     @BeforeEach
     void setUp() {
