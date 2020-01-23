@@ -24,9 +24,21 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                     .addFilterBefore(new UserAuthFilter(), BasicAuthenticationFilter.class);
         }
     }
-
+    
     @Configuration
     @Order(2)
+    public static class GettingStartedSecurityConfig extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/getting-started")
+                    .addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class)
+                    .addFilterBefore(new HijackFilter(), BasicAuthenticationFilter.class)
+                    .addFilterBefore(new UserAuthFilter(), BasicAuthenticationFilter.class);
+        }
+    }
+
+    @Configuration
+    @Order(3)
     public static class DocsWebSecurityFilterConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
