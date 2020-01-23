@@ -1,10 +1,13 @@
 package uk.gov.ch.developer.docs;
 
-public interface ApplicationVariables {
+public final class ApplicationVariables {
 
-    String HOME_PATH = "/dev-hub";
-    String HOME_VIEW = "dev-hub/home";
-    String GETTINGSTARTED_PATH = "/dev-hub/getting-started";
-    String GETTINGSTARTED_VIEW = "dev-hub/gettingStarted";
-    String BADREQUEST_URL = "bad-path";
+    public static final String BAD_REQUEST_URL = "bad-path";
+    public final String HOME_PATH = "/dev-hub";
+    public final String HOME_VIEW = "dev-hub/overview";
+    public final String GET_STARTED_PATH = "/dev-hub/getstarted";
+    public final String GET_STARTED_VIEW = "dev-hub/getStarted";
+
+    private ApplicationVariables() {
+    }
 }

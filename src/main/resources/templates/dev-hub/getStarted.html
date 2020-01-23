@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-GB"
+      layout:decorate="~{layouts/baseLayout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:utext="${templateTitle}"></title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h1 class="govuk-heading-xl">
+    Get started
+  </h1>
+  <h2 class="govuk-heading-l">Contents</h2>
+  <h3 class="govuk-heading-s">Before you start </h3>
+  <ul class="govuk-list">
+    <li><a class="govuk-link" href="#register">Register a Companies House user account</a></li>
+    <li><a class="govuk-link" href="#about">About the Companies House API</a></li>
+  </ul>
+  <h3 class="govuk-heading-s">Using the Companies House user account</h3>
+  <ul class="govuk-list">
+    <li><a class="govuk-link" href="#authentication">API key authentication</a></li>
+    <li><a class="govuk-link" href="#guidelines">Developer guidelines</a></li>
+  </ul>
+  <section id="register">
+    <h3 class="govuk-heading-m">Register a Companies House user account </h3>
+    <p class="govuk-body">The Companies House API
+      <a class="govuk-link" href="https://www.example.com/">overview</a>
+      describes the basic operation of the API.
+      You must <a class="govuk-link"
+                  href="/signin">register a user account</a> with Companies House to explore and
+      perform tests with the Companies House API.
+    </p>
+    <p class="govuk-body">
+      Quick start tip: each Companies House API reference page contains an embedded explorer to try
+      out the service without having to write any client code.
+    </p>
+  </section>
+  <section id="about">
+    <h3 class="govuk-heading-m">About the Companies House API</h3>
+    <p class="govuk-body">Companies House digitally records almost all the information it receives
+      and makes this available to the public through its website and through the Companies House
+      RESTful API.
+    </p>
+    <p class="govuk-body">
+      Being RESTful, each record of information is assigned a globally unique URI, and the
+      operations available on each resource are directly mapped to HTTP verbs. Data can be easily
+      consumed by issuing simple <code>GET</code> requests on the required resource URI.
+    </p>
+    <p class="govuk-body">
+      Read the <a class="govuk-link"
+                  th:href="@{{manageApplicationsUrl}/(manageApplicationsUrl=${@environment.getProperty('manageApplications.url')})}">Companies
+        House REST API overview</a> for more information about our API approach, REST
+      web services and the JSON data format.
+    </p>
+  </section>
+  <section id="authentication">
+    <h3 class="govuk-heading-m">API key authentication</h3>
+    <p class="govuk-body">Access to API services requires authentication. The Companies House API
+      requires authentication credentials to be sent with each request, which take the form of an
+      API key.
+    </p>
+    <p class="govuk-body">
+      Learn how to <a class="govuk-link"
+                      th:href="@{{authenticationUrl}/(authenticationUrl=${@environment.getProperty('authentication.url')})}">create
+        an API key</a>.
+    </p>
+  </section>
+  <section id="guidelines">
+    <h3 class="govuk-heading-m">Developer guidelines</h3>
+    <p class="govuk-body">Read the <a class="govuk-link"
+                                      th:href="@{{devGuideURL}/(devGuideURL=${@environment.getProperty('developerGuidelines.url')})}">developer
+      guidelines</a> for information about security, API rate
+      limits and enumerated types as you’re developing your application.
+    </p>
+  </section>
+</div>
+</body>
+</html>

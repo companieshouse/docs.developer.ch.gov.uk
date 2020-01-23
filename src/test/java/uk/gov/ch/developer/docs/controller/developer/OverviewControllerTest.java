@@ -20,17 +20,16 @@ import uk.gov.ch.developer.docs.DocsWebApplication;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
-class GettingStartedControllerTest {
+class OverviewControllerTest {
 
-    private static final String URL = "/getting-started";
-    private static final String VIEW = "dev-hub/gettingStarted";
-
+    private static final String URL = "/overview";
+    private static final String VIEW = "dev-hub/overview";
 
     private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
-    private GettingStartedController controller;
+    private GetStartedController controller;
 
     @BeforeEach
     void setUp() {
@@ -38,7 +37,7 @@ class GettingStartedControllerTest {
     }
 
     @Test
-    @DisplayName("Get Getting Started Page - success path")
+    @DisplayName("Get Overview Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
         this.mockMvc.perform(get(URL))
                 .andExpect(status().isOk())
@@ -46,9 +45,9 @@ class GettingStartedControllerTest {
     }
 
     @Test
-    @DisplayName("Get Getting Started Page - Failure path")
+    @DisplayName("Get Overview Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
+        this.mockMvc.perform(get(ApplicationVariables.BAD_REQUEST_URL))
                 .andExpect(status().isNotFound());
     }
 }
