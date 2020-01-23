@@ -6,8 +6,8 @@
 </head>
 <body>
 
+<!-- This is expected to be called in the context of a list -->
 <div th:fragment="navBarSubMenu (menu)" th:remove="tag">
-  <!-- This is expected to be called in the context of a list -->
   <li class="app-subnav__section-item">
     <a class="app-subnav__link govuk-link" th:href="${menu.url}" th:text="${menu.heading}"></a>
   </li>

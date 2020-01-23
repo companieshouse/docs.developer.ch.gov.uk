@@ -7,6 +7,45 @@
 
   <build>
     <plugins>
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <environmentVariables>
+            <CACHE_POOL_SIZE>10</CACHE_POOL_SIZE>
+            <CACHE_SERVER>localhost:1234</CACHE_SERVER>
+            <COOKIE_DOMAIN>.companieshouse.gov.uk</COOKIE_DOMAIN>
+            <COOKIE_NAME>abc</COOKIE_NAME>
+            <COOKIE_SECRET>iamasecret</COOKIE_SECRET>
+            <DEFAULT_SESSION_EXPIRATION>3600</DEFAULT_SESSION_EXPIRATION>
+            <HUMAN_LOG>1</HUMAN_LOG>
+
+            <cdn.url>//</cdn.url>
+            <chs.url>//</chs.url>
+
+            <account.url>//</account.url>
+
+            <createAccount.url>${home.url}/create-account</createAccount.url>
+            <developerGuidelines.url>${home.url}/developer-guidelines</developerGuidelines.url>
+            <gettingStarted.url>${home.url}/getting-started</gettingStarted.url>
+            <manageApplications.url>${home.url}/manage-applications</manageApplications.url>
+            <home.url>${home.url}</home.url>
+            <piwik.siteId>//</piwik.siteId>
+            <piwik.url>//</piwik.url>
+          </environmentVariables>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <groupId>org.junit.platform</groupId>
+            <version>${junit-platform-surefire-provider.version}</version>
+          </dependency>
+        </dependencies>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>${maven-surefire-plugin.version}</version>
+      </plugin>
+
+
       <plugin>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
@@ -154,6 +193,10 @@
     <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
     <java-session-handler.version>2.2.0</java-session-handler.version>
     <web-security-java.version>1.1.0-rc1</web-security-java.version>
+
+
+    <home.url></home.url>
+    <junit-platform-surefire-provider.version>1.2.0</junit-platform-surefire-provider.version>
   </properties>
 
   <repositories>

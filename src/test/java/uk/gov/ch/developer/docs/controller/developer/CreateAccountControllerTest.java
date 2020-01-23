@@ -18,18 +18,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.ch.developer.docs.ApplicationVariables;
 import uk.gov.ch.developer.docs.DocsWebApplication;
-import uk.gov.ch.developer.docs.utility.TestUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
 class CreateAccountControllerTest {
 
-    private static final String PATH = "/create-account";
+    private static final String URL = "/create-account";
     private static final String VIEW = "dev-hub/createAccount";
 
-    static {
-        TestUtils.setUpEnviromentProperties();
-    }
 
     private MockMvc mockMvc;
     @Autowired
@@ -45,7 +41,7 @@ class CreateAccountControllerTest {
     @Test
     @DisplayName("How to Create CH Account Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
-        this.mockMvc.perform(get(PATH))
+        this.mockMvc.perform(get(URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(VIEW));
     }
@@ -53,7 +49,7 @@ class CreateAccountControllerTest {
     @Test
     @DisplayName("How to Create CH Account Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_PATH))
+        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
                 .andExpect(status().isNotFound());
     }
 
