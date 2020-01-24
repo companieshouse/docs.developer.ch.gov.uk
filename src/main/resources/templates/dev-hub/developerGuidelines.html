@@ -9,9 +9,7 @@
 <body>
 <div layout:fragment="content">
   <h1 class="govuk-heading-xl">Developer guidelines</h1>
-
   <h2 class="govuk-heading-m">Contents</h2>
-
   <ol class="govuk-list govuk-list--number">
     <li><a class="govuk-link" href="#ratelimits">API rate limits</a></li>
     <li><a class="govuk-link" href="#enumtypes">Enumerated types</a></li>
@@ -23,7 +21,8 @@
     <h2 class="govuk-heading-m">API rate limits</h2>
     <p class="govuk-body">Rate limiting is applied to the Companies House API to ensure a
       high-quality service is delivered for all users, and to protect client applications from
-      unexpected loops.</p>
+      unexpected loops.
+    </p>
     <p class="govuk-body">
       You can make up to 600 requests within a five-minute period. If you exceed this limit, you
       will receive a <code>429 Too Many Requests</code> HTTP status code for each request made
@@ -33,6 +32,7 @@
     </p>
     <p class="govuk-body">
       If you have an application that requires a higher rate limit than this default, <a
+        class="govuk-link"
         th:href="@{{chsUrl}/help/contact-us(chsUrl=${@environment.getProperty('chs.url')})}">contact
       us.</a>
     </p>
@@ -50,6 +50,7 @@
     </p>
     <p class="govuk-body">
       The collection of enumeration types used by Companies House are available on <a
+        class="govuk-link"
         href="https://github.com/companieshouse/api-enumerations">GitHub</a>. These files provide
       mapping between enumeration type and text description, and are divided
       into sets or classes. Each API resource member will define which class of enumeration is being
@@ -72,32 +73,38 @@
   <section id="appsecurity">
     <h2 class="govuk-heading-m">Application security</h2>
     <p class="govuk-body">The API can only be accessed over Transport Layer Security (TLS). We
-      recommend using TLS 1.2.</p>
+      recommend using TLS 1.2.
+    </p>
   </section>
   <section id="keysecurity">
     <h2 class="govuk-heading-m">API key security </h2>
     <p class="govuk-body">It is important to keep your API keys secure. This will prevent them from
       being discovered, your account from being compromised and your rate-limit quota from being
-      exceeded. </p>
+      exceeded.
+    </p>
     <ol class="govuk-list govuk-list--bullet">
       <li><h3 class="govuk-heading-s">Do not embed API keys in your code</h3>
         <p class="govuk-body">Storing keys in your application code increases the risk that they
           will be discovered, particularly if any of your source code is made public or it can be
           viewed by people who should not have access to the key. Instead, you should consider
-          storing them inside environment variables or configuration. </p>
+          storing them inside environment variables or configuration.
+        </p>
       </li>
       <li><h3 class="govuk-heading-s">Do not store API keys in your source tree</h3>
         <p class="govuk-body">If you store API keys in files, for example configuration or
           environment files, do not store them inside the application source tree. If all or part of
-          the source is made public the key may be compromised. </p>
+          the source is made public the key may be compromised.
+        </p>
       </li>
       <li><h3 class="govuk-heading-s">Restrict API key use by IP address and domain</h3>
         <p class="govuk-body">Limit the use of a key to a specific IP address or domain to reduce
-          its usefulness if it becomes compromised.</p>
+          its usefulness if it becomes compromised.
+        </p>
       </li>
       <li><h3 class="govuk-heading-s">Regenerate your API keys</h3>
         <p class="govuk-body">Regenerate your API keys regularly, including with each application
-          release, to lessen the chance that a key will be discovered.</p>
+          release, to lessen the chance that a key will be discovered.
+        </p>
       </li>
       <li><h3 class="govuk-heading-s">Delete API keys when no longer required</h3>
         <p class="govuk-body">Remove unused keys from your Developer Hub registered-applications

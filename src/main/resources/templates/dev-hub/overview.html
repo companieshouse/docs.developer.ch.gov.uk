@@ -6,9 +6,7 @@
   <title th:utext="${templateTitle}"></title>
 </head>
 <div id="temp-home-main-content" layout:fragment="content">
-  <header class="page-header group">
     <h1 class="govuk-heading-xl">Companies House REST API Overview</h1>
-  </header>
   <section>
     <p class="govuk-body">The Companies House API is a REST API that provides a simple, consistent
       approach to requesting and modifying data. REST stands for Representational State Transfer, an
@@ -20,7 +18,8 @@
       of interface. Data was retrieved or submitted by POSTing XML documents to the service, each
       defining the method to be called and the data to be processed.
     </p>
-    <p class="govuk-body">The difference between both API approaches is defined below.</p>
+    <p class="govuk-body">The difference between both API approaches is defined below.
+    </p>
   </section>
   <section id="rest">
     <h2 class="govuk-heading-l">Representational State Transfer (REST) web services</h2>
