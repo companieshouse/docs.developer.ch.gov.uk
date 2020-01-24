@@ -9,66 +9,99 @@
 <body>
 <div layout:fragment="content">
   <h1 class="govuk-heading-xl">Developer guidelines</h1>
-  <p class="govuk-body-l">To help achieve the successful development of your application, when using
-    the
-    Companies House API you should adhere to a few simple guidelines:
-  </p>
+
+  <h2 class="govuk-heading-m">Contents</h2>
+
   <ol class="govuk-list govuk-list--number">
+    <li><a class="govuk-link" href="#ratelimits">API rate limits</a></li>
+    <li><a class="govuk-link" href="#enumtypes">Enumerated types</a></li>
     <li><a class="govuk-link" href="#resources">Data resources</a></li>
-    <li><a class="govuk-link" href="#security">Security</a></li>
+    <li><a class="govuk-link" href="#appsecurity">Security</a></li>
     <li><a class="govuk-link" href="#keysecurity">Securing API keys</a></li>
   </ol>
+  <section id="ratelimits">
+    <h2 class="govuk-heading-m">API rate limits</h2>
+    <p class="govuk-body">Rate limiting is applied to the Companies House API to ensure a
+      high-quality service is delivered for all users, and to protect client applications from
+      unexpected loops.</p>
+    <p class="govuk-body">
+      You can make up to 600 requests within a five-minute period. If you exceed this limit, you
+      will receive a <code>429 Too Many Requests</code> HTTP status code for each request made
+      within the
+      remainder of the five-minute window. At the end of the period, your rate limit will reset back
+      to its maximum value of 600 requests.
+    </p>
+    <p class="govuk-body">
+      If you have an application that requires a higher rate limit than this default, <a
+        th:href="@{{chsUrl}/help/contact-us(chsUrl=${@environment.getProperty('chs.url')})}">contact
+      us.</a>
+    </p>
+  </section>
+  <section id="enums">
+    <h2 class="govuk-heading-m">Enumerated types</h2>
+    <p class="govuk-body">A majority of the resources returned by the Companies House API contain
+      members that reference enumeration types. This helps make the resources self-documenting, and
+      allows clients to interpret the meaning of a resource member without needing to parse a text
+      description.
+    </p>
+    <p class="govuk-body">
+      Enumeration types are used to supplement or replace a text description, which allows clients
+      to display their own version of a description or provide descriptions in multiple languages.
+    </p>
+    <p class="govuk-body">
+      The collection of enumeration types used by Companies House are available on <a
+        href="https://github.com/companieshouse/api-enumerations">GitHub</a>. These files provide
+      mapping between enumeration type and text description, and are divided
+      into sets or classes. Each API resource member will define which class of enumeration is being
+      returned.
+    </p>
+    <p class="govuk-body">
+      A planned enhancement to the enumeration scheme is the provision of API endpoints that will
+      return the enumeration class catalogue. This avoids enumerations having to be hard-coded
+      within a client, and by periodically checking for change through ETags, clients do not have to
+      download the full catalogue.
+    </p>
+  </section>
   <section id="resources">
     <h2 class="govuk-heading-m">Data resources</h2>
-    <p class="govuk-body">Data is mostly returned as JSON documents. Your application must tolerate
-      the
-      order of document members changing over time, and expect to receive members it hasn't seen
-      before.
+    <p class="govuk-body">
+      Data is mostly returned as JSON documents. Your application must be able to handle the order
+      of document members changing over time and expect to receive members it has not seen before.
     </p>
   </section>
-  <section id="security">
-    <h2 class="govuk-heading-m">Security</h2>
-    <p class="govuk-body">The API can only be accessed over TLS. We recommend using TLS 1.2.</p>
+  <section id="appsecurity">
+    <h2 class="govuk-heading-m">Application security</h2>
+    <p class="govuk-body">The API can only be accessed over Transport Layer Security (TLS). We
+      recommend using TLS 1.2.</p>
   </section>
   <section id="keysecurity">
-    <h2 class="govuk-heading-m">Securing API keys</h2>
-    <p class="govuk-body">It is important to keep your API keys secure, to prevent them being
-      discovered, your
-      account being compromised and your rate-limit quota being exceeded. There are a few best
-      practices that can help with this:
-    </p>
+    <h2 class="govuk-heading-m">API key security </h2>
+    <p class="govuk-body">It is important to keep your API keys secure. This will prevent them from
+      being discovered, your account from being compromised and your rate-limit quota from being
+      exceeded. </p>
     <ol class="govuk-list govuk-list--bullet">
       <li><h3 class="govuk-heading-s">Do not embed API keys in your code</h3>
         <p class="govuk-body">Storing keys in your application code increases the risk that they
-          will be discovered, particularly if any of your source code is made public, or can
-          be viewed by people who should not have access to the key. Instead,
-          you should consider storing them inside environment variables or configuration.
-        </p>
+          will be discovered, particularly if any of your source code is made public or it can be
+          viewed by people who should not have access to the key. Instead, you should consider
+          storing them inside environment variables or configuration. </p>
       </li>
       <li><h3 class="govuk-heading-s">Do not store API keys in your source tree</h3>
-        <p class="govuk-body">If you store API keys in files, perhaps inside a configuration or
-          environment file,
-          these should not be stored inside the application source tree, just in case part or all
-          of the source is made public or can be viewed by people who should not have access to
-          the key.
-        </p>
+        <p class="govuk-body">If you store API keys in files, for example configuration or
+          environment files, do not store them inside the application source tree. If all or part of
+          the source is made public the key may be compromised. </p>
       </li>
       <li><h3 class="govuk-heading-s">Restrict API key use by IP address and domain</h3>
-        <p class="govuk-body">Limiting the use of a key to a specific IP address or domain will
-          reduce the usefulness
-          of a key that becomes compromised.
-        </p>
+        <p class="govuk-body">Limit the use of a key to a specific IP address or domain to reduce
+          its usefulness if it becomes compromised.</p>
       </li>
       <li><h3 class="govuk-heading-s">Regenerate your API keys</h3>
-        <p class="govuk-body">By regenerating your API keys regularly, and certainly with each
-          application release, you
-          can lessen the chance that a key will be discovered.
-        </p>
+        <p class="govuk-body">Regenerate your API keys regularly, including with each application
+          release, to lessen the chance that a key will be discovered.</p>
       </li>
       <li><h3 class="govuk-heading-s">Delete API keys when no longer required</h3>
-        <p class="govuk-body">Removing obsolete keys from your Developer Hub registered-applications
-          page limits the
-          number of entry points into your account.
+        <p class="govuk-body">Remove unused keys from your Developer Hub registered-applications
+          page to limit the number of entry points into your account.
         <p>
       </li>
     </ol>
