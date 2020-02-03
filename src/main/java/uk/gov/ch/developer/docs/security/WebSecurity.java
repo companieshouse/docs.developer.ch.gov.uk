@@ -18,10 +18,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     public static class TemporaryStartPageSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/signin")
-                    .addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class)
-                    .addFilterBefore(new HijackFilter(), BasicAuthenticationFilter.class)
-                    .addFilterBefore(new UserAuthFilter(), BasicAuthenticationFilter.class);
+            http.antMatcher("/signin");
+//                    .addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class)
+//                    .addFilterBefore(new HijackFilter(), BasicAuthenticationFilter.class)
+//                    .addFilterBefore(new UserAuthFilter(), BasicAuthenticationFilter.class);
         }
     }
     
