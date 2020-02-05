@@ -49,6 +49,9 @@ public class SignInController {
     @GetMapping
     public void getSignIn(ServletRequest request, ServletResponse response) throws IOException {
 
+        SessionConfig sess = new SessionConfig();
+        sess.getSession(request, response);
+
         Session chSession =
                 (Session) request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
