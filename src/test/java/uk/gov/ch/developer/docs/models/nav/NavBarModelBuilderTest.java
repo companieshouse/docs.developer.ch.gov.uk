@@ -242,7 +242,7 @@ class NavBarModelBuilderTest {
 
             NavItemList documentation = builderWithMocks
                     .addHeading("General Documentation", DisplayRestrictions.none());
-            documentation.add("Get Started", "gettingStartedURL");
+            documentation.add("Get Started", "getStartedURL");
             documentation.add("Companies House REST API overview", "homeURL");
             documentation.add("How to add an API key", "homeURL");
             documentation.add("Developer Guidelines", "devGuideURL");
@@ -282,7 +282,7 @@ class NavBarModelBuilderTest {
 
             NavItemList documentation = builderWithMocks
                     .addHeading("General Documentation", DisplayRestrictions.none());
-            documentation.add("Get Started", "gettingStartedURL");
+            documentation.add("Get Started", "getStartedURL");
             documentation.add("Companies House REST API overview", "homeURL");
             documentation.add("How to add an API key", "homeURL");
             documentation.add("Developer Guidelines", "devGuideURL");

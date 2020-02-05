@@ -29,7 +29,7 @@ class HomeControllerTest {
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
-    private GettingStartedController controller;
+    private HomeController controller;
 
     @BeforeEach
     void setUp() {
@@ -47,7 +47,7 @@ class HomeControllerTest {
     @Test
     @DisplayName("Get Dev-Hub Home Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
+        this.mockMvc.perform(get(ApplicationVariables.BAD_REQUEST_URL))
                 .andExpect(status().isNotFound());
     }
 }

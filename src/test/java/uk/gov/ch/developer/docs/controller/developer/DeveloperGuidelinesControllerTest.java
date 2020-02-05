@@ -49,7 +49,7 @@ class DeveloperGuidelinesControllerTest {
     @Test
     @DisplayName("Get How To Obtain an API Home Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
+        this.mockMvc.perform(get(ApplicationVariables.BAD_REQUEST_URL))
                 .andExpect(status().isNotFound());
     }
 
