@@ -52,14 +52,6 @@ public class SignInController {
         Session chSession =
                 (Session) request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
-        // if(signInInfo.isSignedIn()) {
-        //
-        // //Carry on and process filter chain
-        // chain.doFilter(request, response);
-        //
-        // }? Ask about this, do we check here - currently if signed in it redirects through
-        // callback
-
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
@@ -101,6 +93,9 @@ public class SignInController {
 
         String nonce = generateNonce();
         sessionToUpdate.getData().put(SessionKeys.NONCE.getKey(), nonce);
+        
+//        //Store the CHS session
+//        chSession.store();
 
         // Build oauth uri and redirect
         String authoriseUri;
