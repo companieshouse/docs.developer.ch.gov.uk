@@ -51,11 +51,6 @@ public class SignInController {
 
         SessionConfig sess = new SessionConfig();
         Session chSession = sess.getSession(httpServletRequest, httpServletResponse);
-//        Session chSession =
-//                (Session) request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-
-//        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-//        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
         // Redirect for user authentication (no scope specified)
         redirectForAuth(chSession, httpServletRequest, httpServletResponse, null, false);
@@ -95,9 +90,6 @@ public class SignInController {
         String nonce = generateNonce();
         sessionToUpdate.getData().put(SessionKeys.NONCE.getKey(), nonce);
         
-//        //Store the CHS session
-//        chSession.store();
-
         // Build oauth uri and redirect
         String authoriseUri;
         if (force) {
@@ -107,10 +99,6 @@ public class SignInController {
             authoriseUri = createAuthoriseURI(originalRequestUrl.toString(), scope, nonce);
         }
 
-//        SessionConfig sess = new SessionConfig();
-//        Session cHSession = sess.getSession(request, response);
-        
-        
         //Store the CHS session
         sessionToUpdate.store();
         
