@@ -1,8 +1,6 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
 import java.util.Arrays;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,22 +16,12 @@ public class SessionConfig {
     public static final String COOKIE_NAME = reader.getMandatoryString("COOKIE_NAME");
     public static final String CHS_SESSION_REQUEST_ATT_KEY = "chsSession";
 
-    public void getSession(ServletRequest request, ServletResponse response) {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-//        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-
+    public Session getSession(HttpServletRequest request, HttpServletResponse httpServletResponse) {
         // Get the CHS session
-        String cookieId = getCHSSessionCookieId(httpServletRequest);
+        String cookieId = getCHSSessionCookieId(request);
         Session chSession = getSessionByCookieId(cookieId);
-        
-        //Put the CHS session into the request as chsSession attribute
-        httpServletRequest.setAttribute(CHS_SESSION_REQUEST_ATT_KEY, chSession);
-        
-        //Store the CHS session
-        chSession.store();
-        
-//        return chSession;
 
+        return chSession;
     }
 
     private String getCHSSessionCookieId(HttpServletRequest request) {
@@ -56,5 +44,4 @@ public class SessionConfig {
     private Session getSessionByCookieId(String cookieId) {
         return SessionFactory.getSessionByCookieId(SessionFactory.getDefaultStoreImpl(), cookieId);
     }
-
 }

@@ -47,20 +47,18 @@ public class SignInController {
     protected Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
 
     @GetMapping
-    public void getSignIn(ServletRequest request, ServletResponse response) throws IOException {
+    public void getSignIn(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
 
         SessionConfig sess = new SessionConfig();
-        sess.getSession(request, response);
+        Session chSession = sess.getSession(httpServletRequest, httpServletResponse);
+//        Session chSession =
+//                (Session) request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
-        Session chSession =
-                (Session) request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+//        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+//        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
         // Redirect for user authentication (no scope specified)
         redirectForAuth(chSession, httpServletRequest, httpServletResponse, null, false);
-
     }
 
     /**
@@ -109,6 +107,16 @@ public class SignInController {
             authoriseUri = createAuthoriseURI(originalRequestUrl.toString(), scope, nonce);
         }
 
+//        SessionConfig sess = new SessionConfig();
+//        Session cHSession = sess.getSession(request, response);
+        
+        
+        //Store the CHS session
+        sessionToUpdate.store();
+        
+        //Put the CHS session into the request as chsSession attribute
+        request.setAttribute("chsSession", sessionToUpdate);
+        
         response.sendRedirect(authoriseUri);
     }
 
