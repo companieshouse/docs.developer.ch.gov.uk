@@ -71,8 +71,9 @@ public class SignInController {
         // Find the original requested url
         StringBuilder originalRequestUrl = new StringBuilder(request.getRequestURL().toString());
         String queryString = request.getQueryString();
-        if (queryString != null)
+        if (queryString != null) {
             originalRequestUrl.append("?").append(queryString);
+        }
 
         // Set the scope
         String scope = null;
