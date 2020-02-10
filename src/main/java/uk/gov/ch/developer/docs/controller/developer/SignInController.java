@@ -2,8 +2,6 @@ package uk.gov.ch.developer.docs.controller.developer;
 
 import java.io.IOException;
 import java.security.SecureRandom;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
@@ -44,20 +42,17 @@ public class SignInController {
     private static final String redirectUri = reader.getMandatoryString("OAUTH2_REDIRECT_URI");
     private static final String secret = reader.getMandatoryString("COOKIE_SECRET");
 
-    protected Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
+    private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
 
     @GetMapping
-    public void getSignIn(ServletRequest request, ServletResponse response) throws IOException {
+    public void getSignIn(HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse) throws IOException {
 
-        Session chSession =
-                (Session) request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        Session chSession = (Session) httpServletRequest
+                .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
         // Redirect for user authentication (no scope specified)
         redirectForAuth(chSession, httpServletRequest, httpServletResponse, null, false);
-
     }
 
     /**
@@ -81,8 +76,9 @@ public class SignInController {
 
         // Set the scope
         String scope = null;
-        if (companyNumber != null)
+        if (companyNumber != null) {
             scope = OAUTH_COMPANY_SCOPE_PREFIX + companyNumber;
+        }
 
         // Generate and store a nonce in the session
         Session sessionToUpdate = session;
@@ -93,9 +89,6 @@ public class SignInController {
 
         String nonce = generateNonce();
         sessionToUpdate.getData().put(SessionKeys.NONCE.getKey(), nonce);
-        
-//        //Store the CHS session
-//        chSession.store();
 
         // Build oauth uri and redirect
         String authoriseUri;

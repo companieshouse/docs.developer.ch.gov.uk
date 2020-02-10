@@ -25,7 +25,7 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 @RequestMapping("${callback.url}")
 public class UserCallbackController {
 
-    protected Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
+    private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
 
     @Autowired
     private SessionService sessionService;
