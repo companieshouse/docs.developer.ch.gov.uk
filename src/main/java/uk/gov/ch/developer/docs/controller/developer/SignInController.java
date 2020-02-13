@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
@@ -44,13 +45,23 @@ public class SignInController {
     private static final String redirectUri = reader.getMandatoryString("OAUTH2_REDIRECT_URI");
     private static final String secret = reader.getMandatoryString("COOKIE_SECRET");
 
+    public static final String COOKIE_NAME = reader.getMandatoryString("COOKIE_NAME");
+    private static final String COOKIE_DOMAIN_DEFAULT = ".companieshouse.gov.uk";
+    private static final boolean COOKIE_SECURE_ONLY_DEFAULT = true;
+
+    private static final String COOKIE_DOMAIN = reader.getMandatoryString("COOKIE_DOMAIN");;
+
+    private static final String COOKIE_SECURE_ONLY = System.getenv("COOKIE_SECURE_ONLY");
+
     protected Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
 
     @GetMapping
     public void getSignIn(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
 
-        SessionConfig sess = new SessionConfig();
-        Session chSession = sess.getSession(httpServletRequest, httpServletResponse);
+//        SessionConfig sess = new SessionConfig();
+//        Session chSession = sess.getSession(httpServletRequest, httpServletResponse);
+
+        Session chSession = (Session) httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
         // Redirect for user authentication (no scope specified)
         redirectForAuth(chSession, httpServletRequest, httpServletResponse, null, false);
@@ -98,14 +109,39 @@ public class SignInController {
         } else {
             authoriseUri = createAuthoriseURI(originalRequestUrl.toString(), scope, nonce);
         }
-
-        //Store the CHS session
-        sessionToUpdate.store();
+//
+////        //Put the CHS session into the request as chsSession attribute
+//        request.setAttribute("chsSession", sessionToUpdate);
+//        
+//        response.addCookie(prepareCookieForSession(COOKIE_DOMAIN, COOKIE_SECURE_ONLY, sessionToUpdate));
+//
+//        //Store the CHS session
+//        sessionToUpdate.store();
+//        
+//        
+        response.sendRedirect(response.encodeRedirectURL(authoriseUri));
+    }
+    
+    protected static Cookie prepareCookieForSession(String cookieDomain, String cookieSecureOnly,  Session chsSession) {
+        Cookie chsSessionCookie = new Cookie(COOKIE_NAME, chsSession.getCookieId());
+        chsSessionCookie.setMaxAge(chsSession.getExpirationPeriod());
+        chsSessionCookie.setHttpOnly(true);
+        chsSessionCookie.setPath("/");
         
-        //Put the CHS session into the request as chsSession attribute
-        request.setAttribute("chsSession", sessionToUpdate);
+        if(cookieDomain == null) {
+            chsSessionCookie.setDomain(COOKIE_DOMAIN_DEFAULT);
+        } else {
+            chsSessionCookie.setDomain(cookieDomain);
+        }
         
-        response.sendRedirect(authoriseUri);
+        if(cookieSecureOnly == null) {
+            chsSessionCookie.setSecure(COOKIE_SECURE_ONLY_DEFAULT);
+        } else {
+            boolean secureOnly = "true".equalsIgnoreCase(cookieSecureOnly);
+            chsSessionCookie.setSecure(secureOnly);
+        }
+               
+        return chsSessionCookie;
     }
 
     /**

@@ -1,6 +1,7 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
 import java.text.ParseException;
+import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -47,12 +48,13 @@ public class UserCallbackController {
             throws ParseException, KeyLengthException, JOSEException,
             net.minidev.json.parser.ParseException {
 
-        SessionConfig session = new SessionConfig();
-        Session sessionCallback = session.getSession(httpServletRequest, httpServletResponse);
+//        SessionConfig session = new SessionConfig();
+//        Session sessionCallback = session.getSession(httpServletRequest, httpServletResponse);
 
-        String nonceSession = sessionCallback.getData().get(SessionKeys.NONCE.getKey()).toString();
-
-        // sessionService.getSessionFromContext(); Still returns null, needs to be looked into
+        Session sessionCallback = sessionService.getSessionFromContext();
+        
+        Map<String, Object> sessionMap = sessionCallback.getData();
+        String nonceSession = sessionMap.get(SessionKeys.NONCE.getKey()).toString();
 
         String nonceState = decryptState(state);
 
@@ -64,7 +66,7 @@ public class UserCallbackController {
     }
 
     private String decryptState(String state) throws ParseException, JOSEException,
-            KeyLengthException, net.minidev.json.parser.ParseException {
+            net.minidev.json.parser.ParseException {
 
         JWEObject jweObject = JWEObject.parse(state);
 
