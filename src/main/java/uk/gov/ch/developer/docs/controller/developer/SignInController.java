@@ -7,6 +7,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +50,7 @@ public class SignInController {
     private static final String COOKIE_DOMAIN_DEFAULT = ".companieshouse.gov.uk";
     private static final boolean COOKIE_SECURE_ONLY_DEFAULT = true;
 
-    private static final String COOKIE_DOMAIN = reader.getMandatoryString("COOKIE_DOMAIN");;
+//    private static final String COOKIE_DOMAIN = reader.getMandatoryString("COOKIE_DOMAIN");;
 
     private static final String COOKIE_SECURE_ONLY = System.getenv("COOKIE_SECURE_ONLY");
 
@@ -60,6 +61,16 @@ public class SignInController {
 
 //        SessionConfig sess = new SessionConfig();
 //        Session chSession = sess.getSession(httpServletRequest, httpServletResponse);
+        
+//        HttpSession session = httpServletRequest.getSession();
+//        if (httpServletRequest.getParameter("JSESSIONID") != null) {
+//            Cookie userCookie = new Cookie("JSESSIONID", httpServletRequest.getParameter("JSESSIONID"));
+//            httpServletResponse.addCookie(userCookie);
+//        } else {
+//            String sessionId = session.getId();
+//            Cookie userCookie = new Cookie("JSESSIONID", sessionId);
+//            httpServletResponse.addCookie(userCookie);
+//        }
 
         Session chSession = (Session) httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
