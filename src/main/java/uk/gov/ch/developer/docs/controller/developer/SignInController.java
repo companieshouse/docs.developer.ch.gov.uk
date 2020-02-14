@@ -5,6 +5,7 @@ import java.security.SecureRandom;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,6 @@ import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.DirectEncrypter;
 import net.minidev.json.JSONObject;
 import uk.gov.companieshouse.environment.EnvironmentReader;
-import uk.gov.companieshouse.environment.impl.EnvironmentReaderImpl;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
@@ -31,18 +31,22 @@ import uk.gov.companieshouse.session.model.UserProfile;
 @RequestMapping("/signin")
 public class SignInController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
     private static final String OAUTH_COMPANY_SCOPE_PREFIX =
             "https://api.companieshouse.gov.uk/company/";
 
-    private static final EnvironmentReader reader = new EnvironmentReaderImpl();
+    private String base64Key;
+    private String authorizationUri;
+    private String clientId;
+    private String redirectUri;
 
-    private static final String base64Key = reader.getMandatoryString("OAUTH2_REQUEST_KEY");
-    private static final String authorizationUri = reader.getMandatoryString("OAUTH2_AUTH_URI");
-    private static final String clientId = reader.getMandatoryString("OAUTH2_CLIENT_ID");
-    private static final String redirectUri = reader.getMandatoryString("OAUTH2_REDIRECT_URI");
-    private static final String secret = reader.getMandatoryString("COOKIE_SECRET");
-
-    private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
+    @Autowired
+    public SignInController(EnvironmentReader reader) {
+        this.base64Key = reader.getMandatoryString("OAUTH2_REQUEST_KEY");
+        this.authorizationUri = reader.getMandatoryString("OAUTH2_AUTH_URI");
+        this.clientId = reader.getMandatoryString("OAUTH2_CLIENT_ID");
+        this.redirectUri = reader.getMandatoryString("OAUTH2_REDIRECT_URI");
+    }
 
     @GetMapping
     public void getSignIn(HttpServletRequest httpServletRequest,
@@ -213,13 +217,9 @@ public class SignInController {
             jweObject.encrypt(new DirectEncrypter(key));
         } catch (JOSEException e) {
             LOGGER.error(e, null);
+            return "";
         }
 
         return jweObject.serialize();
     }
-
-    public String getSecret() {
-        return secret;
-    }
-
 }
