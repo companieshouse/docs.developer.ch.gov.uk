@@ -104,7 +104,7 @@ public class SignInController {
             authoriseUri = createAuthoriseURI(originalRequestUrl.toString(), scope, nonce);
         }
 
-        response.sendRedirect(response.encodeRedirectURL(authoriseUri));
+        response.sendRedirect(authoriseUri);
     }
 
     /**
