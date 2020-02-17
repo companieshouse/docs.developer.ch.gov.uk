@@ -7,21 +7,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWEObject;
-import com.nimbusds.jose.KeyLengthException;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.DirectDecrypter;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 import uk.gov.ch.developer.docs.session.SessionService;
 import uk.gov.companieshouse.environment.EnvironmentReader;
-import uk.gov.companieshouse.environment.impl.EnvironmentReaderImpl;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
@@ -36,15 +33,17 @@ public class UserCallbackController {
     @Autowired
     private SessionService sessionService;
 
-    private static final EnvironmentReader reader = new EnvironmentReaderImpl();
+    private String base64Key;
 
-    private static final String base64Key = reader.getMandatoryString("OAUTH2_REQUEST_KEY");
+    public UserCallbackController(EnvironmentReader reader) {
+        this.base64Key = reader.getMandatoryString("OAUTH2_REQUEST_KEY");
+    }
 
     @GetMapping
     public void getParams(HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse, @RequestParam("state") String state,
-            @RequestParam("code") String code) throws ParseException, KeyLengthException,
-            JOSEException, net.minidev.json.parser.ParseException, IOException {
+            @RequestParam("code") String code) throws ParseException, JOSEException,
+            net.minidev.json.parser.ParseException, IOException {
 
         Session sessionCallback = sessionService.getSessionFromContext();
 
