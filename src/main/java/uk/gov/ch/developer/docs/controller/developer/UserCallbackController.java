@@ -39,8 +39,6 @@ public class UserCallbackController {
     public String getParams(@RequestParam("state") String state, @RequestParam("code") String code)
             throws ParseException, KeyLengthException, JOSEException,
             net.minidev.json.parser.ParseException {
-        LOGGER.info("State: " + state);
-        LOGGER.info("Code: " + code);
 
         sessionService.getSessionDataFromContext();
 
