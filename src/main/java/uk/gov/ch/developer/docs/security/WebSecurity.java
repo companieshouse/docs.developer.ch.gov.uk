@@ -13,55 +13,31 @@ public class WebSecurity {
 
     @Configuration
     @Order(1)
-    public static class StartPageSecurityConfig extends WebSecurityConfigurerAdapter {
+    public static class RootSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/")
-//            .antMatcher("/assets/**")
-//            .antMatcher("/css/**")
-            .addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class);
+            http.antMatcher("/").addFilterBefore(new SessionHandler(),
+                    BasicAuthenticationFilter.class);
         }
     }
     @Configuration
     @Order(2)
-    public static class PageSecurityConfig extends WebSecurityConfigurerAdapter {
+    public static class SignInSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/signin")
-//            .antMatcher("/assets/**")
-//            .antMatcher("/css/**")
-            .addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class);
+            http.antMatcher("/signin").addFilterBefore(new SessionHandler(),
+                    BasicAuthenticationFilter.class);
         }
     }
-    
+
     @Configuration
     @Order(3)
-    public static class CallbackPageSecurityConfig extends WebSecurityConfigurerAdapter {
+    public static class CallbackSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/oauth2/user/**")
-            .addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class);
+            http.antMatcher("/oauth2/user/**").addFilterBefore(new SessionHandler(),
+                    BasicAuthenticationFilter.class);
         }
     }
-    
-//    @Configuration
-//    @Order(2)
-//    public static class TemporaryStartPageSecurityConfig extends WebSecurityConfigurerAdapter {
-//        @Override
-//        protected void configure(HttpSecurity http) throws Exception {
-//            http.antMatcher("/**")
-//                .addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class);
-////                .addFilterBefore(new HijackFilter(), BasicAuthenticationFilter.class);
-//        }
-//    }
-    
 
-//    @Configuration
-//    @Order(2)
-//    public static class DocsWebSecurityFilterConfig extends WebSecurityConfigurerAdapter {
-//        @Override
-//        protected void configure(HttpSecurity http) throws Exception {
-//            http.antMatcher("/**");
-//        }
-//    }
 }
