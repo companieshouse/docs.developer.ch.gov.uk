@@ -1,6 +1,5 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -21,17 +20,17 @@ import uk.gov.ch.developer.docs.DocsWebApplication;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DocsWebApplication.class)
-class CreateAccountControllerTest {
+class GetStartedControllerTest {
 
-    private static final String URL = "/create-account";
-    private static final String VIEW = "dev-hub/createAccount";
-
+    private static final String URL = "/get-started";
+    private static final String VIEW = "dev-hub/getStarted";
 
     private MockMvc mockMvc;
+
     @Autowired
     private WebApplicationContext context;
     @InjectMocks
-    private CreateAccountController controller;
+    private GetStartedController controller;
 
     @BeforeEach
     void setUp() {
@@ -39,7 +38,7 @@ class CreateAccountControllerTest {
     }
 
     @Test
-    @DisplayName("How to Create CH Account Page - success path")
+    @DisplayName("Get Get Started Page - success path")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
         this.mockMvc.perform(get(URL))
                 .andExpect(status().isOk())
@@ -47,17 +46,9 @@ class CreateAccountControllerTest {
     }
 
     @Test
-    @DisplayName("How to Create CH Account Page - Failure path")
+    @DisplayName("Get Get Started Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
         this.mockMvc.perform(get(ApplicationVariables.BAD_REQUEST_URL))
                 .andExpect(status().isNotFound());
-    }
-
-    @Test()
-    @DisplayName("How to Create CH Account  Page - Null path")
-    void Test_GetRequest_ThrowsException_ForNullPath() {
-        //Inspection suppressed because we are passing null to a @NotNull parameter.
-        //noinspection ConstantConditions
-        assertThrows(IllegalArgumentException.class, () -> this.mockMvc.perform(get(null)));
     }
 }

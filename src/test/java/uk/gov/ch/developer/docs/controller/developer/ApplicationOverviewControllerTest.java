@@ -45,7 +45,7 @@ class ApplicationOverviewControllerTest {
     @Test
     @DisplayName("Get Overview page - Failure path")
     void TestGetRequestReturnsErrorForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
+        this.mockMvc.perform(get(ApplicationVariables.BAD_REQUEST_URL))
                 .andExpect(status().isNotFound());
     }
 

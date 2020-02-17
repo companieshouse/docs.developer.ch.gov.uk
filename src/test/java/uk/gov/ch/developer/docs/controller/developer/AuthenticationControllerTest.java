@@ -45,7 +45,7 @@ class AuthenticationControllerTest {
     @Test
     @DisplayName("Get Authentication Page - Failure path")
     void TestGetRequestReturnsErrorForIncorrectPath() throws Exception {
-        this.mockMvc.perform(get(ApplicationVariables.BADREQUEST_URL))
+        this.mockMvc.perform(get(ApplicationVariables.BAD_REQUEST_URL))
                 .andExpect(status().isNotFound());
     }
 }

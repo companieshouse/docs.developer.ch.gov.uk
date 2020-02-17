@@ -2,13 +2,10 @@ package uk.gov.ch.developer.docs.controller.developer;
 
 import java.io.IOException;
 import java.security.SecureRandom;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +18,6 @@ import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.DirectEncrypter;
 import net.minidev.json.JSONObject;
 import uk.gov.companieshouse.environment.EnvironmentReader;
-import uk.gov.companieshouse.environment.impl.EnvironmentReaderImpl;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
@@ -35,44 +31,29 @@ import uk.gov.companieshouse.session.model.UserProfile;
 @RequestMapping("/signin")
 public class SignInController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
     private static final String OAUTH_COMPANY_SCOPE_PREFIX =
             "https://api.companieshouse.gov.uk/company/";
 
-    private static final EnvironmentReader reader = new EnvironmentReaderImpl();
+    private String base64Key;
+    private String authorizationUri;
+    private String clientId;
+    private String redirectUri;
 
-    private static final String base64Key = reader.getMandatoryString("OAUTH2_REQUEST_KEY");
-    private static final String authorizationUri = reader.getMandatoryString("OAUTH2_AUTH_URI");
-    private static final String clientId = reader.getMandatoryString("OAUTH2_CLIENT_ID");
-    private static final String redirectUri = reader.getMandatoryString("OAUTH2_REDIRECT_URI");
-    private static final String secret = reader.getMandatoryString("COOKIE_SECRET");
-
-    public static final String COOKIE_NAME = reader.getMandatoryString("COOKIE_NAME");
-    private static final String COOKIE_DOMAIN_DEFAULT = ".companieshouse.gov.uk";
-    private static final boolean COOKIE_SECURE_ONLY_DEFAULT = true;
-
-//    private static final String COOKIE_DOMAIN = reader.getMandatoryString("COOKIE_DOMAIN");;
-
-    private static final String COOKIE_SECURE_ONLY = System.getenv("COOKIE_SECURE_ONLY");
-
-    protected Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
+    @Autowired
+    public SignInController(EnvironmentReader reader) {
+        this.base64Key = reader.getMandatoryString("OAUTH2_REQUEST_KEY");
+        this.authorizationUri = reader.getMandatoryString("OAUTH2_AUTH_URI");
+        this.clientId = reader.getMandatoryString("OAUTH2_CLIENT_ID");
+        this.redirectUri = reader.getMandatoryString("OAUTH2_REDIRECT_URI");
+    }
 
     @GetMapping
-    public void getSignIn(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+    public void getSignIn(HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse) throws IOException {
 
-//        SessionConfig sess = new SessionConfig();
-//        Session chSession = sess.getSession(httpServletRequest, httpServletResponse);
-        
-//        HttpSession session = httpServletRequest.getSession();
-//        if (httpServletRequest.getParameter("JSESSIONID") != null) {
-//            Cookie userCookie = new Cookie("JSESSIONID", httpServletRequest.getParameter("JSESSIONID"));
-//            httpServletResponse.addCookie(userCookie);
-//        } else {
-//            String sessionId = session.getId();
-//            Cookie userCookie = new Cookie("JSESSIONID", sessionId);
-//            httpServletResponse.addCookie(userCookie);
-//        }
-
-        Session chSession = (Session) httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
+        Session chSession = (Session) httpServletRequest
+                .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
         // Redirect for user authentication (no scope specified)
         redirectForAuth(chSession, httpServletRequest, httpServletResponse, null, false);
@@ -94,13 +75,15 @@ public class SignInController {
         // Find the original requested url
         StringBuilder originalRequestUrl = new StringBuilder(request.getRequestURL().toString());
         String queryString = request.getQueryString();
-        if (queryString != null)
+        if (queryString != null) {
             originalRequestUrl.append("?").append(queryString);
+        }
 
         // Set the scope
         String scope = null;
-        if (companyNumber != null)
+        if (companyNumber != null) {
             scope = OAUTH_COMPANY_SCOPE_PREFIX + companyNumber;
+        }
 
         // Generate and store a nonce in the session
         Session sessionToUpdate = session;
@@ -111,7 +94,7 @@ public class SignInController {
 
         String nonce = generateNonce();
         sessionToUpdate.getData().put(SessionKeys.NONCE.getKey(), nonce);
-        
+
         // Build oauth uri and redirect
         String authoriseUri;
         if (force) {
@@ -120,39 +103,8 @@ public class SignInController {
         } else {
             authoriseUri = createAuthoriseURI(originalRequestUrl.toString(), scope, nonce);
         }
-//
-////        //Put the CHS session into the request as chsSession attribute
-//        request.setAttribute("chsSession", sessionToUpdate);
-//        
-//        response.addCookie(prepareCookieForSession(COOKIE_DOMAIN, COOKIE_SECURE_ONLY, sessionToUpdate));
-//
-//        //Store the CHS session
-//        sessionToUpdate.store();
-//        
-//        
+
         response.sendRedirect(response.encodeRedirectURL(authoriseUri));
-    }
-    
-    protected static Cookie prepareCookieForSession(String cookieDomain, String cookieSecureOnly,  Session chsSession) {
-        Cookie chsSessionCookie = new Cookie(COOKIE_NAME, chsSession.getCookieId());
-        chsSessionCookie.setMaxAge(chsSession.getExpirationPeriod());
-        chsSessionCookie.setHttpOnly(true);
-        chsSessionCookie.setPath("/");
-        
-        if(cookieDomain == null) {
-            chsSessionCookie.setDomain(COOKIE_DOMAIN_DEFAULT);
-        } else {
-            chsSessionCookie.setDomain(cookieDomain);
-        }
-        
-        if(cookieSecureOnly == null) {
-            chsSessionCookie.setSecure(COOKIE_SECURE_ONLY_DEFAULT);
-        } else {
-            boolean secureOnly = "true".equalsIgnoreCase(cookieSecureOnly);
-            chsSessionCookie.setSecure(secureOnly);
-        }
-               
-        return chsSessionCookie;
     }
 
     /**
@@ -265,13 +217,9 @@ public class SignInController {
             jweObject.encrypt(new DirectEncrypter(key));
         } catch (JOSEException e) {
             LOGGER.error(e, null);
+            return "";
         }
 
         return jweObject.serialize();
     }
-
-    public String getSecret() {
-        return secret;
-    }
-
 }

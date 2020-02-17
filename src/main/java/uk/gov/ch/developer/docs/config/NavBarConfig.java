@@ -10,8 +10,8 @@ import uk.gov.ch.developer.docs.models.nav.NavItemList;
 @Configuration
 public class NavBarConfig {
 
-    @Value("${gettingStarted.url}")
-    private String gettingStartedURL;
+    @Value("${getStarted.url}")
+    private String getStartedURL;
     @Value("${home.url}")
     private String homeURL;
     @Value("${createAccount.url}")
@@ -20,7 +20,14 @@ public class NavBarConfig {
     private String authenticationUrl;
     @Value("${developerGuidelines.url}")
     private String devGuideURL;
+    @Value("${overview.url}")
+    private String overviewURL;
 
+    /**
+     * Constructs the entire model along with visibility restrictions.
+     *
+     * @return builder that constructs visible navigation bar for a given session.
+     */
     @Bean
     public NavBarModelBuilder getNavBarModelBuilder() {
 
@@ -32,9 +39,9 @@ public class NavBarConfig {
 
         NavItemList documentation = model
                 .addHeading("General Documentation", DisplayRestrictions.none());
-        documentation.add("Get Started", gettingStartedURL);
-        documentation.add("Companies House REST API overview", homeURL);
-        documentation.add("How to add an API key", homeURL);
+        documentation.add("Get Started", getStartedURL);
+        documentation.add("Companies House REST API overview", overviewURL);
+        documentation.add("How to add an API key", authenticationUrl);
         documentation.add("Developer Guidelines", devGuideURL);
 
         NavItemList manageAccounts = model
