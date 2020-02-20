@@ -6,6 +6,7 @@ import com.nimbusds.jose.JWEAlgorithm;
 import com.nimbusds.jose.JWEHeader;
 import com.nimbusds.jose.JWEObject;
 import com.nimbusds.jose.Payload;
+import com.nimbusds.jose.crypto.DirectDecrypter;
 import com.nimbusds.jose.crypto.DirectEncrypter;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,28 @@ public class Oauth2 implements IOauth {
         }
 
         return jweObject.serialize();
+    }
+
+    /**
+     * Given a state encapsulating a JWE token, decode it into a {@link com.nimbusds.jose.Payload}
+     */
+    @Override
+    public Payload oauth2DecodeState(final String state) {
+        Payload payload;
+        try {
+            final JWEObject jweObject = JWEObject.parse(state);
+
+            final byte[] key = identityProvider.getRequestKey();
+            jweObject.decrypt(new DirectDecrypter(key));
+            payload = jweObject.getPayload();
+        } catch (Exception e) {
+            LOGGER.error(e, null);
+            payload = null;
+        }
+        return payload;
+    }
+
+    public boolean oauth2VerifyNonce(final String Nonce) {
+        return false;
     }
 }

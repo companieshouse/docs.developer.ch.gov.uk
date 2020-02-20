@@ -1,23 +1,16 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import java.text.ParseException;
-import org.apache.commons.codec.binary.Base64;
+import com.nimbusds.jose.Payload;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWEObject;
-import com.nimbusds.jose.KeyLengthException;
-import com.nimbusds.jose.Payload;
-import com.nimbusds.jose.crypto.DirectDecrypter;
-import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
+import uk.gov.ch.developer.docs.oauth.IOauth;
+import uk.gov.ch.developer.docs.oauth.IdentityProvider;
 import uk.gov.ch.developer.docs.session.SessionService;
-import uk.gov.companieshouse.environment.EnvironmentReader;
-import uk.gov.companieshouse.environment.impl.EnvironmentReaderImpl;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -26,32 +19,26 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 public class UserCallbackController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
-
     @Autowired
     private SessionService sessionService;
-
-    private static final EnvironmentReader reader = new EnvironmentReaderImpl();
-
-    private static final String base64Key = reader.getMandatoryString("OAUTH2_REQUEST_KEY");
+    @Autowired
+    private IdentityProvider identityProvider;
+    @Autowired
+    private IOauth oauth;
 
     @GetMapping
     @ResponseBody
-    public String getParams(@RequestParam("state") String state, @RequestParam("code") String code)
-            throws ParseException, KeyLengthException, JOSEException,
-            net.minidev.json.parser.ParseException {
-
+    public String getCallback(@RequestParam("state") String state,
+            @RequestParam("code") String code) {
         sessionService.getSessionDataFromContext();
 
-        JWEObject jweObject = JWEObject.parse(state);
+        final Payload payload = oauth.oauth2DecodeState(state);
+        final JSONObject jsonObject = payload.toJSONObject();
+        final String returnedNonce = jsonObject.getAsString("nonce");
+        if (!oauth.oauth2VerifyNonce(returnedNonce)) {
+            LOGGER.error("Invalid nonce value in state during oauth2 callback");
 
-        byte[] key = Base64.decodeBase64(base64Key);
-        jweObject.decrypt(new DirectDecrypter(key));
-
-        Payload payload = jweObject.getPayload();
-
-        JSONObject json = (JSONObject) JSONValue.parseWithException(payload.toString());
-        String nonce = (String) json.get("nonce");
-
+        }
         return "Found";
     }
 

@@ -32,6 +32,10 @@ public class IdentityProvider implements IIdentityProvider {
         clientSecret = reader.getMandatoryString("CHS_DEVELOPER_CLIENT_SECRET");
     }
 
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
     @Override
     public byte[] getRequestKey() {
         return requestKey;
