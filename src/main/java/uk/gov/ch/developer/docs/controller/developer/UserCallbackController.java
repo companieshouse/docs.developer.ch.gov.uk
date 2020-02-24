@@ -13,6 +13,8 @@ import uk.gov.ch.oauth.IOauth;
 import uk.gov.ch.oauth.IdentityProvider;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
+import uk.gov.companieshouse.session.Session;
+import uk.gov.companieshouse.session.SessionKeys;
 
 @Controller
 @RequestMapping("${callback.url}")
