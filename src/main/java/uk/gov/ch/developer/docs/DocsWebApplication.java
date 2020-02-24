@@ -12,7 +12,6 @@ public class DocsWebApplication implements WebMvcConfigurer {
 
     public static final String APPLICATION_NAME_SPACE = "docs.developer.ch.gov.uk";
 
-
     private LoggingInterceptor loggingInterceptor;
 
     @Autowired
