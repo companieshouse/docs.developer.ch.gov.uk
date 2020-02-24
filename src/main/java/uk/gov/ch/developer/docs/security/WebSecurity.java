@@ -16,26 +16,7 @@ public class WebSecurity {
     public static class RootSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/").addFilterBefore(new SessionHandler(),
-                    BasicAuthenticationFilter.class);
-        }
-    }
-    @Configuration
-    @Order(2)
-    public static class SignInSecurityConfig extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/signin").addFilterBefore(new SessionHandler(),
-                    BasicAuthenticationFilter.class);
-        }
-    }
-
-    @Configuration
-    @Order(3)
-    public static class CallbackSecurityConfig extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/oauth2/user/**").addFilterBefore(new SessionHandler(),
+            http.antMatcher("/**").addFilterBefore(new SessionHandler(),
                     BasicAuthenticationFilter.class);
         }
     }

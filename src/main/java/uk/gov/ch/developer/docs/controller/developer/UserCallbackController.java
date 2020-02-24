@@ -1,6 +1,5 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -29,21 +28,22 @@ import uk.gov.companieshouse.session.SessionKeys;
 public class UserCallbackController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
+    private final String base64Key;
+    private final String redirectUri;
 
     @Autowired
     private SessionService sessionService;
 
-    private String base64Key;
-
     public UserCallbackController(EnvironmentReader reader) {
         this.base64Key = reader.getMandatoryString("OAUTH2_REQUEST_KEY");
+        this.redirectUri = reader.getMandatoryString("REDIRECT_URI");
     }
 
     @GetMapping
-    public void getParams(HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse, @RequestParam("state") String state,
-            @RequestParam("code") String code) throws ParseException, JOSEException,
-            net.minidev.json.parser.ParseException, IOException {
+    public String getParams(HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse, @RequestParam("state") final String state,
+            @RequestParam("code") final String code)
+            throws ParseException, JOSEException, net.minidev.json.parser.ParseException {
 
         Session sessionCallback = sessionService.getSessionFromContext();
 
@@ -53,10 +53,10 @@ public class UserCallbackController {
         String nonceState = decryptState(state);
 
         if (nonceState.equals(nonceSession)) {
-            LOGGER.info("Nonce values are equal");
+            LOGGER.debug("Nonce values are equal");
         }
 
-        httpServletResponse.sendRedirect("http://dev.chs-dev.internal:4904/");
+        return ("redirect:" + redirectUri);
     }
 
     private String decryptState(String state)
@@ -70,8 +70,7 @@ public class UserCallbackController {
         Payload payload = jweObject.getPayload();
 
         JSONObject json = (JSONObject) JSONValue.parseWithException(payload.toString());
-        String nonceState = (String) json.get("nonce");
-        return nonceState;
+        return (String) json.get("nonce");
     }
 
 }
