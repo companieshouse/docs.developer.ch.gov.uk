@@ -8,9 +8,11 @@ import com.nimbusds.jose.JWEObject;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.DirectDecrypter;
 import com.nimbusds.jose.crypto.DirectEncrypter;
+import java.util.Map;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.ch.developer.docs.session.SessionService;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -18,8 +20,9 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 public class Oauth2 implements IOauth {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
-
     final IIdentityProvider identityProvider;
+    @Autowired
+    private SessionService sessionService;
 
     @Autowired
     public Oauth2(final IIdentityProvider identityProvider) {
@@ -36,19 +39,19 @@ public class Oauth2 implements IOauth {
             final String nonce,
             final String attributeName) {
 
-        JSONObject payloadJson = new JSONObject();
+        final JSONObject payloadJson = new JSONObject();
         payloadJson.put(attributeName, returnUri);
         payloadJson.put("nonce", nonce);
 
-        Payload payload = new Payload(payloadJson);
-        JWEHeader header = new JWEHeader(JWEAlgorithm.DIR, EncryptionMethod.A128CBC_HS256);
-        JWEObject jweObject = new JWEObject(header, payload);
+        final Payload payload = new Payload(payloadJson);
+        final JWEHeader header = new JWEHeader(JWEAlgorithm.DIR, EncryptionMethod.A128CBC_HS256);
+        final JWEObject jweObject = new JWEObject(header, payload);
 
         try {
             final DirectEncrypter encrypter = new DirectEncrypter(identityProvider.getRequestKey());
             jweObject.encrypt(encrypter);
         } catch (JOSEException e) {
-            LOGGER.error(e, null);
+            LOGGER.error("Could not encode OAuth state", e);
             return null;
         }
 
@@ -74,7 +77,27 @@ public class Oauth2 implements IOauth {
         return payload;
     }
 
-    public boolean oauth2VerifyNonce(final String Nonce) {
-        return false;
+    public boolean oauth2VerifyNonce(final String nonce) {
+        boolean retval = false;
+        if (nonce != null) {
+            retval = nonce.equals(getSessionNonce());
+        }
+        return retval;
+    }
+
+    /**
+     * Extract the OAuth2 Nonce from the current session
+     *
+     * @return The Nonce String from within the session or null if not found.
+     */
+    private String getSessionNonce() {
+        String oauth2Nonce = null;
+        try {
+            final Map<String, Object> data = sessionService.getSessionDataFromContext();
+            oauth2Nonce = (String) data.getOrDefault(".oauth2_nonce", null);
+        } catch (final Exception e) {
+            LOGGER.error("Unable to extract oauth 2 Nonce from session", e);
+        }
+        return oauth2Nonce;
     }
 }

@@ -8,13 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import uk.gov.ch.developer.docs.session.SessionService;
+import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
-import uk.gov.ch.oauth.IdentityProvider;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
-import uk.gov.companieshouse.session.Session;
-import uk.gov.companieshouse.session.SessionKeys;
 
 @Controller
 @RequestMapping("${callback.url}")
@@ -22,9 +19,7 @@ public class UserCallbackController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
     @Autowired
-    private SessionService sessionService;
-    @Autowired
-    private IdentityProvider identityProvider;
+    IIdentityProvider identityProvider;
     @Autowired
     private IOauth oauth;
 
@@ -32,19 +27,22 @@ public class UserCallbackController {
     @ResponseBody
     public String getCallback(@RequestParam("state") String state,
             @RequestParam("code") String code) {
-        //LOGGER.info("Code:"+code);
-        //LOGGER.info("State:"+state);
+        LOGGER.trace("Code:" + code);
+        LOGGER.trace("State:" + state);
 
-        //sessionService.getSessionDataFromContext();
-
-        final Payload payload = oauth.oauth2DecodeState(state);
-        final JSONObject jsonObject = payload.toJSONObject();
-        final String returnedNonce = jsonObject.getAsString("nonce");
-        LOGGER.info("Nonce:" + returnedNonce);
+        final String returnedNonce = getNonceFromState(state);
         if (!oauth.oauth2VerifyNonce(returnedNonce)) {
             LOGGER.error("Invalid nonce value in state during oauth2 callback");
+            return "redirect:/";
+        } else {
+            return ("redirect:" + identityProvider.getRedirectUri());
         }
-        return "Found";
+    }
+
+    private String getNonceFromState(final String state) {
+        final Payload payload = oauth.oauth2DecodeState(state);
+        final JSONObject jsonObject = payload.toJSONObject();
+        return jsonObject.getAsString("nonce");
     }
 
 }

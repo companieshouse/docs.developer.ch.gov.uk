@@ -78,6 +78,7 @@ public class SignInController {
         response.sendRedirect(authoriseUri);
     }
 
+    //TODO Move this onto the OAuth instance
     private String generateSessionNonce(final Session session) {
         // Generate and store a nonce in the session
         Session sessionToUpdate = session;
@@ -110,6 +111,7 @@ public class SignInController {
         return email;
     }
 
+    //TODO Move this into the OAuth object
     /**
      * Generates a secure unique key
      *

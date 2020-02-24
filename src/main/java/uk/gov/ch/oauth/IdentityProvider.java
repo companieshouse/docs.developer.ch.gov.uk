@@ -26,8 +26,10 @@ public class IdentityProvider implements IIdentityProvider {
         this.clientId = reader.getMandatoryString("CHS_DEVELOPER_CLIENT_ID");
         redirectUri = reader.getMandatoryString("OAUTH2_REDIRECT_URI");
         clientSecret = reader.getMandatoryString("CHS_DEVELOPER_CLIENT_SECRET");
+       // TODO is this better? redirectUri = reader.getMandatoryString("REDIRECT_URI");
     }
 
+    @Override
     public String getClientSecret() {
         return clientSecret;
     }
@@ -37,15 +39,20 @@ public class IdentityProvider implements IIdentityProvider {
         return requestKey;
     }
 
+    @Override
     public String getRedirectUri() {
         return redirectUri;
     }
 
+    @Override
     public String getClientId() {
         return clientId;
     }
 
-    private String getAuthorisationUrl(final String scope, final String state) {
+    /**
+     * Auth URL with scope added
+     */
+    public String getAuthorisationUrl(final String state, final String scope) {
         StringBuilder sb = new StringBuilder(getAuthorisationUrl(state));
         if (scope != null) {
             sb.append("&scope=");
@@ -54,8 +61,10 @@ public class IdentityProvider implements IIdentityProvider {
         return sb.toString();
     }
 
+    @Override
     public String getAuthorisationUrl(final String state) {
-        return getAuthorizationUri()
+
+        final String url = getAuthorizationUri()
                 + "?"
                 + "client_id="
                 + getClientId()
@@ -64,6 +73,8 @@ public class IdentityProvider implements IIdentityProvider {
                 + "&response_type=code"
                 + "&state="
                 + state;
+        LOGGER.trace(url);
+        return url;
     }
 
     public String getAuthorizationUri() {
