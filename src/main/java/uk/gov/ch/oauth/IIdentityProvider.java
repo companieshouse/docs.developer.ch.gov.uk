@@ -1,4 +1,4 @@
-package uk.gov.ch.developer.docs.oauth;
+package uk.gov.ch.oauth;
 
 public interface IIdentityProvider {
 
