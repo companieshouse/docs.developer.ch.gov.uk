@@ -78,6 +78,30 @@ public class SignInController {
         response.sendRedirect(authoriseUri);
     }
 
+    /**
+     * Constructs the authorisation URI with additional force and hint
+     *
+     * @param originalRequestUri Original URI from which to redirect
+     * @param scope Scope of the request
+     * @param email Email address from the session, empty if not present
+     * @return Authorisation URI
+     */
+    protected String createAuthoriseURIWithForceAndHint(final String originalRequestUri,
+            final String scope, final String nonce, final String email) {
+        if (email == null) {
+            LOGGER.debug("No email supplied");
+        }
+        if (email == null) {
+            LOGGER.debug("No scope supplied");
+        }
+        final String hint = oauth.oauth2EncodeState(email, nonce, "email");
+        final String authUrl = identityProvider.getAuthorisationUrl(originalRequestUri, scope);
+        String authUri = authUrl + "&reauthenticate=force"
+                + "&hint="
+                + hint;
+        return authUri;
+    }
+
     //TODO Move this onto the OAuth instance
     private String generateSessionNonce(final Session session) {
         // Generate and store a nonce in the session
@@ -96,7 +120,7 @@ public class SignInController {
      * @param session User session from which to retrieve the email address
      * @return email
      */
-    private String getEmailFromSession(Session session) {
+    private String getEmailFromSession(final Session session) {
 
         String email = "";
 
@@ -104,7 +128,7 @@ public class SignInController {
         if (session != null) {
             signInInfo = session.getSignInInfo();
         }
-        UserProfile userProfile = signInInfo.getUserProfile();
+        final UserProfile userProfile = signInInfo.getUserProfile();
         if (userProfile != null) {
             email = userProfile.getEmail();
         }
@@ -112,6 +136,7 @@ public class SignInController {
     }
 
     //TODO Move this into the OAuth object
+
     /**
      * Generates a secure unique key
      *

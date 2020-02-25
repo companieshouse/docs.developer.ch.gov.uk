@@ -14,4 +14,6 @@ public interface IIdentityProvider {
     String getClientId();
 
     String getAuthorisationUrl(final String state);
+
+    String getAuthorisationUrl(final String originalRequestUri, final String scope);
 }
