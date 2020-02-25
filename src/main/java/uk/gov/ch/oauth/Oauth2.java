@@ -50,7 +50,7 @@ public class Oauth2 implements IOauth {
         try {
             final DirectEncrypter encrypter = new DirectEncrypter(identityProvider.getRequestKey());
             jweObject.encrypt(encrypter);
-        } catch (JOSEException e) {
+        } catch (final JOSEException e) {
             LOGGER.error("Could not encode OAuth state", e);
             return null;
         }
@@ -70,8 +70,8 @@ public class Oauth2 implements IOauth {
             final byte[] key = identityProvider.getRequestKey();
             jweObject.decrypt(new DirectDecrypter(key));
             payload = jweObject.getPayload();
-        } catch (Exception e) {
-            LOGGER.error(e, null);
+        } catch (final Exception e) {
+            LOGGER.error("Could not decode OAuth state", e);
             payload = null;
         }
         return payload;
@@ -96,7 +96,7 @@ public class Oauth2 implements IOauth {
             final Map<String, Object> data = sessionService.getSessionDataFromContext();
             oauth2Nonce = (String) data.getOrDefault(".oauth2_nonce", null);
         } catch (final Exception e) {
-            LOGGER.error("Unable to extract oauth 2 Nonce from session", e);
+            LOGGER.error("Unable to extract OAuth2 Nonce from session", e);
         }
         return oauth2Nonce;
     }
