@@ -91,7 +91,7 @@ public class SignInController {
         if (email == null) {
             LOGGER.debug("No email supplied");
         }
-        if (email == null) {
+        if (scope == null) {
             LOGGER.debug("No scope supplied");
         }
         final String hint = oauth.oauth2EncodeState(email, nonce, "email");

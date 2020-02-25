@@ -3,12 +3,11 @@ package uk.gov.ch.oauth;
 import java.util.Base64;
 import java.util.Base64.Decoder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.environment.EnvironmentReader;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
-@Component
 public class IdentityProvider implements IIdentityProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
@@ -18,15 +17,19 @@ public class IdentityProvider implements IIdentityProvider {
     final private String clientId;
     final private String redirectUri;
     final private String clientSecret;
+    final private String tokenUrl = null;
+    final private String profileUrl = null;
+    @Value("${home.url}")
+    private String homeUrl;
 
     @Autowired
     public IdentityProvider(final EnvironmentReader reader) {
         requestKey = decoder.decode(reader.getMandatoryString("DEVELOPER_OAUTH2_REQUEST_KEY"));
         this.authorizationUri = reader.getMandatoryString("OAUTH2_AUTH_URI");
         this.clientId = reader.getMandatoryString("CHS_DEVELOPER_CLIENT_ID");
-        redirectUri = reader.getMandatoryString("OAUTH2_REDIRECT_URI");
         clientSecret = reader.getMandatoryString("CHS_DEVELOPER_CLIENT_SECRET");
-       // TODO is this better? redirectUri = reader.getMandatoryString("REDIRECT_URI");
+        redirectUri = reader.getMandatoryString("OAUTH2_REDIRECT_URI");
+        // TODO is this better? Which is the correct source of the redirect URL? redirectUri = reader.getMandatoryString("REDIRECT_URI");
     }
 
     @Override
@@ -59,6 +62,22 @@ public class IdentityProvider implements IIdentityProvider {
             sb.append(scope);
         }
         return sb.toString();
+    }
+
+
+    @Override
+    public String getTokenUrl() {
+        return tokenUrl;
+    }
+
+    @Override
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    @Override
+    public String getHomeUrl() {
+        return homeUrl;
     }
 
     @Override
