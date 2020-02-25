@@ -2,7 +2,6 @@ package uk.gov.ch.developer.docs.session;
 
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.session.Session;
-import uk.gov.companieshouse.session.SessionImpl;
 import uk.gov.companieshouse.session.store.Store;
 
 /**
@@ -16,10 +15,6 @@ import uk.gov.companieshouse.session.store.Store;
 public class SessionFactory {
 
     private SessionFactory() {
-    }
-
-    public SessionImpl getSessionByCookieId(final Store store, final String cookieId) {
-        return uk.gov.companieshouse.session.SessionFactory.getSessionByCookieId(store, cookieId);
     }
 
     public Session getSessionByCookieId(final String cookieId) {
