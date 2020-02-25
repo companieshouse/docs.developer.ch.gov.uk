@@ -33,8 +33,10 @@ public class UserCallbackController {
         final String returnedNonce = getNonceFromState(state);
         if (!oauth.oauth2VerifyNonce(returnedNonce)) {
             LOGGER.error("Invalid nonce value in state during oauth2 callback");
+           //TODO redirect to correct location for unmatched Nonces
             return "redirect:/";
         } else {
+            //TODO redirect to correct location on matching Nonces
             return ("redirect:" + identityProvider.getRedirectUri());
         }
     }
