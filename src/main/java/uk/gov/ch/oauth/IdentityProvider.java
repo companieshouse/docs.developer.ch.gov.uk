@@ -11,25 +11,31 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 public class IdentityProvider implements IIdentityProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
-    private final static Decoder decoder = Base64.getDecoder();
-    final private byte[] requestKey;
-    final private String authorizationUri;
-    final private String clientId;
-    final private String redirectUri;
-    final private String clientSecret;
-    final private String tokenUrl = null;
-    final private String profileUrl = null;
+    private static final Decoder decoder = Base64.getDecoder();
+    private final byte[] requestKey;
+    private final String authorizationUri;
+    private final String clientId;
+    private final String redirectUri;
+    private final String clientSecret;
+    private final String accountLocalUrl;
+    private final String tokenUrl;
+    private final String profileUrl;
+    private final String redirectUriPage;
+
     @Value("${home.url}")
     private String homeUrl;
 
     @Autowired
     public IdentityProvider(final EnvironmentReader reader) {
         requestKey = decoder.decode(reader.getMandatoryString("DEVELOPER_OAUTH2_REQUEST_KEY"));
-        this.authorizationUri = reader.getMandatoryString("OAUTH2_AUTH_URI");
-        this.clientId = reader.getMandatoryString("CHS_DEVELOPER_CLIENT_ID");
+        authorizationUri = reader.getMandatoryString("OAUTH2_AUTH_URI");
+        clientId = reader.getMandatoryString("CHS_DEVELOPER_CLIENT_ID");
         clientSecret = reader.getMandatoryString("CHS_DEVELOPER_CLIENT_SECRET");
         redirectUri = reader.getMandatoryString("OAUTH2_REDIRECT_URI");
-        // TODO is this better? Which is the correct source of the redirect URL? redirectUri = reader.getMandatoryString("REDIRECT_URI");
+        redirectUriPage = reader.getMandatoryString("REDIRECT_URI");
+        accountLocalUrl = reader.getMandatoryString("ACCOUNT_LOCAL_URL");
+        tokenUrl = accountLocalUrl + "/oauth2/token";
+        profileUrl = accountLocalUrl + "/user/profile";
     }
 
     @Override
@@ -83,21 +89,24 @@ public class IdentityProvider implements IIdentityProvider {
     @Override
     public String getAuthorisationUrl(final String state) {
 
-        final String url = getAuthorizationUri()
-                + "?"
-                + "client_id="
-                + getClientId()
-                + "&redirect_uri="
-                + getRedirectUri()
-                + "&response_type=code"
-                + "&state="
-                + state;
+        final String url = getAuthorizationUri() + "?" + "client_id=" + getClientId()
+                + "&redirect_uri=" + getRedirectUri() + "&response_type=code" + "&state=" + state;
         LOGGER.trace(url);
         return url;
     }
 
     public String getAuthorizationUri() {
         return authorizationUri;
+    }
+
+    @Override
+    public String getRedirectUriPage() {
+        return redirectUriPage;
+    }
+
+    @Override
+    public String getAccountLocalUrl() {
+        return accountLocalUrl;
     }
 
 }

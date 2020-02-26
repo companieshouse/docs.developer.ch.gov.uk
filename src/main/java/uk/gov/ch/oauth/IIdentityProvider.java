@@ -45,4 +45,8 @@ public interface IIdentityProvider {
     String getProfileUrl();
 
     String getHomeUrl();
+    
+    String getRedirectUriPage();
+    
+    String getAccountLocalUrl();
 }
