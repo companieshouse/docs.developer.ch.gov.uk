@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.ch.developer.docs.session.SessionService;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
+import uk.gov.companieshouse.session.SessionKeys;
 
 @Component
 public class Oauth2 implements IOauth {
@@ -94,7 +95,7 @@ public class Oauth2 implements IOauth {
         String oauth2Nonce = null;
         try {
             final Map<String, Object> data = sessionService.getSessionDataFromContext();
-            oauth2Nonce = (String) data.getOrDefault(".oauth2_nonce", null);
+            oauth2Nonce = (String) data.getOrDefault(SessionKeys.NONCE, null);
         } catch (final Exception e) {
             LOGGER.error("Unable to extract OAuth2 Nonce from session", e);
         }
