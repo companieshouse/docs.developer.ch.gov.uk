@@ -2,7 +2,7 @@
 #
 # Start script for docs.developer.ch.gov.uk
 
-APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if [[ -z "${MESOS_SLAVE_PID}" ]]; then
     source ~/.chs_env/private_env
@@ -28,3 +28,4 @@ else
 fi
 
 exec java ${JAVA_MEM_ARGS} -jar -Dserver.port="${PORT}" "${APP_DIR}/docs.developer.ch.gov.uk.jar"
+#exec java ${JAVA_MEM_ARGS} -jar -Dserver.port="${PORT}" -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 "${APP_DIR}/docs.developer.ch.gov.uk.jar"
