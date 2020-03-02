@@ -95,7 +95,7 @@ public class Oauth2 implements IOauth {
         String oauth2Nonce = null;
         try {
             final Map<String, Object> data = sessionService.getSessionDataFromContext();
-            oauth2Nonce = (String) data.getOrDefault(SessionKeys.NONCE, null);
+            oauth2Nonce = (String) data.getOrDefault(SessionKeys.NONCE.getKey(), null);
         } catch (final Exception e) {
             LOGGER.error("Unable to extract OAuth2 Nonce from session", e);
         }

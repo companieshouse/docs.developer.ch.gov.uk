@@ -1,12 +1,17 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
+import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 import com.nimbusds.jose.Payload;
 import net.minidev.json.JSONObject;
+import reactor.core.publisher.Mono;
 import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
 import uk.gov.companieshouse.logging.Logger;
@@ -34,6 +39,19 @@ public class UserCallbackController {
             // return "redirect:/"; TODO redirect will not work needs to be addressed for unmatched
             // Nonces
         }
+
+        WebClient webClient = WebClient.create();
+
+        webClient.post().uri(URI.create(identityProvider.getTokenUrl()))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromPublisher(Mono.just("code=" + code + "&client_id="
+                        + identityProvider.getClientId() + "&client_secret="
+                        + identityProvider.getClientSecret() + "&redirect_uri="
+                        + identityProvider.getRedirectUri() + "&grant_type=authorization_code"),
+                        String.class))
+                .retrieve().bodyToMono(OAuthToken.class)
+                .subscribe(s -> LOGGER.trace("Access Token " + s.getAccess_token()));
 
         return ("redirect:" + identityProvider.getRedirectUriPage());// TODO redirect back to page
                                                                      // where sign-in was initiated
