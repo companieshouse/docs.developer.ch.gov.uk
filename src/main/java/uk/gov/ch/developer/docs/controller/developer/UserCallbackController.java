@@ -14,6 +14,7 @@ import net.minidev.json.JSONObject;
 import reactor.core.publisher.Mono;
 import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
+import uk.gov.ch.oauth.OAuthToken;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -36,8 +37,8 @@ public class UserCallbackController {
         final String returnedNonce = getNonceFromState(state);
         if (!oauth.oauth2VerifyNonce(returnedNonce)) {
             LOGGER.error("Invalid nonce value in state during oauth2 callback");
-            // return "redirect:/"; TODO redirect will not work needs to be addressed for unmatched
-            // Nonces
+            // return "redirect:/"; TODO redirect will not work, needs to be addressed for unmatched
+            // Nonce values
         }
 
         WebClient webClient = WebClient.create();
@@ -45,16 +46,25 @@ public class UserCallbackController {
         webClient.post().uri(URI.create(identityProvider.getTokenUrl()))
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromPublisher(Mono.just("code=" + code + "&client_id="
-                        + identityProvider.getClientId() + "&client_secret="
-                        + identityProvider.getClientSecret() + "&redirect_uri="
-                        + identityProvider.getRedirectUri() + "&grant_type=authorization_code"),
+                .body(BodyInserters.fromPublisher(Mono.just(getPostRequestBody(code)),
                         String.class))
                 .retrieve().bodyToMono(OAuthToken.class)
-                .subscribe(s -> LOGGER.trace("Access Token " + s.getAccess_token()));
+                .subscribe(s -> LOGGER.trace("Access Token: " + s.getAccessToken()));// TODO remove
+                                                                                     // this log
+                                                                                     // line
 
         return ("redirect:" + identityProvider.getRedirectUriPage());// TODO redirect back to page
                                                                      // where sign-in was initiated
+    }
+
+    private String getPostRequestBody(String code) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("code=").append(code).append("&client_id=").append(identityProvider.getClientId())
+                .append("&client_secret=").append(identityProvider.getClientSecret())
+                .append("&redirect_uri=").append(identityProvider.getRedirectUri())
+                .append("&grant_type=authorization_code");
+
+        return sb.toString();
     }
 
     private String getNonceFromState(final String state) {
