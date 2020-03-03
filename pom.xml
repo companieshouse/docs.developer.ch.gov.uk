@@ -159,6 +159,10 @@
       <artifactId>spring-security-config</artifactId>
       <groupId>org.springframework.security</groupId>
     </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webflux</artifactId>
+    </dependency>
   </dependencies>
   <description>Static content for the developer hub,
     such as "getting started" and "introduction" documentation
@@ -177,8 +181,6 @@
   </parent>
 
   <properties>
-    <artifactoryResolveReleaseRepo>virtual-release</artifactoryResolveReleaseRepo>
-    <artifactoryResolveSnapshotRepo>libs-snapshot-local</artifactoryResolveSnapshotRepo>
     <common-web-java.version>1.1.0-rc1</common-web-java.version>
     <java.version>1.8</java.version>
     <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
@@ -194,22 +196,9 @@
     <java-session-handler.version>2.2.0</java-session-handler.version>
     <web-security-java.version>1.1.0-rc1</web-security-java.version>
 
-
     <home.url></home.url>
     <junit-platform-surefire-provider.version>1.2.0</junit-platform-surefire-provider.version>
   </properties>
-
-  <repositories>
-    <repository>
-      <id>ch-artifactory-release</id>
-      <url>${MAVEN_REPOSITORY_URL}/${artifactoryResolveReleaseRepo}</url>
-    </repository>
-    <repository>
-      <id>ch-artifactory-snapshot</id>
-      <url>${MAVEN_REPOSITORY_URL}/${artifactoryResolveSnapshotRepo}</url>
-    </repository>
-  </repositories>
-
 
   <version>unversioned</version>
 </project>
