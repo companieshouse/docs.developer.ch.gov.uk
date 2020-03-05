@@ -20,9 +20,17 @@
             <DEFAULT_SESSION_EXPIRATION>3600</DEFAULT_SESSION_EXPIRATION>
             <HUMAN_LOG>1</HUMAN_LOG>
 
+            <!--   used for OAuth -->
+            <DEVELOPER_OAUTH2_REQUEST_KEY>qXf+qkU6P6SAoY2lKW1FtKMS4PylaNA3pY2sUQxNFDl=</DEVELOPER_OAUTH2_REQUEST_KEY>
+            <OAUTH2_AUTH_URI>${home.url}/oauth2/authorise</OAUTH2_AUTH_URI>
+            <CHS_DEVELOPER_CLIENT_ID>test.apps.ch.gov.test</CHS_DEVELOPER_CLIENT_ID>
+            <CHS_DEVELOPER_CLIENT_SECRET>CLIwYzRkNzIwOGQ1OGQ0OWIzMzViYjJjOTEyYTc2</CHS_DEVELOPER_CLIENT_SECRET>
+            <OAUTH2_REDIRECT_URI>${home.url}/oauth2/user/callback</OAUTH2_REDIRECT_URI>
+            <REDIRECT_URI>${home.url}/</REDIRECT_URI>
+            <ACCOUNT_LOCAL_URL>https://localhost:4003//</ACCOUNT_LOCAL_URL>
+
             <cdn.url>//</cdn.url>
             <chs.url>//</chs.url>
-
             <account.url>//</account.url>
 
             <createAccount.url>${home.url}/create-account</createAccount.url>
