@@ -32,7 +32,7 @@ public interface IIdentityProvider {
      * @see #getAuthorisationUrl(String, String)
      */
     String getAuthorisationUrl(final String state);
-
+    
     /**
      * Authorisation URL generated with {@literal state} and {@literal scope}
      *
@@ -40,6 +40,8 @@ public interface IIdentityProvider {
      */
     String getAuthorisationUrl(final String originalRequestUri, final String scope);
 
+    String getPostRequestBody(final String code);
+    
     String getTokenUrl();
 
     String getProfileUrl();

@@ -95,6 +95,16 @@ public class IdentityProvider implements IIdentityProvider {
         return url;
     }
 
+    @Override
+    public String getPostRequestBody(String code) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("code=").append(code).append("&client_id=").append(getClientId())
+                .append("&client_secret=").append(getClientSecret()).append("&redirect_uri=")
+                .append(getRedirectUri()).append("&grant_type=authorization_code");
+
+        return sb.toString();
+    }
+
     public String getAuthorizationUri() {
         return authorizationUri;
     }
