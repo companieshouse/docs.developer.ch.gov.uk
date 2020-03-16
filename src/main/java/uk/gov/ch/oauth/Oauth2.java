@@ -42,6 +42,7 @@ public class Oauth2 implements IOauth {
     }
 
     @SuppressWarnings("unchecked")
+    // This is necessary as the original data on the session is untyped, but expected to be of the correct types
     private static Map<String, Object> updateSignIn(final Object sInf, final Object sio) {
         final Map<String, Object> original = (Map<String, Object>) sInf;
         final Map<String, Object> extras = (Map<String, Object>) sio;
@@ -138,15 +139,6 @@ public class Oauth2 implements IOauth {
             final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
             final Map<String, Object> sData = chSession.getData();
 
-//            @SuppressWarnings("unchecked")
-//            Map<String, Object> sInfo = (Map<String, Object>) sData
-//                    .get(signInInfoKey);//TODO refactor to computeIfPresent
-//            if (sInfo == null) {
-//                sInfo = signInData;
-//            } else {
-//                sInfo.putAll(signInData);
-//            }
-//            sData.put(signInInfoKey, sInfo);
             sData.merge(signInInfoKey, signInData, Oauth2::updateSignIn);
         }
         return userProfile;
