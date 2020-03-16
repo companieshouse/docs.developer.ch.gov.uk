@@ -12,7 +12,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
 import net.minidev.json.JSONObject;
-import reactor.core.publisher.Mono;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import uk.gov.ch.developer.docs.session.SessionService;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
@@ -32,13 +32,21 @@ public class Oauth2 implements IOauth {
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
     final IIdentityProvider identityProvider;
     private final Duration timeoutDuration = Duration.ofSeconds(10L);
-    
+
     @Autowired
     private SessionService sessionService;
 
     @Autowired
     public Oauth2(final IIdentityProvider identityProvider) {
         this.identityProvider = identityProvider;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> updateSignIn(final Object sInf, final Object sio) {
+        final Map<String, Object> original = (Map<String, Object>) sInf;
+        final Map<String, Object> extras = (Map<String, Object>) sio;
+        original.putAll(extras);
+        return original;
     }
 
     /**
@@ -112,63 +120,66 @@ public class Oauth2 implements IOauth {
         }
         return oauth2Nonce;
     }
-    
-    public UserProfileResponse getUserProfile(String code, Session chSession) {
+
+    public UserProfileResponse getUserProfile(final String code, final Session chSession) {
         LOGGER.debug("Requesting User Profile");
-        
+
         final OAuthToken oauthToken = getOAuthToken(code);
-        
         final WebClient webClient = WebClient.create();
-        
         final URI profileUrl = URI.create(identityProvider.getProfileUrl());
-        
-        UserProfileResponse userProfile = webClient.get()
+
+        final UserProfileResponse userProfile = getUserProfileResponse(oauthToken, webClient,
+                profileUrl);
+
+        if (userProfile != null) {
+            final Map<String, Object> signInData = oauthToken.setAccessToken();
+            userProfile.setUserProfile(signInData);
+            signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
+            final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
+            final Map<String, Object> sData = chSession.getData();
+
+//            @SuppressWarnings("unchecked")
+//            Map<String, Object> sInfo = (Map<String, Object>) sData
+//                    .get(signInInfoKey);//TODO refactor to computeIfPresent
+//            if (sInfo == null) {
+//                sInfo = signInData;
+//            } else {
+//                sInfo.putAll(signInData);
+//            }
+//            sData.put(signInInfoKey, sInfo);
+            sData.merge(signInInfoKey, signInData, Oauth2::updateSignIn);
+        }
+        return userProfile;
+    }
+
+    private UserProfileResponse getUserProfileResponse(OAuthToken oauthToken, WebClient webClient,
+            URI profileUrl) {
+        final Mono<UserProfileResponse> userProfileResponse = webClient.get()
                 .uri(profileUrl)
                 .headers(h -> h.setBearerAuth(oauthToken.getToken()))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .flatMap(response -> response.bodyToMono(UserProfileResponse.class))
-                .block(timeoutDuration);
-        
-        if(userProfile != null) {
-            Map<String, Object> signInData = oauthToken.setAccessToken();
-            userProfile.setUserProfile(signInData);
-            signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
-            Map<String, Object> sData = chSession.getData();
-            
-            String key = SessionKeys.SIGN_IN_INFO.getKey();
-            
-            @SuppressWarnings("unchecked")
-            Map<String, Object> sInfo = (Map<String, Object>) sData.get(key);//TODO refactor to computeIfPresent
-            if(sInfo == null) {
-                sInfo = signInData;
-            } else {
-                sInfo.putAll(signInData);
-            }
-            sData.put(key, sInfo);
-
-        }
-        
-        return userProfile;
+                .flatMap(response -> response.bodyToMono(UserProfileResponse.class));
+        return userProfileResponse.block(timeoutDuration);
     }
 
     private OAuthToken getOAuthToken(String code) {
         LOGGER.debug("Getting OAuth Token");
-        
+
         final WebClient webClient = WebClient.create();
-        
+
         final URI tokenUrl = URI.create(identityProvider.getTokenUrl());
         final Mono<String> postRequest = Mono.just(identityProvider.getPostRequestBody(code));
-        final BodyInserter<Mono<String>, ReactiveHttpOutputMessage> bodyInserter = BodyInserters
-        .fromPublisher(postRequest, String.class);
-        
-        return webClient.post()
+        final BodyInserter<Mono<String>, ReactiveHttpOutputMessage> bodyInsert = BodyInserters
+                .fromPublisher(postRequest, String.class);
+
+        final Mono<OAuthToken> postReq = webClient.post()
                 .uri(tokenUrl)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .accept(MediaType.APPLICATION_JSON)
-                .body(bodyInserter)
+                .body(bodyInsert)
                 .retrieve()
-                .bodyToMono(OAuthToken.class)
-                .block(timeoutDuration);
+                .bodyToMono(OAuthToken.class);
+        return postReq.block(timeoutDuration);
     }
 }
