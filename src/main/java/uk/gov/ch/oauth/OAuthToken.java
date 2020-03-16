@@ -34,7 +34,7 @@ public class OAuthToken extends AccessToken {
         super.setToken(token);
     }
     
-    public void setAccessToken(Map<String, Object> signInData) {
+    public Map<String, Object> setAccessToken() {
 
         Map<String, Object> accessTokenData = new HashMap<>();
 
@@ -43,7 +43,10 @@ public class OAuthToken extends AccessToken {
         accessTokenData.put(SessionKeys.REFRESH_TOKEN.getKey(), getRefreshToken());
         accessTokenData.put(SessionKeys.TOKEN_TYPE.getKey(), getTokenType());
 
+        Map<String, Object> signInData = new HashMap<>();
         signInData.put(SessionKeys.ACCESS_TOKEN.getKey(), accessTokenData);
+        
+        return signInData;
     }
 
 }

@@ -8,13 +8,22 @@ import com.nimbusds.jose.JWEObject;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.DirectDecrypter;
 import com.nimbusds.jose.crypto.DirectEncrypter;
+import java.net.URI;
+import java.time.Duration;
 import java.util.Map;
 import net.minidev.json.JSONObject;
+import reactor.core.publisher.Mono;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 import uk.gov.ch.developer.docs.session.SessionService;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
+import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 
 @Component
@@ -22,6 +31,8 @@ public class Oauth2 implements IOauth {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
     final IIdentityProvider identityProvider;
+    private final Duration timeoutDuration = Duration.ofSeconds(10L);
+    
     @Autowired
     private SessionService sessionService;
 
@@ -100,5 +111,64 @@ public class Oauth2 implements IOauth {
             LOGGER.error("Unable to extract OAuth2 Nonce from session", e);
         }
         return oauth2Nonce;
+    }
+    
+    public UserProfileResponse getUserProfile(String code, Session chSession) {
+        LOGGER.debug("Requesting User Profile");
+        
+        final OAuthToken oauthToken = getOAuthToken(code);
+        
+        final WebClient webClient = WebClient.create();
+        
+        final URI profileUrl = URI.create(identityProvider.getProfileUrl());
+        
+        UserProfileResponse userProfile = webClient.get()
+                .uri(profileUrl)
+                .headers(h -> h.setBearerAuth(oauthToken.getToken()))
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .flatMap(response -> response.bodyToMono(UserProfileResponse.class))
+                .block(timeoutDuration);
+        
+        if(userProfile != null) {
+            Map<String, Object> signInData = oauthToken.setAccessToken();
+            userProfile.setUserProfile(signInData);
+            signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
+            Map<String, Object> sData = chSession.getData();
+            
+            String key = SessionKeys.SIGN_IN_INFO.getKey();
+            
+            @SuppressWarnings("unchecked")
+            Map<String, Object> sInfo = (Map<String, Object>) sData.get(key);//TODO refactor to computeIfPresent
+            if(sInfo == null) {
+                sInfo = signInData;
+            } else {
+                sInfo.putAll(signInData);
+            }
+            sData.put(key, sInfo);
+
+        }
+        
+        return userProfile;
+    }
+
+    private OAuthToken getOAuthToken(String code) {
+        LOGGER.debug("Getting OAuth Token");
+        
+        final WebClient webClient = WebClient.create();
+        
+        final URI tokenUrl = URI.create(identityProvider.getTokenUrl());
+        final Mono<String> postRequest = Mono.just(identityProvider.getPostRequestBody(code));
+        final BodyInserter<Mono<String>, ReactiveHttpOutputMessage> bodyInserter = BodyInserters
+        .fromPublisher(postRequest, String.class);
+        
+        return webClient.post()
+                .uri(tokenUrl)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(bodyInserter)
+                .retrieve()
+                .bodyToMono(OAuthToken.class)
+                .block(timeoutDuration);
     }
 }
