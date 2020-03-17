@@ -129,18 +129,17 @@ public class Oauth2 implements IOauth {
         final WebClient webClient = WebClient.create();
         final URI profileUrl = URI.create(identityProvider.getProfileUrl());
 
-        final UserProfileResponse userProfile = getUserProfileResponse(oauthToken, webClient,
-                profileUrl);
+        final UserProfileResponse userProfile =
+                getUserProfileResponse(oauthToken, webClient, profileUrl);
 
-        if (userProfile != null) {
-            final Map<String, Object> signInData = oauthToken.saveAccessToken();
-            userProfile.setUserProfile(signInData);
-            signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
-            final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
-            final Map<String, Object> sData = chSession.getData();
+        final Map<String, Object> signInData = oauthToken.saveAccessToken();
+        userProfile.setUserProfile(signInData);
+        signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
+        final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
+        final Map<String, Object> sData = chSession.getData();
 
-            sData.merge(signInInfoKey, signInData, Oauth2::updateSignIn);
-        }
+        sData.merge(signInInfoKey, signInData, Oauth2::updateSignIn);
+
         return userProfile;
     }
 
