@@ -1,50 +1,52 @@
 package uk.gov.ch.oauth;
 
+import java.util.HashMap;
+import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import uk.gov.companieshouse.session.SessionKeys;
+import uk.gov.companieshouse.session.model.AccessToken;
 
-public class OAuthToken {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class OAuthToken extends AccessToken {
 
     @JsonProperty("expires_in")
-    private String expiresIn;
+    @Override
+    public void setExpiresIn(int expiresIn) {
+        super.setExpiresIn(expiresIn);
+    }
+
     @JsonProperty("token_type")
-    private String tokenType;
-    @JsonProperty("refresh_token")
-    private String refreshToken;
-    @JsonProperty("access_token")
-    private String accessToken;
-
-    private OAuthToken() {}
-
-    public String getExpiresIn() {
-        return expiresIn;
-    }
-
-    public void setExpiresIn(String expiresIn) {
-        this.expiresIn = expiresIn;
-    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
+    @Override
     public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
+        super.setTokenType(tokenType);
     }
 
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
+    @JsonProperty("refresh_token")
+    @Override
     public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+        super.setRefreshToken(refreshToken);
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    @JsonProperty("access_token")
+    @Override
+    public void setToken(String token) {
+        super.setToken(token);
     }
+    
+    public Map<String, Object> saveAccessToken() {
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+        Map<String, Object> accessTokenData = new HashMap<>();
+
+        accessTokenData.put(SessionKeys.ACCESS_TOKEN.getKey(), getToken());
+        accessTokenData.put(SessionKeys.EXPIRES_IN.getKey(), getExpiresIn());
+        accessTokenData.put(SessionKeys.REFRESH_TOKEN.getKey(), getRefreshToken());
+        accessTokenData.put(SessionKeys.TOKEN_TYPE.getKey(), getTokenType());
+
+        Map<String, Object> signInData = new HashMap<>();
+        signInData.put(SessionKeys.ACCESS_TOKEN.getKey(), accessTokenData);
+        
+        return signInData;
     }
 
 }

@@ -8,13 +8,22 @@ import com.nimbusds.jose.JWEObject;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.DirectDecrypter;
 import com.nimbusds.jose.crypto.DirectEncrypter;
+import java.net.URI;
+import java.time.Duration;
 import java.util.Map;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import uk.gov.ch.developer.docs.session.SessionService;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
+import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 
 @Component
@@ -22,12 +31,23 @@ public class Oauth2 implements IOauth {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
     final IIdentityProvider identityProvider;
+    private final Duration timeoutDuration = Duration.ofSeconds(10L);
+
     @Autowired
     private SessionService sessionService;
 
     @Autowired
     public Oauth2(final IIdentityProvider identityProvider) {
         this.identityProvider = identityProvider;
+    }
+
+    @SuppressWarnings("unchecked")
+    // This is necessary as the original data on the session is untyped, but expected to be of the correct types
+    private static Map<String, Object> updateSignIn(final Object sInf, final Object sio) {
+        final Map<String, Object> original = (Map<String, Object>) sInf;
+        final Map<String, Object> extras = (Map<String, Object>) sio;
+        original.putAll(extras);
+        return original;
     }
 
     /**
@@ -100,5 +120,57 @@ public class Oauth2 implements IOauth {
             LOGGER.error("Unable to extract OAuth2 Nonce from session", e);
         }
         return oauth2Nonce;
+    }
+
+    public UserProfileResponse getUserProfile(final String code, final Session chSession) {
+        LOGGER.debug("Requesting User Profile");
+
+        final OAuthToken oauthToken = getOAuthToken(code);
+        final WebClient webClient = WebClient.create();
+        final URI profileUrl = URI.create(identityProvider.getProfileUrl());
+
+        final UserProfileResponse userProfile =
+                getUserProfileResponse(oauthToken, webClient, profileUrl);
+
+        final Map<String, Object> signInData = oauthToken.saveAccessToken();
+        userProfile.setUserProfile(signInData);
+        signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
+        final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
+        final Map<String, Object> sData = chSession.getData();
+
+        sData.merge(signInInfoKey, signInData, Oauth2::updateSignIn);
+
+        return userProfile;
+    }
+
+    private UserProfileResponse getUserProfileResponse(OAuthToken oauthToken, WebClient webClient,
+            URI profileUrl) {
+        final Mono<UserProfileResponse> userProfileResponse = webClient.get()
+                .uri(profileUrl)
+                .headers(h -> h.setBearerAuth(oauthToken.getToken()))
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .flatMap(response -> response.bodyToMono(UserProfileResponse.class));
+        return userProfileResponse.block(timeoutDuration);
+    }
+
+    private OAuthToken getOAuthToken(String code) {
+        LOGGER.debug("Getting OAuth Token");
+
+        final WebClient webClient = WebClient.create();
+
+        final URI tokenUrl = URI.create(identityProvider.getTokenUrl());
+        final Mono<String> postRequest = Mono.just(identityProvider.getPostRequestBody(code));
+        final BodyInserter<Mono<String>, ReactiveHttpOutputMessage> bodyInsert = BodyInserters
+                .fromPublisher(postRequest, String.class);
+
+        final Mono<OAuthToken> postReq = webClient.post()
+                .uri(tokenUrl)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(bodyInsert)
+                .retrieve()
+                .bodyToMono(OAuthToken.class);
+        return postReq.block(timeoutDuration);
     }
 }
