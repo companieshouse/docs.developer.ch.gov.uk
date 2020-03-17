@@ -133,7 +133,7 @@ public class Oauth2 implements IOauth {
                 profileUrl);
 
         if (userProfile != null) {
-            final Map<String, Object> signInData = oauthToken.setAccessToken();
+            final Map<String, Object> signInData = oauthToken.saveAccessToken();
             userProfile.setUserProfile(signInData);
             signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
             final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();

@@ -51,4 +51,6 @@ public interface IIdentityProvider {
     String getRedirectUriPage();
     
     String getAccountLocalUrl();
+    
+    String getGrantType();
 }

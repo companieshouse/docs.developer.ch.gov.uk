@@ -34,7 +34,7 @@ public class OAuthToken extends AccessToken {
         super.setToken(token);
     }
     
-    public Map<String, Object> setAccessToken() {
+    public Map<String, Object> saveAccessToken() {
 
         Map<String, Object> accessTokenData = new HashMap<>();
 

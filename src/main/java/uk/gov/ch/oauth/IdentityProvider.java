@@ -21,6 +21,7 @@ public class IdentityProvider implements IIdentityProvider {
     private final String tokenUrl;
     private final String profileUrl;
     private final String redirectUriPage;
+    private final String grantType;
 
     @Value("${home.url}")
     private String homeUrl;
@@ -36,6 +37,7 @@ public class IdentityProvider implements IIdentityProvider {
         accountLocalUrl = reader.getMandatoryString("ACCOUNT_LOCAL_URL");
         tokenUrl = accountLocalUrl + "/oauth2/token";
         profileUrl = accountLocalUrl + "/user/profile";
+        grantType = "authorization_code";
     }
 
     @Override
@@ -100,7 +102,7 @@ public class IdentityProvider implements IIdentityProvider {
         final StringBuilder sb = new StringBuilder();
         sb.append("code=").append(code).append("&client_id=").append(getClientId())
                 .append("&client_secret=").append(getClientSecret()).append("&redirect_uri=")
-                .append(getRedirectUri()).append("&grant_type=authorization_code");
+                .append(getRedirectUri()).append("&grant_type=").append(getGrantType());
 
         return sb.toString();
     }
@@ -118,5 +120,9 @@ public class IdentityProvider implements IIdentityProvider {
     public String getAccountLocalUrl() {
         return accountLocalUrl;
     }
-
+    
+    @Override
+    public String getGrantType() {
+        return grantType;
+    }
 }
