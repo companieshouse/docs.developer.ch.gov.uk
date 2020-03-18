@@ -12,12 +12,6 @@
         <ul th:if="${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(userModel)}"
             th:remove="tag">
           <li class="user" id="signed-in-user" th:text="${userModel.getId() + ':'}"></li>
-          <li><a
-              class="piwik-event"
-              data-event-id="Your Applications" id="your-applications"
-              th:href="@{{manageApplicationsUrl}/(manageApplicationsUrl=${@environment.getProperty('manageApplications.url')})}">Your
-            Applications
-          </a></li>
           <li><a class="piwik-event" data-event-id="Sign out" href="/signout" id="user-signout">Sign
             out
           </a></li>
@@ -29,7 +23,7 @@
           in /
           Register</a>
       </li>
-      <li><a class="govuk-link" href="http://www.example.com">Developer hub forum</a></li>
+      <li><a class="govuk-link" href="https://forum.aws.chdev.org/ ">Developer hub forum</a></li>
     </ul>
   </nav>
 </div>
