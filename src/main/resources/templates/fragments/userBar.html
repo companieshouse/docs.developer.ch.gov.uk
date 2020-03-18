@@ -9,15 +9,9 @@
   <nav class="content">
     <ul class="mobile-hidden" id="navigation">
       <li>
-        <ul class="mobile-hidden"
-            th:if="${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(userModel)}">
+        <ul th:if="${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(userModel)}"
+            th:remove="tag">
           <li class="user" id="signed-in-user" th:text="${userModel.getId() + ':'}"></li>
-          <li><a
-              class="piwik-event"
-              data-event-id="Your details - top menu" id="your-details"
-              th:href="@{{chsAccountUrl}/user/account(chsAccountUrl=${@environment.getProperty('account.url')})}">Your
-            details
-          </a></li>
           <li><a
               class="piwik-event"
               data-event-id="Your Applications" id="your-applications"
@@ -29,12 +23,13 @@
           </a></li>
         </ul>
       </li>
-      <li th:if="!${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(userModel)}">
-        <!--  -->
+      <li th:if="!${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(userModel)}"
+          th:remove="tag">
         <a class="piwik-event govuk-link" data-event-id="Sign In" href="/signin" id="user-signin">Sign
           in /
           Register</a>
       </li>
+      <li><a class="govuk-link" href="http://www.example.com">Developer hub forum</a></li>
     </ul>
   </nav>
 </div>
