@@ -44,14 +44,6 @@ public class NavBarConfig {
         documentation.add("How to add an API key", authenticationUrl);
         documentation.add("Developer Guidelines", devGuideURL);
 
-        NavItemList manageAccounts = model
-                .addHeading("Manage account", DisplayRestrictions.USER_REQUIRED);
-        manageAccounts.add("Manage Profile", homeURL);
-        manageAccounts.add("Change Password", homeURL);
-
-        NavItemList help = model.addHeading("Help", DisplayRestrictions.USER_REQUIRED);
-        help.add("Developer Hub Forum", homeURL);
-
         return model;
     }
 }
