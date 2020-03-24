@@ -7,35 +7,24 @@
 <body>
 <div class="js-toggle-nav" id="global-nav" th:fragment="userBar">
   <nav class="content">
-    <ul class="mobile-hidden" id="navigation">
-      <li>
-        <ul class="mobile-hidden"
-            th:if="${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(userModel)}">
-          <li class="user" id="signed-in-user" th:text="${userModel.getId() + ':'}"></li>
-          <li><a
-              class="piwik-event"
-              data-event-id="Your details - top menu" id="your-details"
-              th:href="@{{chsAccountUrl}/user/account(chsAccountUrl=${@environment.getProperty('account.url')})}">Your
-            details
-          </a></li>
-          <li><a
-              class="piwik-event"
-              data-event-id="Your Applications" id="your-applications"
-              th:href="@{{manageApplicationsUrl}/(manageApplicationsUrl=${@environment.getProperty('manageApplications.url')})}">Your
-            Applications
-          </a></li>
+    <div
+        th:with="loggedIn=${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(userModel)}">
+      <ul class="mobile-hidden" id="navigation" th:switch="${loggedIn}">
+        <ul th:case="true" th:remove="tag">
+          <li class="user" id="signed-in-user" th:text="${userModel.getId()}"></li>
           <li><a class="piwik-event" data-event-id="Sign out" href="/signout" id="user-signout">Sign
             out
           </a></li>
         </ul>
-      </li>
-      <li th:if="!${T(uk.gov.ch.developer.docs.models.user.UserModel).isUserSignedIn(userModel)}">
-        <!--  -->
-        <a class="piwik-event govuk-link" data-event-id="Sign In" href="/signin" id="user-signin">Sign
-          in /
-          Register</a>
-      </li>
-    </ul>
+        <ul th:case="false" th:remove="tag">
+          <li><a class="piwik-event govuk-link" data-event-id="Sign In" href="/signin"
+                 id="user-signin">Sign in / Register</a></li>
+        </ul>
+        <li><a class="govuk-link"
+               th:href="@{{forum}(forum=${@environment.getProperty('developerforum.url')})}">Developer
+          hub forum</a></li>
+      </ul>
+    </div>
   </nav>
 </div>
 </body>
