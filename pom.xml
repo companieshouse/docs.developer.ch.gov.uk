@@ -28,7 +28,7 @@
             <OAUTH2_REDIRECT_URI>${home.url}/oauth2/user/callback</OAUTH2_REDIRECT_URI>
             <REDIRECT_URI>${home.url}/</REDIRECT_URI>
             <ACCOUNT_LOCAL_URL>https://localhost:4003//</ACCOUNT_LOCAL_URL>
-
+            <CHS_SIGNOUT_URL>>http://test</CHS_SIGNOUT_URL>
             <cdn.url>//</cdn.url>
             <chs.url>//</chs.url>
             <account.url>//</account.url>
