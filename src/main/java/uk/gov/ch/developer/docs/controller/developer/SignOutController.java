@@ -15,15 +15,17 @@ import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.session.store.Store;
-import uk.gov.companieshouse.session.store.StoreImpl;
 
 @Controller
 public class SignOutController {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(DocsWebApplication.APPLICATION_NAME_SPACE);
+    private static final String SIGN_IN_INFO = SessionKeys.SIGN_IN_INFO.getKey();
 
     @Autowired
     private IIdentityProvider identityProviders;
+    @Autowired
+    private Store store;
 
     @GetMapping("${signout.url}")
     public void doSignOut(final HttpServletResponse httpServletResponse,
@@ -36,24 +38,20 @@ public class SignOutController {
 
         if (chSession.getSignInInfo().isSignedIn()) {
 
-            Map<String, Object> sessionData = chSession.getData();
-            Map<String, Object> signInInfo =
-                    (Map<String, Object>) sessionData.get(SessionKeys.SIGN_IN_INFO.getKey());
+            final Map<String, Object> sessionData = chSession.getData();
+            final Map<String, Object> signInInfo =
+                    (Map<String, Object>) sessionData.get(SIGN_IN_INFO);
 
             signInInfo.replace(SessionKeys.SIGNED_IN.getKey(), 1, 0);
-
-            sessionData.remove(SessionKeys.SIGN_IN_INFO.getKey());
+            sessionData.remove(SIGN_IN_INFO);
 
             final String zxsKey = (String) sessionData.get(".zxs_key");// This is the id of cookie
                                                                        // stored in redis
-
             if (zxsKey != null) {
                 LOGGER.trace("Deleting ZXS info from cache");
-                Store store = new StoreImpl();
                 store.delete(zxsKey);
             }
         }
-
         httpServletResponse.sendRedirect(identityProviders.getRedirectUriPage());
     }
 
