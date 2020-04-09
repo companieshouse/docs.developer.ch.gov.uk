@@ -49,6 +49,7 @@ public class SignInControllerTest {
     void getSignInTest() throws IOException {
         when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
         when(request.getRequestURL()).thenReturn(requestUrl);
+        when(request.getQueryString()).thenReturn(queryString);
 
         signInController.getSignIn(request, response);
 
@@ -58,8 +59,10 @@ public class SignInControllerTest {
 
     @Test
     void redirectForAuthTest() throws IOException {
-        signInController.redirectForAuth(session, request, response);
         when(request.getRequestURL()).thenReturn(requestUrl);
+        when(request.getQueryString()).thenReturn(queryString);
+
+        signInController.redirectForAuth(session, request, response);
 
         verify(oauth, times(1)).oauth2EncodeState(any(String.class), any(String.class), any(String.class));
         verify(identityProvider, times(1)).getAuthorisationUrl(any(String.class));
