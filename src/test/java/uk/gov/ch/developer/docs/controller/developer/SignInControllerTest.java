@@ -37,7 +37,7 @@ public class SignInControllerTest {
 
     @InjectMocks
     private SignInController signInController;
-    String requestUrl = "http://requesturl";
+    StringBuffer requestUrl = new StringBuffer("http://requesturl");
     String queryString = "querystring";
     String originalRequestUri = "originalRequestUri";
     String scope = "scope";
@@ -48,6 +48,7 @@ public class SignInControllerTest {
     @Test
     void getSignInTest() throws IOException {
         when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
+        when(request.getRequestURL()).thenReturn(requestUrl);
 
         signInController.getSignIn(request, response);
 
@@ -58,6 +59,7 @@ public class SignInControllerTest {
     @Test
     void redirectForAuthTest() throws IOException {
         signInController.redirectForAuth(session, request, response);
+        when(request.getRequestURL()).thenReturn(requestUrl);
 
         verify(oauth, times(1)).oauth2EncodeState(any(String.class), any(String.class), any(String.class));
         verify(identityProvider, times(1)).getAuthorisationUrl(any(String.class));
