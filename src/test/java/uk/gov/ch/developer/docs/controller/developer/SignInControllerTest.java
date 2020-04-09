@@ -1,7 +1,6 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.oauth.IIdentityProvider;
@@ -19,7 +20,9 @@ import uk.gov.ch.oauth.IOauth;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 
+
 @ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SignInControllerTest {
     @Mock
     HttpServletRequest request;
@@ -32,6 +35,7 @@ public class SignInControllerTest {
     @Mock
     Session session;
 
+    @InjectMocks
     private SignInController signInController;
     String requestUrl = "http://requesturl";
     String queryString = "querystring";
@@ -66,5 +70,4 @@ public class SignInControllerTest {
 
         Assert.assertEquals(signInController.createAuthoriseURIWithForceAndHint(originalRequestUri, scope, nonce, email), "authUrl&reauthenticate=force&hint=hint");
     }
-
 }
