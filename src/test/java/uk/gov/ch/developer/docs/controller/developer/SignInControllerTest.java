@@ -47,6 +47,8 @@ public class SignInControllerTest {
 
     @Test
     void getSignInTest() throws IOException {
+        when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
+
         signInController.getSignIn(request, response);
 
         verify(request, times(1)).getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
