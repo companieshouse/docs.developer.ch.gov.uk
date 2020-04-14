@@ -37,8 +37,7 @@ public class SignInControllerTest {
 
     @InjectMocks
     private SignInController signInController;
-    StringBuffer requestUrl = new StringBuffer("http://requesturl");
-    String queryString = "querystring";
+    StringBuffer requestUrlStringBuffer = new StringBuffer("http://requesturl");
     String originalRequestUri = "originalRequestUri";
     String scope = "scope";
     String nonce = "nonce";
@@ -48,19 +47,19 @@ public class SignInControllerTest {
     @Test
     void getSignInTest() throws IOException {
         when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
-        when(request.getRequestURL()).thenReturn(requestUrl);
-        when(request.getQueryString()).thenReturn(queryString);
+        when(request.getRequestURL()).thenReturn(requestUrlStringBuffer);
+        when(oauth.oauth2EncodeState(any(String.class), any(String.class), any(String.class))).thenReturn("state");
+        when(identityProvider.getAuthorisationUrl("state")).thenReturn("authoriseUri");
 
         signInController.getSignIn(request, response);
 
         verify(request, times(1)).getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-
+        verify(response, times(1)).sendRedirect(any(String.class));
     }
 
     @Test
     void redirectForAuthTest() throws IOException {
-        when(request.getRequestURL()).thenReturn(requestUrl);
-        when(request.getQueryString()).thenReturn(queryString);
+        when(request.getRequestURL()).thenReturn(requestUrlStringBuffer);
         when(oauth.oauth2EncodeState(any(String.class), any(String.class), any(String.class))).thenReturn("state");
         when(identityProvider.getAuthorisationUrl("state")).thenReturn("authoriseUri");
 
