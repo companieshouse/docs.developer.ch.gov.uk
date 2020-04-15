@@ -1,7 +1,6 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,7 +20,6 @@ import uk.gov.companieshouse.session.handler.SessionHandler;
 
 
 @ExtendWith(MockitoExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SignInControllerTest {
 
     @Mock
@@ -35,11 +32,11 @@ public class SignInControllerTest {
     IIdentityProvider identityProvider;
     @Mock
     Session session;
-    StringBuffer requestUrlStringBuffer = new StringBuffer("http://requesturl");
-    String originalRequestUri = "originalRequestUri";
-    String scope = "scope";
-    String nonce = "nonce";
-    String email = "email@email";
+    final static StringBuffer requestUrlStringBuffer = new StringBuffer("https://www.example.com");
+    final static String originalRequestUri = "originalRequestUri";
+    final static String scope = "scope";
+    final static String nonce = "nonce";
+    final static String email = "email@example.com";
     @InjectMocks
     private SignInController signInController;
 
@@ -53,8 +50,8 @@ public class SignInControllerTest {
 
         signInController.getSignIn(request, response);
 
-        verify(request, times(1)).getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-        verify(response, times(1)).sendRedirect(any(String.class));
+        verify(request).getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
+        verify(response).sendRedirect(any(String.class));
     }
 
     @Test
@@ -66,10 +63,10 @@ public class SignInControllerTest {
 
         signInController.redirectForAuth(session, request, response);
 
-        verify(oauth, times(1))
+        verify(oauth)
                 .oauth2EncodeState(any(String.class), any(String.class), any(String.class));
-        verify(identityProvider, times(1)).getAuthorisationUrl(any(String.class));
-        verify(response, times(1)).sendRedirect(any(String.class));
+        verify(identityProvider).getAuthorisationUrl(any(String.class));
+        verify(response).sendRedirect(any(String.class));
 
     }
 
@@ -80,8 +77,7 @@ public class SignInControllerTest {
         when(identityProvider.getAuthorisationUrl(any(String.class), any(String.class)))
                 .thenReturn("authUrl");
 
-        Assert.assertEquals(signInController
-                        .createAuthoriseURIWithForceAndHint(originalRequestUri, scope, nonce, email),
-                "authUrl&reauthenticate=force&hint=hint");
+        Assert.assertEquals("authUrl&reauthenticate=force&hint=hint", signInController
+                .createAuthoriseURIWithForceAndHint(originalRequestUri, scope, nonce, email));
     }
 }
