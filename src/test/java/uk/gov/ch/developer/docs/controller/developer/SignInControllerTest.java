@@ -32,11 +32,12 @@ public class SignInControllerTest {
     IIdentityProvider identityProvider;
     @Mock
     Session session;
-    final static StringBuffer requestUrlStringBuffer = new StringBuffer("https://www.example.com");
-    final static String originalRequestUri = "originalRequestUri";
-    final static String scope = "scope";
-    final static String nonce = "nonce";
-    final static String email = "email@example.com";
+    static final StringBuffer requestUrlStringBuffer = new StringBuffer("https://www.example.com");
+    static final String email = "email@example.com";
+    static final String nonce = "nonce";
+    static final String originalRequestUri = "originalRequestUri";
+    static final String scope = "scope";
+    static final String state = "state";
     @InjectMocks
     private SignInController signInController;
 
@@ -45,8 +46,8 @@ public class SignInControllerTest {
         when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
         when(request.getRequestURL()).thenReturn(requestUrlStringBuffer);
         when(oauth.oauth2EncodeState(any(String.class), any(String.class), any(String.class)))
-                .thenReturn("state");
-        when(identityProvider.getAuthorisationUrl("state")).thenReturn("authoriseUri");
+                .thenReturn(state);
+        when(identityProvider.getAuthorisationUrl(state)).thenReturn("authoriseUri");
 
         signInController.getSignIn(request, response);
 
@@ -58,8 +59,8 @@ public class SignInControllerTest {
     void redirectForAuthTest() throws IOException {
         when(request.getRequestURL()).thenReturn(requestUrlStringBuffer);
         when(oauth.oauth2EncodeState(any(String.class), any(String.class), any(String.class)))
-                .thenReturn("state");
-        when(identityProvider.getAuthorisationUrl("state")).thenReturn("authoriseUri");
+                .thenReturn(state);
+        when(identityProvider.getAuthorisationUrl(state)).thenReturn("authoriseUri");
 
         signInController.redirectForAuth(session, request, response);
 
