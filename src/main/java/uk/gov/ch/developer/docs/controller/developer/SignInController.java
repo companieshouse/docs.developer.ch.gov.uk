@@ -17,8 +17,6 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.handler.SessionHandler;
-import uk.gov.companieshouse.session.model.SignInInfo;
-import uk.gov.companieshouse.session.model.UserProfile;
 
 @Controller
 @RequestMapping("${signin.url}")
@@ -96,14 +94,13 @@ public class SignInController {
         }
         final String hint = oauth.oauth2EncodeState(email, nonce, "email");
         final String authUrl = identityProvider.getAuthorisationUrl(originalRequestUri, scope);
-        String authUri = authUrl + "&reauthenticate=force"
+        return authUrl + "&reauthenticate=force"
                 + "&hint="
                 + hint;
-        return authUri;
     }
 
     //TODO Move this onto the OAuth instance
-    private String generateSessionNonce(final Session session) {
+    protected String generateSessionNonce(final Session session) {
         // Generate and store a nonce in the session
         Session sessionToUpdate = session;
         if (sessionToUpdate == null) {
@@ -112,27 +109,6 @@ public class SignInController {
         String nonce = generateNonce();
         sessionToUpdate.getData().put(SessionKeys.NONCE.getKey(), nonce);
         return nonce;
-    }
-
-    /**
-     * Retrieves email from a session if present, else returns an empty string
-     *
-     * @param session User session from which to retrieve the email address
-     * @return email
-     */
-    private String getEmailFromSession(final Session session) {
-
-        String email = "";
-
-        SignInInfo signInInfo = new SignInInfo();
-        if (session != null) {
-            signInInfo = session.getSignInInfo();
-        }
-        final UserProfile userProfile = signInInfo.getUserProfile();
-        if (userProfile != null) {
-            email = userProfile.getEmail();
-        }
-        return email;
     }
 
     //TODO Move this into the OAuth object
