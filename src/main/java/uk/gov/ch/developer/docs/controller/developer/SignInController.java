@@ -1,18 +1,24 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import uk.gov.ch.developer.docs.session.SessionFactory;
 import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
+import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.handler.SessionHandler;
+import uk.gov.companieshouse.session.model.SignInInfo;
+import uk.gov.companieshouse.session.model.UserProfile;
 
 @Controller
 @RequestMapping("${signin.url}")
