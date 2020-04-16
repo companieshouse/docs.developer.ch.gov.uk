@@ -1,21 +1,33 @@
 package uk.gov.ch.oauth;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
+import java.util.Map;
 import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.model.UserProfile;
 
+/**
+ * Extension of {@link uk.gov.companieshouse.session.model.UserProfile} to allow addition of {@link
+ * JsonProperty} annotations to enable parsing of user data from the authentication server. Most
+ * methods delegate directly to the superclass. To provide resilience unused or unknown properties
+ * are marked as ignored for default JSON parsing.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserProfileResponse extends UserProfile {
 
+    /**
+     * @param email email address of user if provided
+     */
     @JsonProperty("email")
     @Override
     public void setEmail(String email) {
         super.setEmail(email);
     }
 
+    /**
+     * @param forename forename of user if provided
+     */
     @JsonProperty("forename")
     @Override
     public void setForename(String forename) {
@@ -48,13 +60,22 @@ public class UserProfileResponse extends UserProfile {
 
     @JsonProperty("permissions")
     @Override
-    public void setPermissions(Map<String, Boolean> permissions) {
+    public void setPermissions(final Map<String, Boolean> permissions) {
         super.setPermissions(permissions);
     }
-    
-    public void setUserProfile(Map<String, Object> signInData) {
 
-        Map<String, Object> userProfileData = new HashMap<>();
+    /**
+     * This method adds user profile values to an existing session data map. User profiles in {@link
+     * uk.gov.companieshouse.session.Session} are stored as separate key value pairs rather than as
+     * a structured object. The values that are consumed by the session are added to the supplied
+     * map using appropriate {@link SessionKeys} to map from instance values to internal map values.
+     * <br /> N.B. This method does not mutate the instance, it appends data to the supplied map.
+     *
+     * @param signInData to which the user profile data is to be added
+     */
+    public void setUserProfile(final Map<String, Object> signInData) {
+
+        final Map<String, Object> userProfileData = new HashMap<>();
 
         userProfileData.put(SessionKeys.EMAIL.getKey(), getEmail());
         userProfileData.put(SessionKeys.USER_ID.getKey(), getId());
