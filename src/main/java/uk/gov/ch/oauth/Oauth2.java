@@ -20,7 +20,6 @@ import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import uk.gov.ch.developer.docs.session.SessionService;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
@@ -30,11 +29,9 @@ import uk.gov.companieshouse.session.SessionKeys;
 public class Oauth2 implements IOauth {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
-    final IIdentityProvider identityProvider;
+    private final IIdentityProvider identityProvider;
     private final Duration timeoutDuration = Duration.ofSeconds(10L);
-
-    @Autowired
-    private SessionService sessionService;
+    private final NonceGenerator nonceGenerator = new NonceGenerator();
 
     @Autowired
     public Oauth2(final IIdentityProvider identityProvider) {
@@ -79,6 +76,14 @@ public class Oauth2 implements IOauth {
         return jweObject.serialize();
     }
 
+    public String oauth2EncodeState(final String returnUri,
+            final Session session,
+            final String attributeName) {
+        return oauth2EncodeState(returnUri, nonceGenerator.setNonceForSession(session),
+                attributeName);
+    }
+
+
     /**
      * Given a state encapsulating a JWE token, decode it into a {@link com.nimbusds.jose.Payload}
      */
@@ -114,7 +119,7 @@ public class Oauth2 implements IOauth {
     private String getSessionNonce() {
         String oauth2Nonce = null;
         try {
-            final Map<String, Object> data = sessionService.getSessionDataFromContext();
+            final Map<String, Object> data = SessionUtils.getSessionDataFromContext();
             oauth2Nonce = (String) data.getOrDefault(SessionKeys.NONCE.getKey(), null);
         } catch (final Exception e) {
             LOGGER.error("Unable to extract OAuth2 Nonce from session", e);

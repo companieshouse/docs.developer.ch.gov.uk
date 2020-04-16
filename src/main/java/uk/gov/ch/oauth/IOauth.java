@@ -9,6 +9,10 @@ public interface IOauth {
             final String nonce,
             final String attributeName);
 
+    String oauth2EncodeState(final String returnUri,
+            final Session sessions,
+            final String attributeName);
+
     Payload oauth2DecodeState(final String state);
 
     /**
