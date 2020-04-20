@@ -98,10 +98,10 @@ public class Oauth2 implements IOauth {
         return payload;
     }
 
-    public boolean oauth2VerifyNonce(final String nonce) {
+    public boolean oauth2VerifyNonce(final String nonce, Session chSession) {
         boolean retval = false;
         if (nonce != null) {
-            retval = nonce.equals(getSessionNonce());
+            retval = nonce.equals(getSessionNonce(chSession));
         }
         return retval;
     }
@@ -111,11 +111,13 @@ public class Oauth2 implements IOauth {
      *
      * @return The Nonce String from within the session or null if not found.
      */
-    private String getSessionNonce() {
+    private String getSessionNonce(Session chSession) {
         String oauth2Nonce = null;
         try {
-            final Map<String, Object> data = sessionService.getSessionDataFromContext();
+            final Map<String, Object> data = chSession.getData();
             oauth2Nonce = (String) data.getOrDefault(SessionKeys.NONCE.getKey(), null);
+            data.put(SessionKeys.NONCE.getKey(), "");
+            LOGGER.debug("Verify nonce against expected nonce from session");
         } catch (final Exception e) {
             LOGGER.error("Unable to extract OAuth2 Nonce from session", e);
         }

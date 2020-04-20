@@ -37,17 +37,16 @@ public class UserCallbackController {
             @RequestParam("code") String code, final HttpServletRequest httpServletRequest) {
         LOGGER.trace("Code:" + code);
         LOGGER.trace("State:" + state);
+        final Session chSession = (Session) httpServletRequest
+                .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
         final String returnedNonce = getNonceFromState(state);
-        if (!oauth.oauth2VerifyNonce(returnedNonce)) {
+        if (!oauth.oauth2VerifyNonce(returnedNonce, chSession)) {
             LOGGER.error("Invalid nonce value in state during oauth2 callback");
             // return "redirect:/"; TODO redirect will not work, needs to be addressed for unmatched
             // Nonce values
             return DUMMY_ERROR_RESULT_MISMATCHED_NONCES;
         }
-
-        final Session chSession = (Session) httpServletRequest
-                .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
         LOGGER.debug("Getting User Profile");
 
