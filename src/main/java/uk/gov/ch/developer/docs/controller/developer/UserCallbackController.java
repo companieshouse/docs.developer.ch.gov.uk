@@ -1,13 +1,13 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
+import com.nimbusds.jose.Payload;
 import javax.servlet.http.HttpServletRequest;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.nimbusds.jose.Payload;
-import net.minidev.json.JSONObject;
 import uk.gov.ch.developer.docs.DocsWebApplication;
 import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
@@ -23,6 +23,8 @@ public class UserCallbackController {
 
     private static final Logger LOGGER =
             LoggerFactory.getLogger(DocsWebApplication.APPLICATION_NAME_SPACE);
+    public static final String DUMMY_ERROR_RESULT_MISMATCHED_NONCES = "Dummy Error Result:Mismatched Nonces";
+    public static final String DUMMY_ERROR_NO_USER_PROFILE_RETURNED = "Dummy Error: No User Profile Returned";
 
     @Autowired
     private IIdentityProvider identityProvider;
@@ -41,6 +43,7 @@ public class UserCallbackController {
             LOGGER.error("Invalid nonce value in state during oauth2 callback");
             // return "redirect:/"; TODO redirect will not work, needs to be addressed for unmatched
             // Nonce values
+            return DUMMY_ERROR_RESULT_MISMATCHED_NONCES;
         }
 
         final Session chSession = (Session) httpServletRequest
@@ -52,13 +55,15 @@ public class UserCallbackController {
 
         if (userProfileResponse == null) {
             // TODO raise error
+            LOGGER.error("No user profile returned in OAuth Callback");
+            return DUMMY_ERROR_NO_USER_PROFILE_RETURNED;
         }
 
         return ("redirect:" + identityProvider.getRedirectUriPage());// TODO redirect back to page
                                                                      // where sign-in was initiated
     }
 
-    private String getNonceFromState(final String state) {
+    String getNonceFromState(final String state) {
         final Payload payload = oauth.oauth2DecodeState(state);
         final JSONObject jsonObject = payload.toJSONObject();
         return jsonObject.getAsString("nonce");

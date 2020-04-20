@@ -1,21 +1,22 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doReturn;
+
+import com.nimbusds.jose.Payload;
 import javax.servlet.http.HttpServletRequest;
+import net.minidev.json.JSONObject;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.nimbusds.jose.Payload;
-import net.minidev.json.JSONObject;
 import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
 
 @ExtendWith(MockitoExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserCallbackControllerTest {
 
     @Mock
@@ -30,19 +31,23 @@ public class UserCallbackControllerTest {
     private IIdentityProvider identityProvider;
 
     @InjectMocks
+    @Spy
     private UserCallbackController userCallbackController;
 
     @Test
-    public void testGetCallback() {
+    @DisplayName("Checking result when the returned nonce does not match the one for the current session")
+    public void testGetCallbackBadNonce() {
+        final String code = "dummy Code";
+        final String state = "dummy State";
+        doReturn("bad state nonce").when(userCallbackController).getNonceFromState(state);
 
-        String code = "";
-        String state = "";
+        final String callbackResult = userCallbackController
+                .getCallback(state, code, httpServletRequest);
 
-        when(oauth.oauth2DecodeState(state)).thenReturn(payload);
-        when(payload.toJSONObject()).thenReturn(jsonObject);
-        when(jsonObject.getAsString("nonce")).thenReturn("");
-
-        assertNotNull(userCallbackController.getCallback(state, code, httpServletRequest));
+        assertEquals(UserCallbackController.DUMMY_ERROR_RESULT_MISMATCHED_NONCES, callbackResult);
     }
-    
+
+    @Test
+    void getCallback() {
+    }
 }
