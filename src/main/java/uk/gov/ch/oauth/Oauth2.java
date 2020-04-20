@@ -98,6 +98,12 @@ public class Oauth2 implements IOauth {
         return payload;
     }
 
+    /**
+     * Verify's Nonce against Session Nonce
+     * @param nonce
+     * @param sessionNonce
+     * @returns true if Nonce values match false otherwise
+     */
     public boolean oauth2VerifyNonce(final String nonce, final String sessionNonce) {
         boolean retval = false;
         if (nonce != null) {
@@ -108,6 +114,7 @@ public class Oauth2 implements IOauth {
 
     /**
      * Extract the OAuth2 Nonce from the current session
+     * Removes Nonce value so can be validated fresh and first obtaining the value
      *
      * @return The Nonce String from within the session or null if not found.
      */
