@@ -114,7 +114,7 @@ public class Oauth2 implements IOauth {
 
     /**
      * Extract the OAuth2 Nonce from the current session
-     * Removes Nonce value so can be validated fresh and first obtaining the value
+     * Removes Nonce value so can be validated once and replay attacks are more difficult
      *
      * @return The Nonce String from within the session or null if not found.
      */
