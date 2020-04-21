@@ -110,6 +110,11 @@ public class Oauth2 implements IOauth {
         return payload;
     }
 
+    /**
+     * Verify's Nonce against Session Nonce
+     * @param nonce
+     * @returns true if Nonce values match false otherwise
+     */
     public boolean oauth2VerifyNonce(final String nonce) {
         boolean retval = false;
         if (nonce != null) {
@@ -120,6 +125,7 @@ public class Oauth2 implements IOauth {
 
     /**
      * Extract the OAuth2 Nonce from the current session
+     * Removes Nonce value so can be validated once and replay attacks are more difficult
      *
      * @return The Nonce String from within the session or null if not found.
      */
@@ -127,7 +133,8 @@ public class Oauth2 implements IOauth {
         String oauth2Nonce = null;
         try {
             final Map<String, Object> data = sessionUtils.getSessionDataFromContext();
-            oauth2Nonce = (String) data.getOrDefault(SessionKeys.NONCE.getKey(), null);
+            oauth2Nonce = (String) data.remove(SessionKeys.NONCE.getKey());
+            LOGGER.debug("Extracting nonce value");
         } catch (final Exception e) {
             LOGGER.error("Unable to extract OAuth2 Nonce from session", e);
         }
