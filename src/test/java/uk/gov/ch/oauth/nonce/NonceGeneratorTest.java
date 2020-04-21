@@ -69,7 +69,6 @@ class NonceGeneratorTest {
         List<String> nonces = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             String newNonce = nonceGenerator.generateNonce();
-            System.out.println(newNonce);
             assertFalse(nonces.contains(newNonce));
             nonces.add(newNonce);
         }
