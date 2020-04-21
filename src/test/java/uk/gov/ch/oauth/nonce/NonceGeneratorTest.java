@@ -1,15 +1,14 @@
 package uk.gov.ch.oauth.nonce;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,11 +65,11 @@ class NonceGeneratorTest {
     @Test
     @DisplayName("Generate Nonce creates unique values, brute force test")
     void generateNonceGeneratesUniqueValues() {
-        List<String> nonces = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        Set<String> nonces = new TreeSet<>();
+        final int iterations = 100;
+        for (int i = 0; i < iterations; i++) {
             String newNonce = nonceGenerator.generateNonce();
-            assertFalse(nonces.contains(newNonce));
-            nonces.add(newNonce);
         }
+        assertEquals(iterations, nonces.size());
     }
 }
