@@ -69,6 +69,7 @@ class NonceGeneratorTest {
         final int iterations = 100;
         for (int i = 0; i < iterations; i++) {
             String newNonce = nonceGenerator.generateNonce();
+            nonces.add(newNonce);
         }
         assertEquals(iterations, nonces.size());
     }
