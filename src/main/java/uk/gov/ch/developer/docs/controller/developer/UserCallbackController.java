@@ -1,17 +1,17 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
+import com.nimbusds.jose.Payload;
 import javax.servlet.http.HttpServletRequest;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.nimbusds.jose.Payload;
-import net.minidev.json.JSONObject;
 import uk.gov.ch.developer.docs.DocsWebApplication;
-import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
-import uk.gov.ch.oauth.UserProfileResponse;
+import uk.gov.ch.oauth.identity.IIdentityProvider;
+import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;

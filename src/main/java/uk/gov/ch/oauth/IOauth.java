@@ -1,6 +1,7 @@
 package uk.gov.ch.oauth;
 
 import com.nimbusds.jose.Payload;
+import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.session.Session;
 
 public interface IOauth {

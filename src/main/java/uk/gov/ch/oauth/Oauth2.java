@@ -20,6 +20,11 @@ import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import uk.gov.ch.oauth.identity.IIdentityProvider;
+import uk.gov.ch.oauth.nonce.NonceGenerator;
+import uk.gov.ch.oauth.session.SessionUtils;
+import uk.gov.ch.oauth.tokens.OAuthToken;
+import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
@@ -30,12 +35,14 @@ public class Oauth2 implements IOauth {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
     private final IIdentityProvider identityProvider;
+    private final SessionUtils sessionUtils;
     private final Duration timeoutDuration = Duration.ofSeconds(10L);
     private final NonceGenerator nonceGenerator = new NonceGenerator();
 
     @Autowired
-    public Oauth2(final IIdentityProvider identityProvider) {
+    public Oauth2(final IIdentityProvider identityProvider, SessionUtils sessionUtils) {
         this.identityProvider = identityProvider;
+        this.sessionUtils = sessionUtils;
     }
 
     @SuppressWarnings("unchecked")
@@ -119,7 +126,7 @@ public class Oauth2 implements IOauth {
     private String getSessionNonce() {
         String oauth2Nonce = null;
         try {
-            final Map<String, Object> data = SessionUtils.getSessionDataFromContext();
+            final Map<String, Object> data = sessionUtils.getSessionDataFromContext();
             oauth2Nonce = (String) data.getOrDefault(SessionKeys.NONCE.getKey(), null);
         } catch (final Exception e) {
             LOGGER.error("Unable to extract OAuth2 Nonce from session", e);
@@ -138,7 +145,7 @@ public class Oauth2 implements IOauth {
                 getUserProfileResponse(oauthToken, webClient, profileUrl);
 
         final Map<String, Object> signInData = oauthToken.saveAccessToken();
-        userProfile.setUserProfile(signInData);
+        userProfile.addUserProfileToMap(signInData);
         signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
         final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
         final Map<String, Object> sData = chSession.getData();
@@ -159,7 +166,7 @@ public class Oauth2 implements IOauth {
         return userProfileResponse.block(timeoutDuration);
     }
 
-    private OAuthToken getOAuthToken(String code) {
+    OAuthToken getOAuthToken(String code) {
         LOGGER.debug("Getting OAuth Token");
 
         final WebClient webClient = WebClient.create();

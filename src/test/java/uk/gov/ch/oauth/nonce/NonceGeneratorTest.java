@@ -1,4 +1,4 @@
-package uk.gov.ch.oauth;
+package uk.gov.ch.oauth.nonce;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,9 +13,11 @@ import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.ch.oauth.session.SessionUtils;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 
@@ -24,11 +26,14 @@ class NonceGeneratorTest {
 
     private static final String NONCE = "NONCE";
     @Mock
+    SessionUtils mockUtils;
+    @Mock
     Session mockSession;
     @Mock
     Map<String, Object> mockData;
 
-    @Spy //Spy used to allow us to remove randomness from Nonce generation
+    @InjectMocks
+    @Spy//Spy used to allow us to remove randomness from Nonce generation
             NonceGenerator nonceGenerator;
 
     @Test
@@ -50,9 +55,11 @@ class NonceGeneratorTest {
     @Test
     @DisplayName("Session is null does not cause an error")
     void doesNotErrorWhenNonceIsNull() {
+        doReturn(mockSession).when(mockUtils).createSession();
         doReturn(NONCE).when(nonceGenerator).generateNonce(); // Do return used rather than when to
         // prevent code coverage marking this as done.
         String retNonce = nonceGenerator.setNonceForSession(null);
+        verify(mockSession).getData();
         assertEquals(NONCE, retNonce);
     }
 

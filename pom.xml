@@ -24,7 +24,7 @@
             <DEVELOPER_OAUTH2_REQUEST_KEY>qXf+qkU6P6SAoY2lKW1FtKMS4PylaNA3pY2sUQxNFDl=</DEVELOPER_OAUTH2_REQUEST_KEY>
             <OAUTH2_AUTH_URI>${home.url}/oauth2/authorise</OAUTH2_AUTH_URI>
             <CHS_DEVELOPER_CLIENT_ID>test.apps.ch.gov.test</CHS_DEVELOPER_CLIENT_ID>
-            <CHS_DEVELOPER_CLIENT_SECRET>CLIwYzRkNzIwOGQ1OGQ0OWIzMzViYjJjOTEyYTc2</CHS_DEVELOPER_CLIENT_SECRET>
+            <ACCOUNT_LOCAL_URL>accountLocalUrl</ACCOUNT_LOCAL_URL>
             <OAUTH2_REDIRECT_URI>${home.url}/oauth2/user/callback</OAUTH2_REDIRECT_URI>
             <REDIRECT_URI>${home.url}/</REDIRECT_URI>
             <ACCOUNT_LOCAL_URL>https://localhost:4003//</ACCOUNT_LOCAL_URL>
@@ -33,6 +33,16 @@
             <chs.url>//</chs.url>
             <account.url>//</account.url>
 
+            <CHS_DEVELOPER_CLIENT_ID>clientId</CHS_DEVELOPER_CLIENT_ID>
+            <CHS_DEVELOPER_CLIENT_SECRET>CLIwYzRkNzIwOGQ1OGQ0OWIzMzViYjJjOTEyYTc2
+            </CHS_DEVELOPER_CLIENT_SECRET>
+            <CHS_DEVELOPER_CLIENT_SECRET>clientSecret</CHS_DEVELOPER_CLIENT_SECRET>
+            <DEVELOPER_OAUTH2_REQUEST_KEY>requestKey</DEVELOPER_OAUTH2_REQUEST_KEY>
+            <OAUTH2_AUTH_URI>authorizationUri</OAUTH2_AUTH_URI>
+            <OAUTH2_REDIRECT_URI>redirectUri</OAUTH2_REDIRECT_URI>
+            <REDIRECT_URI>redirectUriPage</REDIRECT_URI>
+
+            <!-- path mappings -->
             <createAccount.url>${home.url}/create-account</createAccount.url>
             <developerGuidelines.url>${home.url}/developer-guidelines</developerGuidelines.url>
             <gettingStarted.url>${home.url}/getting-started</gettingStarted.url>

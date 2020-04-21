@@ -1,27 +1,29 @@
 package uk.gov.ch.developer.docs.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
-import uk.gov.ch.oauth.IdentityProvider;
 import uk.gov.ch.oauth.Oauth2;
+import uk.gov.ch.oauth.identity.IIdentityProvider;
+import uk.gov.ch.oauth.identity.IdentityProvider;
+import uk.gov.ch.oauth.session.SessionUtils;
 import uk.gov.companieshouse.environment.EnvironmentReader;
 
 @Configuration
 public class OauthBean {
 
-    @Autowired
-    EnvironmentReader environmentReader;
-
     @Bean
-    public IOauth oauth() {
-        return new Oauth2(identityProvider());
+    public IOauth oauth(IIdentityProvider identityProvider, SessionUtils sessionUtils) {
+        return new Oauth2(identityProvider, sessionUtils);
     }
 
     @Bean
-    IIdentityProvider identityProvider() {
+    IIdentityProvider identityProvider(EnvironmentReader environmentReader) {
         return new IdentityProvider(environmentReader);
+    }
+
+    @Bean
+    SessionUtils sessionUtils() {
+        return new SessionUtils();
     }
 }

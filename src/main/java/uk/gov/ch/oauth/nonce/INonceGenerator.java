@@ -1,4 +1,4 @@
-package uk.gov.ch.oauth;
+package uk.gov.ch.oauth.nonce;
 
 import uk.gov.companieshouse.session.Session;
 
