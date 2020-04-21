@@ -58,6 +58,7 @@ public class SignInController {
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
         // Redirect for user authentication (no scope specified)
         redirectForAuth(chSession, httpServletRequest, httpServletResponse);
+        LOGGER.debugContext("Sign In", "Sign In", chSession.getData());
     }
 
     /**

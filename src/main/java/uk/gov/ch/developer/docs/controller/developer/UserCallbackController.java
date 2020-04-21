@@ -45,10 +45,13 @@ public class UserCallbackController {
 
         final Session chSession = (Session) httpServletRequest
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
+        LOGGER.debugContext("Callback1", "Callback1", chSession.getData());
 
         LOGGER.debug("Getting User Profile");
 
         UserProfileResponse userProfileResponse = oauth.getUserProfile(code, chSession);
+        
+        LOGGER.debugContext("Callback 2", "Callback 2", chSession.getData());
 
         if (userProfileResponse == null) {
             // TODO raise error

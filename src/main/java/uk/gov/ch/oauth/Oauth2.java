@@ -20,6 +20,7 @@ import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import uk.gov.ch.developer.docs.session.SessionFactory;
 import uk.gov.ch.developer.docs.session.SessionService;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
@@ -35,6 +36,9 @@ public class Oauth2 implements IOauth {
 
     @Autowired
     private SessionService sessionService;
+    
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @Autowired
     public Oauth2(final IIdentityProvider identityProvider) {
@@ -126,6 +130,15 @@ public class Oauth2 implements IOauth {
         LOGGER.debug("Requesting User Profile");
 
         final OAuthToken oauthToken = getOAuthToken(code);
+        
+        LOGGER.debug(chSession.getCookieId());
+        
+        chSession.clear();
+        
+        LOGGER.debug(chSession.getCookieId());
+        
+        sessionFactory.regenerateSession(chSession.getCookieId(), chSession.getData());
+        
         final WebClient webClient = WebClient.create();
         final URI profileUrl = URI.create(identityProvider.getProfileUrl());
 
@@ -156,7 +169,7 @@ public class Oauth2 implements IOauth {
 
     private OAuthToken getOAuthToken(String code) {
         LOGGER.debug("Getting OAuth Token");
-
+        
         final WebClient webClient = WebClient.create();
 
         final URI tokenUrl = URI.create(identityProvider.getTokenUrl());

@@ -1,7 +1,10 @@
 package uk.gov.ch.developer.docs.session;
 
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.session.Session;
+import uk.gov.companieshouse.session.SessionImpl;
 import uk.gov.companieshouse.session.store.Store;
 
 /**
@@ -13,6 +16,9 @@ import uk.gov.companieshouse.session.store.Store;
  */
 @Component
 public class SessionFactory {
+    
+    @Autowired
+    Store store;
 
     private SessionFactory() {
     }
@@ -23,6 +29,10 @@ public class SessionFactory {
 
     public Session createSession() {
         return getSessionByCookieId(null);
+    }
+    
+    public Session regenerateSession(final String cookieId, Map<String, Object> data) {
+        return new SessionImpl(store, cookieId, data);
     }
 
 }
