@@ -17,8 +17,10 @@ public interface IOauth {
      * @param Nonce Supplied value
      * @return true if Nonces match and are not both null
      */
-    boolean oauth2VerifyNonce(final String Nonce);
+    boolean oauth2VerifyNonce(final String Nonce, final String sessionNonce);
 
     UserProfileResponse getUserProfile(String code, Session chSession);
+
+    String getSessionNonce(Session chSession);
 
 }

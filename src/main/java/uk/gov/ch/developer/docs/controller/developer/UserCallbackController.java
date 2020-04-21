@@ -1,13 +1,13 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
+import com.nimbusds.jose.Payload;
 import javax.servlet.http.HttpServletRequest;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.nimbusds.jose.Payload;
-import net.minidev.json.JSONObject;
 import uk.gov.ch.developer.docs.DocsWebApplication;
 import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
@@ -35,18 +35,17 @@ public class UserCallbackController {
             @RequestParam("code") String code, final HttpServletRequest httpServletRequest) {
         LOGGER.trace("Code:" + code);
         LOGGER.trace("State:" + state);
+        final Session chSession = (Session) httpServletRequest
+                .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
         final String returnedNonce = getNonceFromState(state);
-        if (!oauth.oauth2VerifyNonce(returnedNonce)) {
+        final String sessionNonce = oauth.getSessionNonce(chSession);
+        if (!oauth.oauth2VerifyNonce(returnedNonce, sessionNonce)) {
             LOGGER.error("Invalid nonce value in state during oauth2 callback");
             // return "redirect:/"; TODO redirect will not work, needs to be addressed for unmatched
             // Nonce values
         }
-
-        final Session chSession = (Session) httpServletRequest
-                .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
         LOGGER.debugContext("Callback1", "Callback1", chSession.getData());
-
         LOGGER.debug("Getting User Profile");
 
         UserProfileResponse userProfileResponse = oauth.getUserProfile(code, chSession);
