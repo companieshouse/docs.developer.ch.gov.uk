@@ -1,4 +1,4 @@
-package uk.gov.ch.oauth;
+package uk.gov.ch.oauth.tokens;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -73,7 +73,7 @@ public class UserProfileResponse extends UserProfile {
      *
      * @param signInData to which the user profile data is to be added
      */
-    public void setUserProfile(final Map<String, Object> signInData) {
+    public void addUserProfileToMap(final Map<String, Object> signInData) {
 
         final Map<String, Object> userProfileData = new HashMap<>();
 

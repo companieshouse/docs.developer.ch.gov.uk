@@ -1,4 +1,4 @@
-package uk.gov.ch.oauth;
+package uk.gov.ch.oauth.tokens;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -60,5 +60,4 @@ public class OAuthToken extends AccessToken {
 
         return signInData;
     }
-
 }

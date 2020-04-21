@@ -1,12 +1,17 @@
 package uk.gov.ch.oauth;
 
 import com.nimbusds.jose.Payload;
+import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.session.Session;
 
 public interface IOauth {
 
     String oauth2EncodeState(final String returnUri,
             final String nonce,
+            final String attributeName);
+
+    String oauth2EncodeState(final String returnUri,
+            final Session sessions,
             final String attributeName);
 
     Payload oauth2DecodeState(final String state);
@@ -17,10 +22,7 @@ public interface IOauth {
      * @param Nonce Supplied value
      * @return true if Nonces match and are not both null
      */
-    boolean oauth2VerifyNonce(final String Nonce, final String sessionNonce);
+    boolean oauth2VerifyNonce(final String Nonce);
 
     UserProfileResponse getUserProfile(String code, Session chSession);
-
-    String getSessionNonce(Session chSession);
-
 }

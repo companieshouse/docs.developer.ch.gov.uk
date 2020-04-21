@@ -15,6 +15,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
+import uk.gov.ch.oauth.identity.IIdentityProvider;
 
 @ExtendWith(MockitoExtension.class)
 public class UserCallbackControllerTest {

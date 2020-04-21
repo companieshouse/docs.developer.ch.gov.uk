@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.ch.developer.docs.DocsWebApplication;
-import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
-import uk.gov.ch.oauth.UserProfileResponse;
+import uk.gov.ch.oauth.identity.IIdentityProvider;
+import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
@@ -41,8 +41,7 @@ public class UserCallbackController {
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
         final String returnedNonce = getNonceFromState(state);
-        final String sessionNonce = oauth.getSessionNonce(chSession);
-        if (!oauth.oauth2VerifyNonce(returnedNonce, sessionNonce)) {
+        if (!oauth.oauth2VerifyNonce(returnedNonce)) {
             LOGGER.error("Invalid nonce value in state during oauth2 callback");
             // return "redirect:/"; TODO redirect will not work, needs to be addressed for unmatched
             // Nonce values
