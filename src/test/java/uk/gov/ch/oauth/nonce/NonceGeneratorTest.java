@@ -42,11 +42,11 @@ class NonceGeneratorTest {
         // prevent code coverage marking this as done.
         when(mockSession.getData()).thenReturn(mockData);
 
-        nonceGenerator.setNonceForSession(mockSession);
+        nonceGenerator.addNonceToSession(mockSession);
 
         verify(mockSession).getData();
         verify(mockData).put(SessionKeys.NONCE.getKey(), NONCE);
-        verify(nonceGenerator).setNonceForSession(mockSession);
+        verify(nonceGenerator).addNonceToSession(mockSession);
         verify(nonceGenerator).generateNonce();
         verifyNoMoreInteractions(nonceGenerator, mockSession, mockData);
     }
@@ -57,7 +57,7 @@ class NonceGeneratorTest {
         doReturn(mockSession).when(mockUtils).createSession();
         doReturn(NONCE).when(nonceGenerator).generateNonce(); // Do return used rather than when to
         // prevent code coverage marking this as done.
-        String retNonce = nonceGenerator.setNonceForSession(null);
+        String retNonce = nonceGenerator.addNonceToSession(null);
         verify(mockSession).getData();
         assertEquals(NONCE, retNonce);
     }

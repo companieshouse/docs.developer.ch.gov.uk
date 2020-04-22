@@ -86,7 +86,7 @@ public class Oauth2 implements IOauth {
     public String oauth2EncodeState(final String returnUri,
             final Session session,
             final String attributeName) {
-        return oauth2EncodeState(returnUri, nonceGenerator.setNonceForSession(session),
+        return oauth2EncodeState(returnUri, nonceGenerator.addNonceToSession(session),
                 attributeName);
     }
 

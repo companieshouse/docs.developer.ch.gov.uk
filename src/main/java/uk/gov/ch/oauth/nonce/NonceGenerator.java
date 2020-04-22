@@ -25,7 +25,7 @@ public class NonceGenerator implements INonceGenerator {
      * @return Base64 encoded unique key
      */
     @Override
-    public String setNonceForSession(Session session) {
+    public String addNonceToSession(Session session) {
         // Generate and store a nonce in the session
         if (session == null) {
             session = sessionFactory.createSession();

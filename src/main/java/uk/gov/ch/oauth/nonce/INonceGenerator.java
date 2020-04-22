@@ -11,5 +11,5 @@ public interface INonceGenerator {
      * generates a new one.
      * @return Base64 encoded unique key
      */
-    String setNonceForSession(Session session);
+    String addNonceToSession(Session session);
 }
