@@ -12,8 +12,6 @@ import uk.gov.ch.oauth.IOauth;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
-import uk.gov.companieshouse.session.Session;
-import uk.gov.companieshouse.session.handler.SessionHandler;
 
 @Controller
 @RequestMapping("${callback.url}")
@@ -35,15 +33,11 @@ public class UserCallbackController {
         try {
             LOGGER.trace("Code:" + code);
             LOGGER.trace("State:" + state);
-            final Session chSession = (Session) httpServletRequest
-                    .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
             final boolean invalid = !oauth.isValid(state, code);
             if (invalid) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                return;
-            }
-//
+            } else {//
 //            LOGGER.debug("Getting User Profile");
 //
 //            final boolean noProfile = noUserProfile(code);
@@ -54,8 +48,9 @@ public class UserCallbackController {
 //                        DUMMY_ERROR_NO_USER_PROFILE_RETURNED);
 //                return;
 //            }
-            httpServletResponse.sendRedirect(identityProvider.getRedirectUriPage());
-            // where sign-in was initiated
+                httpServletResponse.sendRedirect(
+                        identityProvider.getRedirectUriPage());// where sign-in was initiated
+            }
         } catch (final Exception e) {
             LOGGER.error(e);
             httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
