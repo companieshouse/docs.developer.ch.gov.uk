@@ -1,7 +1,6 @@
 package uk.gov.ch.oauth;
 
 import com.nimbusds.jose.Payload;
-import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.session.Session;
 
 public interface IOauth {
@@ -24,5 +23,7 @@ public interface IOauth {
      */
     boolean oauth2VerifyNonce(final String Nonce);
 
-    UserProfileResponse getUserProfile(String code, Session chSession);
+    //  UserProfileResponse fetchUserProfile(String code);
+
+    boolean isValid(String state, String code);
 }

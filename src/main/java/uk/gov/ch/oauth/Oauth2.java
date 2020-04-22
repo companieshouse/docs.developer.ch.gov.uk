@@ -4,6 +4,7 @@ import com.nimbusds.jose.Payload;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
@@ -57,7 +58,6 @@ public class Oauth2 implements IOauth {
     public String oauth2EncodeState(final String returnUri,
             final String nonce,
             final String attributeName) {
-
         return oAuth2StateHandler.oauth2EncodeState(returnUri, nonce, attributeName);
     }
 
@@ -75,6 +75,31 @@ public class Oauth2 implements IOauth {
     @Override
     public Payload oauth2DecodeState(final String state) {
         return oAuth2StateHandler.oauth2DecodeState(state);
+    }
+
+    public boolean isValid(final String state, final String code) {
+        final String returnedNonce = getNonceFromState(state);
+        boolean valid = oauth2VerifyNonce(returnedNonce);
+        if (!valid) {
+            LOGGER.error("Invalid nonce value in state");
+        } else {
+            valid = extractUserProfile(code);
+            if (!valid) {
+                LOGGER.error("No user profile returned in OAuth");
+            }
+        }
+        return valid;
+    }
+
+    private boolean extractUserProfile(final String code) {
+        UserProfileResponse userProfileResponse = fetchUserProfile(code);
+        return userProfileResponse != null;
+    }
+
+    public String getNonceFromState(final String state) {
+        final Payload payload = oauth2DecodeState(state);
+        final JSONObject jsonObject = payload.toJSONObject();
+        return jsonObject.getAsString("nonce");
     }
 
     /**
@@ -109,29 +134,27 @@ public class Oauth2 implements IOauth {
         return oauth2Nonce;
     }
 
-    public UserProfileResponse getUserProfile(final String code, final Session chSession) {
-        LOGGER.debug("Requesting User Profile");
+    public UserProfileResponse fetchUserProfile(final String code) {
+        final OAuthToken oauthToken = requestOAuthToken(code);
 
-        final OAuthToken oauthToken = getOAuthToken(code);
-        final WebClient webClient = WebClient.create();
-        final URI profileUrl = URI.create(identityProvider.getProfileUrl());
-
-        final UserProfileResponse userProfile =
-                getUserProfileResponse(oauthToken, webClient, profileUrl);
+        final UserProfileResponse userProfile = requestUserProfile(oauthToken);
 
         final Map<String, Object> signInData = oauthToken.saveAccessToken();
         userProfile.addUserProfileToMap(signInData);
         signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
         final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
-        final Map<String, Object> sData = chSession.getData();
+        final Map<String, Object> sData = sessionFactory.getSessionDataFromContext();
 
         sData.merge(signInInfoKey, signInData, Oauth2::updateSignIn);
 
         return userProfile;
     }
 
-    private UserProfileResponse getUserProfileResponse(OAuthToken oauthToken, WebClient webClient,
-            URI profileUrl) {
+    private UserProfileResponse requestUserProfile(final OAuthToken oauthToken) {
+        LOGGER.debug("Requesting User Profile");
+        final URI profileUrl = URI.create(identityProvider.getProfileUrl());
+
+        final WebClient webClient = WebClient.create();
         final Mono<UserProfileResponse> userProfileResponse = webClient.get()
                 .uri(profileUrl)
                 .headers(h -> h.setBearerAuth(oauthToken.getToken()))
@@ -141,7 +164,7 @@ public class Oauth2 implements IOauth {
         return userProfileResponse.block(timeoutDuration);
     }
 
-    OAuthToken getOAuthToken(String code) {
+    OAuthToken requestOAuthToken(String code) {
         LOGGER.debug("Getting OAuth Token");
 
         final WebClient webClient = WebClient.create();
