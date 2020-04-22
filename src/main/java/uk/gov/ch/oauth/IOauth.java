@@ -10,7 +10,7 @@ public interface IOauth {
             final String nonce,
             final String attributeName);
 
-    String oauth2EncodeState(final String returnUri,
+    String encodeSignInState(final String returnUri,
             final Session sessions,
             final String attributeName);
 

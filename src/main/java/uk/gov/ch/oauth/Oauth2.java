@@ -1,17 +1,9 @@
 package uk.gov.ch.oauth;
 
-import com.nimbusds.jose.EncryptionMethod;
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWEAlgorithm;
-import com.nimbusds.jose.JWEHeader;
-import com.nimbusds.jose.JWEObject;
 import com.nimbusds.jose.Payload;
-import com.nimbusds.jose.crypto.DirectDecrypter;
-import com.nimbusds.jose.crypto.DirectEncrypter;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
@@ -38,11 +30,13 @@ public class Oauth2 implements IOauth {
     private final SessionFactory sessionFactory;
     private final Duration timeoutDuration = Duration.ofSeconds(10L);
     private final NonceGenerator nonceGenerator = new NonceGenerator();
+    private final OAuth2StateHandler oAuth2StateHandler;
 
     @Autowired
-    public Oauth2(final IIdentityProvider identityProvider, SessionFactory sessionFactory) {
+    public Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory) {
         this.identityProvider = identityProvider;
         this.sessionFactory = sessionFactory;
+        oAuth2StateHandler = new OAuth2StateHandler(this.identityProvider);
     }
 
     @SuppressWarnings("unchecked")
@@ -64,50 +58,23 @@ public class Oauth2 implements IOauth {
             final String nonce,
             final String attributeName) {
 
-        final JSONObject payloadJson = new JSONObject();
-        payloadJson.put(attributeName, returnUri);
-        payloadJson.put("nonce", nonce);
-
-        final Payload payload = new Payload(payloadJson);
-        final JWEHeader header = new JWEHeader(JWEAlgorithm.DIR, EncryptionMethod.A128CBC_HS256);
-        final JWEObject jweObject = new JWEObject(header, payload);
-
-        try {
-            final DirectEncrypter encrypter = new DirectEncrypter(identityProvider.getRequestKey());
-            jweObject.encrypt(encrypter);
-        } catch (final JOSEException e) {
-            LOGGER.error("Could not encode OAuth state", e);
-            return null;
-        }
-
-        return jweObject.serialize();
+        return oAuth2StateHandler.oauth2EncodeState(returnUri, nonce, attributeName);
     }
 
-    public String oauth2EncodeState(final String returnUri,
+    public String encodeSignInState(final String returnUri,
             final Session session,
             final String attributeName) {
-        return oauth2EncodeState(returnUri, nonceGenerator.setNonceForSession(session),
-                attributeName);
+        return oAuth2StateHandler
+                .oauth2EncodeState(returnUri, nonceGenerator.setNonceForSession(session),
+                        attributeName);
     }
-
 
     /**
      * Given a state encapsulating a JWE token, decode it into a {@link com.nimbusds.jose.Payload}
      */
     @Override
     public Payload oauth2DecodeState(final String state) {
-        Payload payload;
-        try {
-            final JWEObject jweObject = JWEObject.parse(state);
-
-            final byte[] key = identityProvider.getRequestKey();
-            jweObject.decrypt(new DirectDecrypter(key));
-            payload = jweObject.getPayload();
-        } catch (final Exception e) {
-            LOGGER.error("Could not decode OAuth state", e);
-            payload = null;
-        }
-        return payload;
+        return oAuth2StateHandler.oauth2DecodeState(state);
     }
 
     /**
