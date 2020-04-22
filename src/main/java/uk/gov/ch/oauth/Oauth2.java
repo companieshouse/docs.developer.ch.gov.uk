@@ -20,7 +20,11 @@ import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import uk.gov.ch.developer.docs.session.SessionService;
+import uk.gov.ch.oauth.identity.IIdentityProvider;
+import uk.gov.ch.oauth.nonce.NonceGenerator;
+import uk.gov.ch.oauth.session.SessionFactory;
+import uk.gov.ch.oauth.tokens.OAuthToken;
+import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
@@ -30,15 +34,15 @@ import uk.gov.companieshouse.session.SessionKeys;
 public class Oauth2 implements IOauth {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
-    final IIdentityProvider identityProvider;
+    private final IIdentityProvider identityProvider;
+    private final SessionFactory sessionFactory;
     private final Duration timeoutDuration = Duration.ofSeconds(10L);
+    private final NonceGenerator nonceGenerator = new NonceGenerator();
 
     @Autowired
-    private SessionService sessionService;
-
-    @Autowired
-    public Oauth2(final IIdentityProvider identityProvider) {
+    public Oauth2(final IIdentityProvider identityProvider, SessionFactory sessionFactory) {
         this.identityProvider = identityProvider;
+        this.sessionFactory = sessionFactory;
     }
 
     @SuppressWarnings("unchecked")
@@ -79,6 +83,14 @@ public class Oauth2 implements IOauth {
         return jweObject.serialize();
     }
 
+    public String oauth2EncodeState(final String returnUri,
+            final Session session,
+            final String attributeName) {
+        return oauth2EncodeState(returnUri, nonceGenerator.setNonceForSession(session),
+                attributeName);
+    }
+
+
     /**
      * Given a state encapsulating a JWE token, decode it into a {@link com.nimbusds.jose.Payload}
      */
@@ -100,14 +112,14 @@ public class Oauth2 implements IOauth {
 
     /**
      * Verify's Nonce against Session Nonce
-     * @param nonce
-     * @param sessionNonce
-     * @returns true if Nonce values match false otherwise
+     *
+     * @param nonce string to verify is correct
+     * @return true if Nonce values match false otherwise
      */
-    public boolean oauth2VerifyNonce(final String nonce, final String sessionNonce) {
+    public boolean oauth2VerifyNonce(final String nonce) {
         boolean retval = false;
         if (nonce != null) {
-            retval = nonce.equals(sessionNonce);
+            retval = nonce.equals(getSessionNonce());
         }
         return retval;
     }
@@ -118,10 +130,10 @@ public class Oauth2 implements IOauth {
      *
      * @return The Nonce String from within the session or null if not found.
      */
-    public String getSessionNonce(final Session chSession) {
+    private String getSessionNonce() {
         String oauth2Nonce = null;
         try {
-            final Map<String, Object> data = chSession.getData();
+            final Map<String, Object> data = sessionFactory.getSessionDataFromContext();
             oauth2Nonce = (String) data.remove(SessionKeys.NONCE.getKey());
             LOGGER.debug("Extracting nonce value");
         } catch (final Exception e) {
@@ -141,7 +153,7 @@ public class Oauth2 implements IOauth {
                 getUserProfileResponse(oauthToken, webClient, profileUrl);
 
         final Map<String, Object> signInData = oauthToken.saveAccessToken();
-        userProfile.setUserProfile(signInData);
+        userProfile.addUserProfileToMap(signInData);
         signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
         final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
         final Map<String, Object> sData = chSession.getData();
@@ -162,7 +174,7 @@ public class Oauth2 implements IOauth {
         return userProfileResponse.block(timeoutDuration);
     }
 
-    private OAuthToken getOAuthToken(String code) {
+    OAuthToken getOAuthToken(String code) {
         LOGGER.debug("Getting OAuth Token");
 
         final WebClient webClient = WebClient.create();

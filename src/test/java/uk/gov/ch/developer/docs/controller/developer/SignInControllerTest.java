@@ -2,7 +2,7 @@ package uk.gov.ch.developer.docs.controller.developer;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -15,8 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
+import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 
@@ -47,18 +47,13 @@ public class SignInControllerTest {
     @InjectMocks
     private SignInController signInController;
 
-    void setup() {
-        doReturn(NONCE).when(signInController).generateSessionNonce(any());
-        when(request.getRequestURL()).thenReturn(REQUEST_URL_STRING_BUFFER);
-        when(oauth.oauth2EncodeState(REQUEST_URL_STRING_BUFFER.toString(), NONCE, "content"))
-                .thenReturn(STATE);
-        when(identityProvider.getAuthorisationUrl(STATE)).thenReturn(AUTHORISE_URI);
-    }
-
     @Test
     void getSignInTest() throws IOException {
-        setup();
         when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
+        doNothing().when(signInController).redirectForAuth(
+                any(Session.class),
+                any(HttpServletRequest.class),
+                any(HttpServletResponse.class));
 
         signInController.getSignIn(request, response);
 
@@ -67,7 +62,10 @@ public class SignInControllerTest {
 
     @Test
     void redirectForAuthTest() throws IOException {
-        setup();
+        when(request.getRequestURL()).thenReturn(REQUEST_URL_STRING_BUFFER);
+        when(oauth.oauth2EncodeState(REQUEST_URL_STRING_BUFFER.toString(), session, "content"))
+                .thenReturn(STATE);
+        when(identityProvider.getAuthorisationUrl(STATE)).thenReturn(AUTHORISE_URI);
 
         signInController.redirectForAuth(session, request, response);
 

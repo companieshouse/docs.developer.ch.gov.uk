@@ -1,4 +1,4 @@
-package uk.gov.ch.oauth;
+package uk.gov.ch.oauth.identity;
 
 /**
  * Fields are based on the following yaml for old developer hub

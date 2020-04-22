@@ -2,17 +2,18 @@ package uk.gov.ch.developer.docs.controller.developer;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
+
+import com.nimbusds.jose.Payload;
 import javax.servlet.http.HttpServletRequest;
+import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.nimbusds.jose.Payload;
-import net.minidev.json.JSONObject;
-import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
+import uk.gov.ch.oauth.identity.IIdentityProvider;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

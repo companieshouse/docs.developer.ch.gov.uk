@@ -1,4 +1,4 @@
-package uk.gov.ch.oauth;
+package uk.gov.ch.oauth.identity;
 
 import java.util.Base64;
 import java.util.Base64.Decoder;
@@ -99,12 +99,9 @@ public class IdentityProvider implements IIdentityProvider {
 
     @Override
     public String getPostRequestBody(String code) {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("code=").append(code).append("&client_id=").append(getClientId())
-                .append("&client_secret=").append(getClientSecret()).append("&redirect_uri=")
-                .append(getRedirectUri()).append("&grant_type=").append(getGrantType());
-
-        return sb.toString();
+        return "code=" + code + "&client_id=" + getClientId()
+                + "&client_secret=" + getClientSecret() + "&redirect_uri="
+                + getRedirectUri() + "&grant_type=" + getGrantType();
     }
 
     public String getAuthorizationUri() {
