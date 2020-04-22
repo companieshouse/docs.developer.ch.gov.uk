@@ -61,6 +61,7 @@ public class Oauth2 implements IOauth {
         return oAuth2StateHandler.oauth2EncodeState(returnUri, nonce, attributeName);
     }
 
+    @Override
     public String encodeSignInState(final String returnUri,
             final Session session,
             final String attributeName) {
@@ -77,6 +78,7 @@ public class Oauth2 implements IOauth {
         return oAuth2StateHandler.oauth2DecodeState(state);
     }
 
+    @Override
     public boolean isValid(final String state, final String code) {
         final String returnedNonce = getNonceFromState(state);
         boolean valid = oauth2VerifyNonce(returnedNonce);
@@ -96,7 +98,7 @@ public class Oauth2 implements IOauth {
         return userProfileResponse != null;
     }
 
-    public String getNonceFromState(final String state) {
+    private String getNonceFromState(final String state) {
         final Payload payload = oauth2DecodeState(state);
         final JSONObject jsonObject = payload.toJSONObject();
         return jsonObject.getAsString("nonce");
@@ -108,7 +110,7 @@ public class Oauth2 implements IOauth {
      * @param nonce string to verify is correct
      * @return true if Nonce values match false otherwise
      */
-    public boolean oauth2VerifyNonce(final String nonce) {
+    private boolean oauth2VerifyNonce(final String nonce) {
         boolean retval = false;
         if (nonce != null) {
             retval = nonce.equals(getSessionNonce());
@@ -134,7 +136,7 @@ public class Oauth2 implements IOauth {
         return oauth2Nonce;
     }
 
-    public UserProfileResponse fetchUserProfile(final String code) {
+    private UserProfileResponse fetchUserProfile(final String code) {
         final OAuthToken oauthToken = requestOAuthToken(code);
 
         final UserProfileResponse userProfile = requestUserProfile(oauthToken);
