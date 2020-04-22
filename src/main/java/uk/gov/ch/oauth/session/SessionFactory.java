@@ -1,8 +1,11 @@
-package uk.gov.ch.developer.docs.session;
+package uk.gov.ch.oauth.session;
 
+import java.util.Map;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.session.Session;
+import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.session.store.Store;
+
 
 /**
  * This is a wrapper component for {@link uk.gov.companieshouse.session.SessionFactory} that allows
@@ -14,15 +17,15 @@ import uk.gov.companieshouse.session.store.Store;
 @Component
 public class SessionFactory {
 
-    private SessionFactory() {
+    public Map<String, Object> getSessionDataFromContext() {
+        return SessionHandler.getSessionDataFromContext();
     }
 
-    public Session getSessionByCookieId(final String cookieId) {
+    Session getSessionByCookieId(final String cookieId) {
         return uk.gov.companieshouse.session.SessionFactory.getSessionByCookieId(cookieId);
     }
 
     public Session createSession() {
         return getSessionByCookieId(null);
     }
-
 }

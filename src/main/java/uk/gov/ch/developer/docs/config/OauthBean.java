@@ -6,15 +6,15 @@ import uk.gov.ch.oauth.IOauth;
 import uk.gov.ch.oauth.Oauth2;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.identity.IdentityProvider;
-import uk.gov.ch.oauth.session.SessionUtils;
+import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.companieshouse.environment.EnvironmentReader;
 
 @Configuration
 public class OauthBean {
 
     @Bean
-    public IOauth oauth(IIdentityProvider identityProvider, SessionUtils sessionUtils) {
-        return new Oauth2(identityProvider, sessionUtils);
+    public IOauth oauth(IIdentityProvider identityProvider, SessionFactory sessionFactory) {
+        return new Oauth2(identityProvider, sessionFactory);
     }
 
     @Bean
@@ -23,7 +23,7 @@ public class OauthBean {
     }
 
     @Bean
-    SessionUtils sessionUtils() {
-        return new SessionUtils();
+    SessionFactory sessionFactory() {
+        return new SessionFactory();
     }
 }
