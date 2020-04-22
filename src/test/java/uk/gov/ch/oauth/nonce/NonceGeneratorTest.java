@@ -16,7 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.ch.oauth.session.SessionUtils;
+import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 
@@ -25,7 +25,7 @@ class NonceGeneratorTest {
 
     private static final String NONCE = "NONCE";
     @Mock
-    SessionUtils mockUtils;
+    SessionFactory mockUtils;
     @Mock
     Session mockSession;
     @Mock

@@ -5,7 +5,7 @@ import java.util.Random;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.gov.ch.oauth.session.SessionUtils;
+import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 
@@ -15,7 +15,7 @@ public class NonceGenerator implements INonceGenerator {
     private final Random random = new SecureRandom();
 
     @Autowired
-    SessionUtils sessionUtils;
+    SessionFactory sessionFactory;
 
     /**
      * Generates a nonce, adds it to the session and then returns the nonce.
@@ -28,7 +28,7 @@ public class NonceGenerator implements INonceGenerator {
     public String setNonceForSession(Session session) {
         // Generate and store a nonce in the session
         if (session == null) {
-            session = sessionUtils.createSession();
+            session = sessionFactory.createSession();
         }
         final String nonce = generateNonce();
         session.getData().put(SessionKeys.NONCE.getKey(), nonce);

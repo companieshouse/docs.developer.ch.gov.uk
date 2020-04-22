@@ -22,7 +22,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.nonce.NonceGenerator;
-import uk.gov.ch.oauth.session.SessionUtils;
+import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.ch.oauth.tokens.OAuthToken;
 import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.logging.Logger;
@@ -35,14 +35,14 @@ public class Oauth2 implements IOauth {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
     private final IIdentityProvider identityProvider;
-    private final SessionUtils sessionUtils;
+    private final SessionFactory sessionFactory;
     private final Duration timeoutDuration = Duration.ofSeconds(10L);
     private final NonceGenerator nonceGenerator = new NonceGenerator();
 
     @Autowired
-    public Oauth2(final IIdentityProvider identityProvider, SessionUtils sessionUtils) {
+    public Oauth2(final IIdentityProvider identityProvider, SessionFactory sessionFactory) {
         this.identityProvider = identityProvider;
-        this.sessionUtils = sessionUtils;
+        this.sessionFactory = sessionFactory;
     }
 
     @SuppressWarnings("unchecked")
@@ -112,8 +112,9 @@ public class Oauth2 implements IOauth {
 
     /**
      * Verify's Nonce against Session Nonce
-     * @param nonce
-     * @returns true if Nonce values match false otherwise
+     *
+     * @param nonce string to verify is correct
+     * @return true if Nonce values match false otherwise
      */
     public boolean oauth2VerifyNonce(final String nonce) {
         boolean retval = false;
@@ -132,7 +133,7 @@ public class Oauth2 implements IOauth {
     private String getSessionNonce() {
         String oauth2Nonce = null;
         try {
-            final Map<String, Object> data = sessionUtils.getSessionDataFromContext();
+            final Map<String, Object> data = sessionFactory.getSessionDataFromContext();
             oauth2Nonce = (String) data.remove(SessionKeys.NONCE.getKey());
             LOGGER.debug("Extracting nonce value");
         } catch (final Exception e) {
