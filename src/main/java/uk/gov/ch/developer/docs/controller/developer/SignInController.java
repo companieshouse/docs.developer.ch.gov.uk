@@ -1,21 +1,17 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
 import java.io.IOException;
-import java.security.SecureRandom;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import uk.gov.ch.developer.docs.session.SessionFactory;
-import uk.gov.ch.oauth.IIdentityProvider;
 import uk.gov.ch.oauth.IOauth;
+import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
-import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 
 @Controller
@@ -23,19 +19,12 @@ import uk.gov.companieshouse.session.handler.SessionHandler;
 public class SignInController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
-    private final SecureRandom random = new SecureRandom();
 
     @Autowired
     IOauth oauth;
 
     @Autowired
     IIdentityProvider identityProvider;
-
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    public SignInController() {
-    }
 
     private static String getRequestURL(final HttpServletRequest request) {
         // Find the original requested url
@@ -64,15 +53,14 @@ public class SignInController {
      *
      * @param session The user's session, retrieved from context
      */
-    protected void redirectForAuth(final Session session, final HttpServletRequest request,
+    void redirectForAuth(final Session session, final HttpServletRequest request,
             final HttpServletResponse response)
             throws IOException {
 
         final String originalRequestUrl = getRequestURL(request);
-        final String nonce = generateSessionNonce(session);
 
         // Build oauth uri and redirect
-        final String state = oauth.oauth2EncodeState(originalRequestUrl, nonce, "content");
+        final String state = oauth.oauth2EncodeState(originalRequestUrl, session, "content");
         final String authoriseUri = identityProvider.getAuthorisationUrl(state);
         response.sendRedirect(authoriseUri);
     }
@@ -99,30 +87,4 @@ public class SignInController {
                 + "&hint="
                 + hint;
     }
-
-    //TODO Move this onto the OAuth instance
-    protected String generateSessionNonce(final Session session) {
-        // Generate and store a nonce in the session
-        Session sessionToUpdate = session;
-        if (sessionToUpdate == null) {
-            sessionToUpdate = sessionFactory.createSession();
-        }
-        String nonce = generateNonce();
-        sessionToUpdate.getData().put(SessionKeys.NONCE.getKey(), nonce);
-        return nonce;
-    }
-
-    //TODO Move this into the OAuth object
-
-    /**
-     * Generates a secure unique key
-     *
-     * @return Base64 encoded unique key
-     */
-    private String generateNonce() {
-        byte[] bytes = new byte[5];
-        random.nextBytes(bytes);
-        return Base64.encodeBase64URLSafeString(bytes);
-    }
-
 }

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import uk.gov.ch.developer.docs.DocsWebApplication;
-import uk.gov.ch.oauth.IIdentityProvider;
+import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
