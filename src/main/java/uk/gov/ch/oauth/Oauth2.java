@@ -94,7 +94,7 @@ public class Oauth2 implements IOauth {
     }
 
     private boolean extractUserProfile(final String code) {
-        UserProfileResponse userProfileResponse = fetchUserProfile(code);
+       final UserProfileResponse userProfileResponse = fetchUserProfile(code);
         return userProfileResponse != null;
     }
 
@@ -139,8 +139,10 @@ public class Oauth2 implements IOauth {
     private UserProfileResponse fetchUserProfile(final String code) {
         final OAuthToken oauthToken = requestOAuthToken(code);
 
-        final UserProfileResponse userProfile = requestUserProfile(oauthToken);
-
+        UserProfileResponse userProfile = requestUserProfile(oauthToken);
+        if ((userProfile.getId() == null) || userProfile.getId().isEmpty()) {
+            return null;
+        }
         final Map<String, Object> signInData = oauthToken.saveAccessToken();
         userProfile.addUserProfileToMap(signInData);
         signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);

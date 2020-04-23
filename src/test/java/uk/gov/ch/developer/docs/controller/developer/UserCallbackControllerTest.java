@@ -1,7 +1,13 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import javax.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.Disabled;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,11 +21,11 @@ import uk.gov.ch.oauth.identity.IdentityProvider;
 @ExtendWith(MockitoExtension.class)
 public class UserCallbackControllerTest {
 
-    @Mock
-    private HttpServletRequest httpServletRequest;
-
+    public static final String HTTP_EXAMPLE_COM_REDIRECT = "http://example.com/redirect";
     @Mock
     IdentityProvider identityProvider;
+    @Mock
+    private HttpServletResponse servletResponse;
     @Mock
     private Oauth2 oauth2;
 
@@ -27,21 +33,46 @@ public class UserCallbackControllerTest {
     @Spy
     private UserCallbackController userCallbackController;
 
-    @Disabled
     @Test
-    @DisplayName("Checking result when the returned nonce does not match the one for the current session")
-    public void testGetCallbackBadNonce() {
-//        final String state = "dummy State";
-//        final String code = "dummy Code";
-//        doReturn("bad state nonce").when(userCallbackController).getNonceFromState(state);
-//
-//        final String callbackResult = userCallbackController
-//                .getCallback(state, code, httpServletRequest);
-//        assertEquals(UserCallbackController.DUMMY_ERROR_RESULT_MISMATCHED_NONCES, callbackResult);
+    @DisplayName("Checking result when state or code are invalid")
+    public void testGetCallbackInvalidCodeState() {
+        final String state = "dummy State";
+        final String code = "dummy Code";
+
+        doReturn(false).when(oauth2).isValid(state, code);
+
+        userCallbackController
+                .getCallback(state, code, servletResponse);
+        verify(servletResponse).setStatus(HttpServletResponse.SC_FORBIDDEN);
+        verifyNoMoreInteractions(servletResponse);
     }
 
-    @Disabled
     @Test
-    void getCallback() {
+    @DisplayName("Checking result when state or code are invalid")
+    public void testGetCallbackException() {
+        final String state = "dummy State";
+        final String code = "dummy Code";
+
+        doThrow(new RuntimeException("bad connection")).when(oauth2).isValid(state, code);
+
+        userCallbackController.getCallback(state, code, servletResponse);
+        verify(servletResponse).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        verifyNoMoreInteractions(servletResponse);
     }
+
+    @Test
+    @DisplayName("Checking result when state or code are valid")
+    public void testGetCallbackSuccess() throws IOException {
+        final String state = "dummy State";
+        final String code = "dummy Code";
+        when(identityProvider.getRedirectUriPage()).thenReturn(HTTP_EXAMPLE_COM_REDIRECT);
+
+        doReturn(true).when(oauth2).isValid(state, code);
+
+        userCallbackController
+                .getCallback(state, code, servletResponse);
+        verify(servletResponse).sendRedirect(HTTP_EXAMPLE_COM_REDIRECT);
+        verifyNoMoreInteractions(servletResponse);
+    }
+
 }

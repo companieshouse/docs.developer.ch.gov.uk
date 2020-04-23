@@ -1,6 +1,5 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,33 +26,20 @@ public class UserCallbackController {
     private IOauth oauth;
 
     @GetMapping
-    public void getCallback(@RequestParam("state") String state,
-            @RequestParam("code") String code, final HttpServletRequest httpServletRequest, final
-    HttpServletResponse httpServletResponse) {
+    public void getCallback(@RequestParam("state") String state, @RequestParam("code") String code,
+            final HttpServletResponse httpServletResponse) {
+        LOGGER.trace("Code:" + code);
+        LOGGER.trace("State:" + state);
         try {
-            LOGGER.trace("Code:" + code);
-            LOGGER.trace("State:" + state);
-
-            final boolean invalid = !oauth.isValid(state, code);
-            if (invalid) {
+            final boolean valid = oauth.isValid(state, code);
+            if (valid) {
+                httpServletResponse.sendRedirect(identityProvider.getRedirectUriPage());
+            } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            } else {//
-//            LOGGER.debug("Getting User Profile");
-//
-//            final boolean noProfile = noUserProfile(code);
-//            if (noProfile) {
-//                // TODO raise error
-//                LOGGER.error("No user profile returned in OAuth Callback");
-//                httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN,
-//                        DUMMY_ERROR_NO_USER_PROFILE_RETURNED);
-//                return;
-//            }
-                httpServletResponse.sendRedirect(
-                        identityProvider.getRedirectUriPage());// where sign-in was initiated
             }
         } catch (final Exception e) {
             LOGGER.error(e);
-            httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
