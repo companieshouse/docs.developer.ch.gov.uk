@@ -39,7 +39,6 @@ public class SignOutController {
         if (chSession.getSignInInfo().isSignedIn()) {
 
             final Map<String, Object> sessionData = chSession.getData();
-            LOGGER.debugContext("Sign Out", "Sign Out", sessionData);
             final Map<String, Object> signInInfo =
                     (Map<String, Object>) sessionData.get(SIGN_IN_INFO);
 
