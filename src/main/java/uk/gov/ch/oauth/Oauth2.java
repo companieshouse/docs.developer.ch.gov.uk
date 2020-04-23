@@ -142,30 +142,20 @@ public class Oauth2 implements IOauth {
         return oauth2Nonce;
     }
 
-    public UserProfileResponse getUserProfile(final String code, final Session chSession) {
+    public UserProfileResponse getUserProfile(final Session session, final OAuthToken oauthTokenResponse) {
         LOGGER.debug("Requesting User Profile");
 
-        final OAuthToken oauthToken = getOAuthToken(code);
-        
-        LOGGER.debug(chSession.getCookieId());
-        
-        chSession.clear();
-        
-        LOGGER.debug(chSession.getCookieId());
-        
-        sessionFactory.regenerateSession(chSession.getCookieId(), chSession.getData());
-        
         final WebClient webClient = WebClient.create();
         final URI profileUrl = URI.create(identityProvider.getProfileUrl());
 
         final UserProfileResponse userProfile =
-                getUserProfileResponse(oauthToken, webClient, profileUrl);
+                getUserProfileResponse(oauthTokenResponse, webClient, profileUrl);
 
-        final Map<String, Object> signInData = oauthToken.saveAccessToken();
+        final Map<String, Object> signInData = oauthTokenResponse.saveAccessToken();
         userProfile.addUserProfileToMap(signInData);
         signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
         final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
-        final Map<String, Object> sData = chSession.getData();
+        final Map<String, Object> sData = session.getData();
 
         sData.merge(signInInfoKey, signInData, Oauth2::updateSignIn);
 
@@ -183,7 +173,7 @@ public class Oauth2 implements IOauth {
         return userProfileResponse.block(timeoutDuration);
     }
 
-    OAuthToken getOAuthToken(String code) {
+    public OAuthToken getOAuthToken(String code) {
         LOGGER.debug("Getting OAuth Token");
 
         final WebClient webClient = WebClient.create();

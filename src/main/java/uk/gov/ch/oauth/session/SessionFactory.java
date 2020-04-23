@@ -32,8 +32,9 @@ public class SessionFactory {
     public Session createSession() {
         return getSessionByCookieId(null);
     }
-    
-    public Session regenerateSession(final String cookieId, Map<String, Object> data) {
+
+    public Session regenerateSession(final String cookieId, Map<String, Object> data, final Session chSession) {
+        chSession.clear();
         return new SessionImpl(store, cookieId, data);
     }
 

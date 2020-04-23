@@ -1,7 +1,11 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
+import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
+
 import com.nimbusds.jose.Payload;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.ch.developer.docs.DocsWebApplication;
 import uk.gov.ch.oauth.IOauth;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
+import uk.gov.ch.oauth.session.SessionFactory;
+import uk.gov.ch.oauth.tokens.OAuthToken;
 import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
@@ -30,9 +36,13 @@ public class UserCallbackController {
     @Autowired
     private IOauth oauth;
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @GetMapping
     public String getCallback(@RequestParam("state") String state,
-            @RequestParam("code") String code, final HttpServletRequest httpServletRequest) {
+                              @RequestParam("code") String code, final HttpServletRequest httpServletRequest, final
+                              HttpServletResponse httpServletResponse) {
         LOGGER.trace("Code:" + code);
         LOGGER.trace("State:" + state);
         final Session chSession = (Session) httpServletRequest
@@ -44,19 +54,23 @@ public class UserCallbackController {
             // return "redirect:/"; TODO redirect will not work, needs to be addressed for unmatched
             // Nonce values
         }
-        LOGGER.debugContext("Callback1", "Callback1", chSession.getData());
-        LOGGER.debug("Getting User Profile");
 
-        UserProfileResponse userProfileResponse = oauth.getUserProfile(code, chSession);
-        
-        LOGGER.debugContext("Callback 2", "Callback 2", chSession.getData());
+        OAuthToken oauthTokenResponse = oauth.getOAuthToken(code);
+
+        LOGGER.debug("Original Session ID: " + chSession.getCookieId());
+        final Map<String, Object> originalSessionData = chSession.getData();
+
+        Session session = sessionFactory
+                .regenerateSession(chSession.getCookieId(), originalSessionData, chSession);
+        httpServletResponse.addCookie(buildSessionCookie(session));
+        UserProfileResponse userProfileResponse = oauth.getUserProfile(session, oauthTokenResponse);
 
         if (userProfileResponse == null) {
             // TODO raise error
         }
 
         return ("redirect:" + identityProvider.getRedirectUriPage());// TODO redirect back to page
-                                                                     // where sign-in was initiated
+        // where sign-in was initiated
     }
 
     private String getNonceFromState(final String state) {
