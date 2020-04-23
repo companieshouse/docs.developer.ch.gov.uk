@@ -35,7 +35,7 @@ public class UserCallbackControllerTest {
 
     @Test
     @DisplayName("Checking result when state or code are invalid")
-    public void testGetCallbackInvalidCodeState() {
+    public void testGetCallbackInvalidCodeState() throws IOException {
         final String state = "dummy State";
         final String code = "dummy Code";
 
@@ -43,7 +43,7 @@ public class UserCallbackControllerTest {
 
         userCallbackController
                 .getCallback(state, code, servletResponse);
-        verify(servletResponse).setStatus(HttpServletResponse.SC_FORBIDDEN);
+        verify(servletResponse).sendError(HttpServletResponse.SC_FORBIDDEN);
         verifyNoMoreInteractions(servletResponse);
     }
 

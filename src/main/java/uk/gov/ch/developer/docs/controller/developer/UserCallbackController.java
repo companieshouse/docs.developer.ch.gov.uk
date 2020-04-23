@@ -35,7 +35,7 @@ public class UserCallbackController {
             if (valid) {
                 httpServletResponse.sendRedirect(identityProvider.getRedirectUriPage());
             } else {
-                httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
             }
         } catch (final Exception e) {
             LOGGER.error(e);
