@@ -59,7 +59,7 @@ public class SignInController {
         final String originalRequestUrl = getRequestURL(request);
 
         // Build oauth uri and redirect
-        final String state = oauth.oauth2EncodeState(originalRequestUrl, session, "content");
+        final String state = oauth.encodeSignInState(originalRequestUrl, session, "content");
         final String authoriseUri = identityProvider.getAuthorisationUrl(state);
         response.sendRedirect(authoriseUri);
     }

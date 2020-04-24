@@ -1,13 +1,6 @@
 package uk.gov.ch.oauth;
 
-import com.nimbusds.jose.EncryptionMethod;
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWEAlgorithm;
-import com.nimbusds.jose.JWEHeader;
-import com.nimbusds.jose.JWEObject;
 import com.nimbusds.jose.Payload;
-import com.nimbusds.jose.crypto.DirectDecrypter;
-import com.nimbusds.jose.crypto.DirectEncrypter;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
@@ -38,11 +31,13 @@ public class Oauth2 implements IOauth {
     private final SessionFactory sessionFactory;
     private final Duration timeoutDuration = Duration.ofSeconds(10L);
     private final NonceGenerator nonceGenerator = new NonceGenerator();
+    private final OAuth2StateHandler oAuth2StateHandler;
 
     @Autowired
-    public Oauth2(final IIdentityProvider identityProvider, SessionFactory sessionFactory) {
+    public Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory) {
         this.identityProvider = identityProvider;
         this.sessionFactory = sessionFactory;
+        oAuth2StateHandler = new OAuth2StateHandler(this.identityProvider);
     }
 
     @SuppressWarnings("unchecked")
@@ -63,51 +58,50 @@ public class Oauth2 implements IOauth {
     public String oauth2EncodeState(final String returnUri,
             final String nonce,
             final String attributeName) {
-
-        final JSONObject payloadJson = new JSONObject();
-        payloadJson.put(attributeName, returnUri);
-        payloadJson.put("nonce", nonce);
-
-        final Payload payload = new Payload(payloadJson);
-        final JWEHeader header = new JWEHeader(JWEAlgorithm.DIR, EncryptionMethod.A128CBC_HS256);
-        final JWEObject jweObject = new JWEObject(header, payload);
-
-        try {
-            final DirectEncrypter encrypter = new DirectEncrypter(identityProvider.getRequestKey());
-            jweObject.encrypt(encrypter);
-        } catch (final JOSEException e) {
-            LOGGER.error("Could not encode OAuth state", e);
-            return null;
-        }
-
-        return jweObject.serialize();
+        return oAuth2StateHandler.oauth2EncodeState(returnUri, nonce, attributeName);
     }
 
-    public String oauth2EncodeState(final String returnUri,
+    @Override
+    public String encodeSignInState(final String returnUri,
             final Session session,
             final String attributeName) {
-        return oauth2EncodeState(returnUri, nonceGenerator.setNonceForSession(session),
-                attributeName);
+        return oAuth2StateHandler
+                .oauth2EncodeState(returnUri, nonceGenerator.setNonceForSession(session),
+                        attributeName);
     }
-
 
     /**
      * Given a state encapsulating a JWE token, decode it into a {@link com.nimbusds.jose.Payload}
      */
-    @Override
-    public Payload oauth2DecodeState(final String state) {
-        Payload payload;
-        try {
-            final JWEObject jweObject = JWEObject.parse(state);
+    private Payload oauth2DecodeState(final String state) {
+        return oAuth2StateHandler.oauth2DecodeState(state);
+    }
 
-            final byte[] key = identityProvider.getRequestKey();
-            jweObject.decrypt(new DirectDecrypter(key));
-            payload = jweObject.getPayload();
-        } catch (final Exception e) {
-            LOGGER.error("Could not decode OAuth state", e);
-            payload = null;
+    @Override
+    public boolean isValid(final String state, final String code) {
+        final String returnedNonce = getNonceFromState(state);
+        boolean validNonce = oauth2VerifyNonce(returnedNonce);
+        if (validNonce) {
+            boolean validProfile = extractUserProfile(code);
+            if (validProfile) {
+                return true;
+            }
+            LOGGER.error("No user profile returned in OAuth");
+        } else {
+            LOGGER.error("Invalid nonce value in state");
         }
-        return payload;
+        return false;
+    }
+
+    private boolean extractUserProfile(final String code) {
+        final UserProfileResponse userProfileResponse = fetchUserProfile(code);
+        return userProfileResponse != null;
+    }
+
+    private String getNonceFromState(final String state) {
+        final Payload payload = oauth2DecodeState(state);
+        final JSONObject jsonObject = payload.toJSONObject();
+        return jsonObject.getAsString("nonce");
     }
 
     /**
@@ -116,7 +110,7 @@ public class Oauth2 implements IOauth {
      * @param nonce string to verify is correct
      * @return true if Nonce values match false otherwise
      */
-    public boolean oauth2VerifyNonce(final String nonce) {
+    private boolean oauth2VerifyNonce(final String nonce) {
         boolean retval = false;
         if (nonce != null) {
             retval = nonce.equals(getSessionNonce());
@@ -125,8 +119,8 @@ public class Oauth2 implements IOauth {
     }
 
     /**
-     * Extract the OAuth2 Nonce from the current session
-     * Removes Nonce value so can be validated once and replay attacks are more difficult
+     * Extract the OAuth2 Nonce from the current session Removes Nonce value so can be validated
+     * once and replay attacks are more difficult
      *
      * @return The Nonce String from within the session or null if not found.
      */
@@ -142,28 +136,29 @@ public class Oauth2 implements IOauth {
         return oauth2Nonce;
     }
 
-    public UserProfileResponse getUserProfile(final Session session, final OAuthToken oauthTokenResponse) {
-        LOGGER.debug("Requesting User Profile");
+    private UserProfileResponse fetchUserProfile(final String code) {
+        final OAuthToken oauthToken = requestOAuthToken(code);
 
-        final WebClient webClient = WebClient.create();
-        final URI profileUrl = URI.create(identityProvider.getProfileUrl());
-
-        final UserProfileResponse userProfile =
-                getUserProfileResponse(oauthTokenResponse, webClient, profileUrl);
-
-        final Map<String, Object> signInData = oauthTokenResponse.saveAccessToken();
+        final UserProfileResponse userProfile = requestUserProfile(oauthToken);
+        if ((userProfile.getId() == null) || userProfile.getId().isEmpty()) {
+            return null;
+        }
+        final Map<String, Object> signInData = oauthToken.saveAccessToken();
         userProfile.addUserProfileToMap(signInData);
         signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
         final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
-        final Map<String, Object> sData = session.getData();
+        final Map<String, Object> sData = sessionFactory.getSessionDataFromContext();
 
         sData.merge(signInInfoKey, signInData, Oauth2::updateSignIn);
 
         return userProfile;
     }
 
-    private UserProfileResponse getUserProfileResponse(OAuthToken oauthToken, WebClient webClient,
-            URI profileUrl) {
+    private UserProfileResponse requestUserProfile(final OAuthToken oauthToken) {
+        LOGGER.debug("Requesting User Profile");
+        final URI profileUrl = URI.create(identityProvider.getProfileUrl());
+
+        final WebClient webClient = WebClient.create();
         final Mono<UserProfileResponse> userProfileResponse = webClient.get()
                 .uri(profileUrl)
                 .headers(h -> h.setBearerAuth(oauthToken.getToken()))
@@ -173,7 +168,7 @@ public class Oauth2 implements IOauth {
         return userProfileResponse.block(timeoutDuration);
     }
 
-    public OAuthToken getOAuthToken(String code) {
+    OAuthToken requestOAuthToken(String code) {
         LOGGER.debug("Getting OAuth Token");
 
         final WebClient webClient = WebClient.create();
