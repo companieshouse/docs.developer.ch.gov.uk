@@ -28,8 +28,6 @@ public class UserCallbackController {
     @GetMapping
     public void getCallback(@RequestParam("state") String state, @RequestParam("code") String code,
             final HttpServletResponse httpServletResponse) {
-        LOGGER.trace("Code:" + code);
-        LOGGER.trace("State:" + state);
         try {
             final boolean valid = oauth.isValid(state, code);
             if (valid) {
