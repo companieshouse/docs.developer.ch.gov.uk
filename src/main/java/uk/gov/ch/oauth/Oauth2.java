@@ -139,7 +139,7 @@ public class Oauth2 implements IOauth {
     private UserProfileResponse fetchUserProfile(final String code) {
         final OAuthToken oauthToken = requestOAuthToken(code);
 
-        UserProfileResponse userProfile = requestUserProfile(oauthToken);
+        final UserProfileResponse userProfile = requestUserProfile(oauthToken);
         if ((userProfile.getId() == null) || userProfile.getId().isEmpty()) {
             return null;
         }

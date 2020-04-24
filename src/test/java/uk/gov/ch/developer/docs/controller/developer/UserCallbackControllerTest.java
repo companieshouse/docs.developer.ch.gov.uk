@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.oauth.Oauth2;
 import uk.gov.ch.oauth.identity.IdentityProvider;
@@ -30,7 +29,6 @@ public class UserCallbackControllerTest {
     private Oauth2 oauth2;
 
     @InjectMocks
-    @Spy
     private UserCallbackController userCallbackController;
 
     @Test
