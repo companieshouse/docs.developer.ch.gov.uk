@@ -80,16 +80,17 @@ public class Oauth2 implements IOauth {
     @Override
     public boolean isValid(final String state, final String code) {
         final String returnedNonce = getNonceFromState(state);
-        boolean valid = oauth2VerifyNonce(returnedNonce);
-        if (!valid) {
-            LOGGER.error("Invalid nonce value in state");
-        } else {
-            valid = extractUserProfile(code);
-            if (!valid) {
-                LOGGER.error("No user profile returned in OAuth");
+        boolean validNonce = oauth2VerifyNonce(returnedNonce);
+        if (validNonce) {
+            boolean validProfile = extractUserProfile(code);
+            if (validProfile) {
+                return true;
             }
+            LOGGER.error("No user profile returned in OAuth");
+        } else {
+            LOGGER.error("Invalid nonce value in state");
         }
-        return valid;
+        return false;
     }
 
     private boolean extractUserProfile(final String code) {
