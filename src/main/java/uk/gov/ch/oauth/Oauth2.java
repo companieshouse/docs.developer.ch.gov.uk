@@ -73,8 +73,7 @@ public class Oauth2 implements IOauth {
     /**
      * Given a state encapsulating a JWE token, decode it into a {@link com.nimbusds.jose.Payload}
      */
-    @Override
-    public Payload oauth2DecodeState(final String state) {
+    private Payload oauth2DecodeState(final String state) {
         return oAuth2StateHandler.oauth2DecodeState(state);
     }
 
@@ -94,7 +93,7 @@ public class Oauth2 implements IOauth {
     }
 
     private boolean extractUserProfile(final String code) {
-       final UserProfileResponse userProfileResponse = fetchUserProfile(code);
+        final UserProfileResponse userProfileResponse = fetchUserProfile(code);
         return userProfileResponse != null;
     }
 
@@ -119,8 +118,8 @@ public class Oauth2 implements IOauth {
     }
 
     /**
-     * Extract the OAuth2 Nonce from the current session
-     * Removes Nonce value so can be validated once and replay attacks are more difficult
+     * Extract the OAuth2 Nonce from the current session Removes Nonce value so can be validated
+     * once and replay attacks are more difficult
      *
      * @return The Nonce String from within the session or null if not found.
      */
