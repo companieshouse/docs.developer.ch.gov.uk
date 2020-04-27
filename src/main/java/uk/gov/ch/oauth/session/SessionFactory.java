@@ -4,7 +4,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.session.Session;
-import uk.gov.companieshouse.session.SessionImpl;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.session.store.Store;
 
@@ -17,12 +16,16 @@ import uk.gov.companieshouse.session.store.Store;
  */
 @Component
 public class SessionFactory {
-    
+
     @Autowired
     Store store;
 
     public Map<String, Object> getSessionDataFromContext() {
         return SessionHandler.getSessionDataFromContext();
+    }
+
+    public static Session getSessionByCookieId(Store store, String cookieId) {
+        return uk.gov.companieshouse.session.SessionFactory.getSessionByCookieId(store, cookieId);
     }
 
     Session getSessionByCookieId(final String cookieId) {
@@ -33,9 +36,14 @@ public class SessionFactory {
         return getSessionByCookieId(null);
     }
 
-    public Session regenerateSession(final String cookieId, Map<String, Object> data, final Session chSession) {
-        chSession.clear();
-        return new SessionImpl(store, cookieId, data);
+    public Session getSessionFromContext() {
+        return SessionHandler.getSessionFromContext();
     }
 
+    public Session regenerateSession(Map<String, Object> data, final Session chSession) {
+        chSession.clear();
+        final Session session = getSessionByCookieId(store, chSession.getCookieId());
+        session.setData(data);
+        return session;
+    }
 }

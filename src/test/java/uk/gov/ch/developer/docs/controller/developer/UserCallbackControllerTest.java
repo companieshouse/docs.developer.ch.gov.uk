@@ -37,7 +37,7 @@ public class UserCallbackControllerTest {
         final String state = "dummy State";
         final String code = "dummy Code";
 
-        doReturn(false).when(oauth2).isValid(state, code);
+        doReturn(false).when(oauth2).isValid(state, code, servletResponse);
 
         userCallbackController
                 .getCallback(state, code, servletResponse);
@@ -51,7 +51,8 @@ public class UserCallbackControllerTest {
         final String state = "dummy State";
         final String code = "dummy Code";
 
-        doThrow(new RuntimeException("bad connection")).when(oauth2).isValid(state, code);
+        doThrow(new RuntimeException("bad connection")).when(oauth2)
+                .isValid(state, code, servletResponse);
 
         userCallbackController.getCallback(state, code, servletResponse);
         verify(servletResponse).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -65,7 +66,7 @@ public class UserCallbackControllerTest {
         final String code = "dummy Code";
         when(identityProvider.getRedirectUriPage()).thenReturn(HTTP_EXAMPLE_COM_REDIRECT);
 
-        doReturn(true).when(oauth2).isValid(state, code);
+        doReturn(true).when(oauth2).isValid(state, code, servletResponse);
 
         userCallbackController
                 .getCallback(state, code, servletResponse);
