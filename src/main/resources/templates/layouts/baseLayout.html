@@ -40,16 +40,25 @@
   <div th:replace="fragments/betaBanner :: betaBanner"></div>
   <div th:replace="fragments/userBar :: userBar"></div>
   <div th:replace="fragments/backButtonLink :: backButtonLink"></div>
-  <main class="govuk-main-wrapper" id="main-content">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-one-third">
-        <div th:replace="fragments/navBar :: navBar"></div>
-      </div>
-      <div class="govuk-grid-column-two-thirds">
-        <div layout:fragment="content"></div>
-      </div>
+  <div th:switch="${isErrorPage}">
+    <!-- Non Error pages require Nav bar and do not have main wrapper in fragment -->
+    <div th:case="false" th:remove="tag">
+      <main class="govuk-main-wrapper" id="main-content">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-third">
+            <div th:replace="fragments/navBar :: navBar"></div>
+          </div>
+          <div class="govuk-grid-column-two-thirds">
+            <div layout:fragment="content"></div>
+          </div>
+        </div>
+      </main>
     </div>
-  </main>
+    <!-- Error pages come with their own main wrapper and no Nav Bar -->
+    <div th:case="true" th:remove="tag">
+      <div layout:fragment="content"></div>
+    </div>
+  </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 
@@ -70,7 +79,5 @@
     th:src="@{{cdnUrl}/javascripts/app/radio-buttons.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 <script
     th:src="@{{cdnUrl}/javascripts/app/piwik-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
-
-<!--<div th:replace="fragments/piwik :: piwik"></div>-->
 </body>
 </html>
