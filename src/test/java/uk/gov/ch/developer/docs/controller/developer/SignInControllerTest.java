@@ -63,7 +63,7 @@ public class SignInControllerTest {
     @Test
     void redirectForAuthTest() throws IOException {
         when(request.getRequestURL()).thenReturn(REQUEST_URL_STRING_BUFFER);
-        when(oauth.oauth2EncodeState(REQUEST_URL_STRING_BUFFER.toString(), session, "content"))
+        when(oauth.encodeSignInState(REQUEST_URL_STRING_BUFFER.toString(), session, "content"))
                 .thenReturn(STATE);
         when(identityProvider.getAuthorisationUrl(STATE)).thenReturn(AUTHORISE_URI);
 
