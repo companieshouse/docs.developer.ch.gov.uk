@@ -32,7 +32,7 @@ class DefaultErrorControllerTest {
     @DisplayName("404 Error")
     void test_GetInvalidURL_ReturnsView() {
         when(mockRequest.getAttribute(RequestDispatcher.ERROR_STATUS_CODE)).thenReturn(404);
-        when(controller.getNotFoundPath()).thenReturn("dev-hub/error/404error");
+        when(controller.getNotFoundPath()).thenReturn(NOT_FOUND_VIEW);
 
         String view = controller.get();
 
@@ -43,7 +43,7 @@ class DefaultErrorControllerTest {
     @DisplayName("Server Error")
     void test_InternalServerError_ReturnsView() {
         when(mockRequest.getAttribute(RequestDispatcher.ERROR_STATUS_CODE)).thenReturn(500);
-        when(controller.getServiceErrorPath()).thenReturn("dev-hub/error/serviceError");
+        when(controller.getServiceErrorPath()).thenReturn(SERVER_ERROR_VIEW);
 
         String view = controller.get();
 
