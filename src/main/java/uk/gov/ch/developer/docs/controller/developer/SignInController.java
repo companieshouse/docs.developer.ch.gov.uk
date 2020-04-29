@@ -44,7 +44,7 @@ public class SignInController {
         final Session chSession = (Session) httpServletRequest
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
         // Redirect for user authentication (no scope specified)
-        redirectForAuth(chSession, httpServletRequest, httpServletResponse);;
+        redirectForAuth(chSession, httpServletRequest, httpServletResponse);
     }
 
     /**
