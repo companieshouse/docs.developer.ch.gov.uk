@@ -11,9 +11,6 @@ public abstract class BaseController {
     protected static final Logger LOGGER = LoggerFactory
             .getLogger(BaseController.class.getName());
 
-    //ToDo: Can this be removed?
-    protected static final String ERROR_VIEW = "error";
-
     BaseController() {
 
     }
