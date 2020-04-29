@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.ch.developer.docs.DocsWebApplication;
 import uk.gov.ch.oauth.IOauth;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
-import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -26,9 +25,6 @@ public class UserCallbackController {
 
     @Autowired
     private IOauth oauth;
-
-    @Autowired
-    private SessionFactory sessionFactory;
 
     @GetMapping
     public void getCallback(@RequestParam("state") String state, @RequestParam("code") String code,

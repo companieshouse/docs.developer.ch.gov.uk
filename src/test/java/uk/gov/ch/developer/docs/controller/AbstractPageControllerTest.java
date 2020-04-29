@@ -1,18 +1,16 @@
 package uk.gov.ch.developer.docs.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.developer.docs.models.user.IUserModel;
-import uk.gov.ch.oauth.session.SessionFactory;
+import uk.gov.ch.developer.docs.session.SessionService;
 import uk.gov.companieshouse.session.Session;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractPageControllerTest {
@@ -24,11 +22,11 @@ class AbstractPageControllerTest {
     @Mock
     private Session mockSession;
     @Mock
-    private SessionFactory mockSessionFactory;
+    private SessionService mockSessionService;
 
     @Test
     void getUser() {
-        when(mockSessionFactory.getSessionFromContext()).thenReturn(mockSession);
+        when(mockSessionService.getSessionFromContext()).thenReturn(mockSession);
         IUserModel out = controller.getUserModel();
         assertEquals(mockUserModel, out);
         verify(mockUserModel, times(1)).populateUserDetails(mockSession);

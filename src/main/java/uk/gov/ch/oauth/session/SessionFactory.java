@@ -1,7 +1,8 @@
 package uk.gov.ch.oauth.session;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.companieshouse.logging.Logger;
+import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.session.store.Store;
@@ -18,15 +19,10 @@ import java.util.Map;
 @Component
 public class SessionFactory {
 
-    @Autowired
-    Store store;
+    private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
 
     public Map<String, Object> getSessionDataFromContext() {
         return SessionHandler.getSessionDataFromContext();
-    }
-
-    public static Session getSessionByCookieId(Store store, String cookieId) {
-        return uk.gov.companieshouse.session.SessionFactory.getSessionByCookieId(store, cookieId);
     }
 
     Session getSessionByCookieId(final String cookieId) {
@@ -41,10 +37,15 @@ public class SessionFactory {
         return SessionHandler.getSessionFromContext();
     }
 
-    public Session regenerateSession(final Session chSession) {
+    public Session regenerateSession() {
+        final Session chSession = getSessionFromContext();
+
+        LOGGER.debug("Original Session ID: " + chSession.getCookieId());
         final Map<String, Object> originalSessionData = chSession.getData();
+
         chSession.clear();
-        final Session session = getSessionByCookieId(store, chSession.getCookieId());
+
+        final Session session = getSessionByCookieId(chSession.getCookieId());
         session.setData(originalSessionData);
         return session;
     }

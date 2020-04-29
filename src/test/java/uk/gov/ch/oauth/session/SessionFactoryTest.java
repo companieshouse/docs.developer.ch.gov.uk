@@ -20,6 +20,8 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class SessionFactoryTest {
 
+    private static final String COOKIE_ID = "OldSessionID" + "signature";
+
     @Mock
     private Store store;
 
@@ -31,7 +33,7 @@ public class SessionFactoryTest {
 
     @Test
     public void testRegenerateSession() {
-        oldSession.setCookieId("OldSessionID" + "signature");
+        oldSession.setCookieId(COOKIE_ID);
 
         Map<String, Object> data = new HashMap<>();
         data.put(".zxs", "1234567890");
@@ -39,11 +41,11 @@ public class SessionFactoryTest {
 
         oldSession.setData(data);
 
-        Session newSession = sessionFactory.regenerateSession(oldSession);
+        Session newSession = sessionFactory.regenerateSession();
 
         verify(oldSession).clear();
 
-        assertNotEquals("OldSessionID" + "signature", newSession.getCookieId());
+        assertNotEquals(COOKIE_ID, newSession.getCookieId());
         assertNotEquals("OldSessionID", newSession.getData().get(".id"));
         assertEquals("1234567890", newSession.getData().get(".zxs"));
         assertEquals(2, newSession.getData().size());
