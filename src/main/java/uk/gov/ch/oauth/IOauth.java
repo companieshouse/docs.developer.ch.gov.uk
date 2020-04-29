@@ -2,6 +2,8 @@ package uk.gov.ch.oauth;
 
 import uk.gov.companieshouse.session.Session;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Handler for the OAuth sight in flow based on the requirements of the CH version of OAuth2
  */
@@ -40,5 +42,5 @@ public interface IOauth {
      * @param code Code string from the callback parameter
      * @return true if inputs are valid and relevant security information has been obtained
      */
-    boolean isValid(final String state, final String code);
+    boolean validate(String state, String code, HttpServletResponse httpServletResponse);
 }

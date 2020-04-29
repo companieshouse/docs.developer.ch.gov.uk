@@ -1,13 +1,5 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +8,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.oauth.Oauth2;
 import uk.gov.ch.oauth.identity.IdentityProvider;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserCallbackControllerTest {
@@ -37,7 +34,7 @@ public class UserCallbackControllerTest {
         final String state = "dummy State";
         final String code = "dummy Code";
 
-        doReturn(false).when(oauth2).isValid(state, code);
+        doReturn(false).when(oauth2).validate(state, code, servletResponse);
 
         userCallbackController
                 .getCallback(state, code, servletResponse);
@@ -51,7 +48,8 @@ public class UserCallbackControllerTest {
         final String state = "dummy State";
         final String code = "dummy Code";
 
-        doThrow(new RuntimeException("bad connection")).when(oauth2).isValid(state, code);
+        doThrow(new RuntimeException("bad connection")).when(oauth2)
+                .validate(state, code, servletResponse);
 
         userCallbackController.getCallback(state, code, servletResponse);
         verify(servletResponse).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -65,7 +63,7 @@ public class UserCallbackControllerTest {
         final String code = "dummy Code";
         when(identityProvider.getRedirectUriPage()).thenReturn(HTTP_EXAMPLE_COM_REDIRECT);
 
-        doReturn(true).when(oauth2).isValid(state, code);
+        doReturn(true).when(oauth2).validate(state, code, servletResponse);
 
         userCallbackController
                 .getCallback(state, code, servletResponse);

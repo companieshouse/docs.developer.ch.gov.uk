@@ -11,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.developer.docs.models.user.IUserModel;
-import uk.gov.ch.developer.docs.session.SessionService;
+import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.companieshouse.session.Session;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,11 +24,11 @@ class AbstractPageControllerTest {
     @Mock
     private Session mockSession;
     @Mock
-    private SessionService mockSessionService;
+    private SessionFactory mockSessionFactory;
 
     @Test
     void getUser() {
-        when(mockSessionService.getSessionFromContext()).thenReturn(mockSession);
+        when(mockSessionFactory.getSessionFromContext()).thenReturn(mockSession);
         IUserModel out = controller.getUserModel();
         assertEquals(mockUserModel, out);
         verify(mockUserModel, times(1)).populateUserDetails(mockSession);
