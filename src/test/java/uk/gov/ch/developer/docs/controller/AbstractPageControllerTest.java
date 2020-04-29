@@ -1,5 +1,10 @@
 package uk.gov.ch.developer.docs.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -8,9 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.developer.docs.models.user.IUserModel;
 import uk.gov.ch.developer.docs.session.SessionService;
 import uk.gov.companieshouse.session.Session;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractPageControllerTest {
