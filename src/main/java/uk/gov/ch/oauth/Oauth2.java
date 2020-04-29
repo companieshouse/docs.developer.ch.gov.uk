@@ -181,7 +181,7 @@ public class Oauth2 implements IOauth {
      * Use an oauth token to request user profile information from the OAuth server
      *
      * @param oauthToken Token to exchange for user date
-     * @return user profile data from the account service or an empty {@link UserProfileResponse} of
+     * @return user profile data from the account service or an empty {@link UserProfileResponse} if
      * the data was incompatible
      */
     private UserProfileResponse requestUserProfile(final OAuthToken oauthToken) {
