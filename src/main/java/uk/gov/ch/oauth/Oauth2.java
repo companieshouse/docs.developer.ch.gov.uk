@@ -1,9 +1,6 @@
 package uk.gov.ch.oauth;
 
 import com.nimbusds.jose.Payload;
-import java.net.URI;
-import java.time.Duration;
-import java.util.Map;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,6 +19,13 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
+
+import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
+import java.time.Duration;
+import java.util.Map;
+
+import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
 
 @Component
 public class Oauth2 implements IOauth {
@@ -78,11 +82,12 @@ public class Oauth2 implements IOauth {
     }
 
     @Override
-    public boolean isValid(final String state, final String code) {
+    public boolean validate(final String state, final String code,
+                            final HttpServletResponse httpServletResponse) {
         final String returnedNonce = getNonceFromState(state);
         boolean validNonce = oauth2VerifyNonce(returnedNonce);
         if (validNonce) {
-            boolean validProfile = extractUserProfile(code);
+            boolean validProfile = extractUserProfile(code, httpServletResponse);
             if (validProfile) {
                 return true;
             }
@@ -93,8 +98,9 @@ public class Oauth2 implements IOauth {
         return false;
     }
 
-    private boolean extractUserProfile(final String code) {
-        final UserProfileResponse userProfileResponse = fetchUserProfile(code);
+    private boolean extractUserProfile(final String code,
+            final HttpServletResponse httpServletResponse) {
+        final UserProfileResponse userProfileResponse = fetchUserProfile(code, httpServletResponse);
         return userProfileResponse != null;
     }
 
@@ -136,9 +142,10 @@ public class Oauth2 implements IOauth {
         return oauth2Nonce;
     }
 
-    private UserProfileResponse fetchUserProfile(final String code) {
+    private UserProfileResponse fetchUserProfile(final String code,
+            final HttpServletResponse httpServletResponse) {
         final OAuthToken oauthToken = requestOAuthToken(code);
-
+        regenerateSessionID(httpServletResponse);
         final UserProfileResponse userProfile = requestUserProfile(oauthToken);
         if ((userProfile.getId() == null) || userProfile.getId().isEmpty()) {
             return null;
@@ -186,5 +193,12 @@ public class Oauth2 implements IOauth {
                 .retrieve()
                 .bodyToMono(OAuthToken.class);
         return postReq.block(timeoutDuration);
+    }
+
+    private void regenerateSessionID(HttpServletResponse httpServletResponse) {
+        Session session = sessionFactory
+                .regenerateSession();
+
+        httpServletResponse.addCookie(buildSessionCookie(session));
     }
 }

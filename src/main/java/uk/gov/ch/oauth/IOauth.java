@@ -2,6 +2,8 @@ package uk.gov.ch.oauth;
 
 import uk.gov.companieshouse.session.Session;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface IOauth {
 
     String oauth2EncodeState(final String returnUri,
@@ -12,5 +14,5 @@ public interface IOauth {
             final Session sessions,
             final String attributeName);
 
-    boolean isValid(String state, String code);
+    boolean validate(String state, String code, HttpServletResponse httpServletResponse);
 }
