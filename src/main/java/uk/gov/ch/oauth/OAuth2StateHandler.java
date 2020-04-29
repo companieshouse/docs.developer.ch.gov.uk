@@ -13,8 +13,12 @@ import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
+/**
+ * Provides JWE specific functionality as a dedicated service for CH version of OAuth2
+ */
 public class OAuth2StateHandler {
 
+    //TODO correct domain for Logging
     private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
 
     private final IIdentityProvider identityProvider;
@@ -25,7 +29,6 @@ public class OAuth2StateHandler {
 
     /**
      * Encodes a URI with a nonce according to a JWE encoding algorithm
-     *
      * @return JWE encoded string, comprised of the return URI and a nonce
      */
     public String oauth2EncodeState(final String returnUri,
@@ -52,7 +55,9 @@ public class OAuth2StateHandler {
     }
 
     /**
-     * Given a state encapsulating a JWE token, decode it into a {@link Payload}
+     * Given a state encapsulating a JWE token, decrypt and decode it into a {@link Payload}
+     * @param state as returned to a sign in controller
+     * @return a {@link Payload} or {@code null} if the payload could not be found or decrypted.
      */
     public Payload oauth2DecodeState(final String state) {
         Payload payload;

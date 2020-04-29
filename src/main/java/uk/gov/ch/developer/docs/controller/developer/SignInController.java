@@ -65,7 +65,8 @@ public class SignInController {
     }
 
     /**
-     * Constructs the authorisation URI with additional force and hint
+     * Constructs the authorisation URI with additional force and hint Not used anywhere, except in
+     * a test.
      *
      * @param originalRequestUri Original URI from which to redirect
      * @param scope Scope of the request

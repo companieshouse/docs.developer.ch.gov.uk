@@ -1,5 +1,11 @@
 package uk.gov.ch.oauth.session;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,25 +16,16 @@ import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionImpl;
 import uk.gov.companieshouse.session.store.Store;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-
 @ExtendWith(MockitoExtension.class)
 public class SessionFactoryTest {
 
     private static final String COOKIE_ID = "OldSessionIDsignature";
-
+    @Mock
+    private final Session oldSession = new SessionImpl();
     @Mock
     private Store store;
     @Mock
-    private Session oldSession = new SessionImpl();
-    @Mock
-    private Session newSession = new SessionImpl();
-
+    private final Session newSession = new SessionImpl();
     @InjectMocks
     @Spy
     SessionFactory sessionFactory;

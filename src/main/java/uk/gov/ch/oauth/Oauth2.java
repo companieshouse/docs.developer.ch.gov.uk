@@ -1,6 +1,12 @@
 package uk.gov.ch.oauth;
 
+import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
+
 import com.nimbusds.jose.Payload;
+import java.net.URI;
+import java.time.Duration;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,13 +25,6 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
-
-import javax.servlet.http.HttpServletResponse;
-import java.net.URI;
-import java.time.Duration;
-import java.util.Map;
-
-import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
 
 @Component
 public class Oauth2 implements IOauth {
@@ -54,9 +53,12 @@ public class Oauth2 implements IOauth {
     }
 
     /**
-     * Encodes a URI with a nonce according to a JWE encoding algorithm
+     * {@inheritDoc}
      *
-     * @return JWE encoded string, comprised of the return URI and a nonce
+     * @param returnUri where to return to
+     * @param nonce single use number to check against session hijacks in OAuth flow
+     * @param attributeName always "email"
+     * @return s fully encoded oauth state URL
      */
     @Override
     public String oauth2EncodeState(final String returnUri,
@@ -65,6 +67,12 @@ public class Oauth2 implements IOauth {
         return oAuth2StateHandler.oauth2EncodeState(returnUri, nonce, attributeName);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param returnUri URI to which the signed in user should be returned after successful sign-in
+     * @param attributeName which type of attribute to use. Currently only "content"
+     */
     @Override
     public String encodeSignInState(final String returnUri,
             final Session session,
@@ -81,9 +89,17 @@ public class Oauth2 implements IOauth {
         return oAuth2StateHandler.oauth2DecodeState(state);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param state State string from the callback parameter
+     * @param code Code string from the callback parameter
+     * @param httpServletResponse for security the cookies and state of response need to be
+     * manipulated
+     */
     @Override
     public boolean validate(final String state, final String code,
-                            final HttpServletResponse httpServletResponse) {
+            final HttpServletResponse httpServletResponse) {
         final String returnedNonce = getNonceFromState(state);
         boolean validNonce = oauth2VerifyNonce(returnedNonce);
         if (validNonce) {
@@ -161,6 +177,13 @@ public class Oauth2 implements IOauth {
         return userProfile;
     }
 
+    /**
+     * Use an oauth token to request user profile information from the OAuth server
+     *
+     * @param oauthToken Token to exchange for user date
+     * @return user profile data from the account service or an empty {@link UserProfileResponse} if
+     * the data was incompatible
+     */
     private UserProfileResponse requestUserProfile(final OAuthToken oauthToken) {
         LOGGER.debug("Requesting User Profile");
         final URI profileUrl = URI.create(identityProvider.getProfileUrl());
