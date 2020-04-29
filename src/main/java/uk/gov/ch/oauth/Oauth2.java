@@ -219,10 +219,8 @@ public class Oauth2 implements IOauth {
     }
 
     private void regenerateSessionID(HttpServletResponse httpServletResponse) {
-        Session chSession = sessionFactory.getSessionFromContext();
-        LOGGER.debug("Original Session ID: " + chSession.getCookieId());
         Session session = sessionFactory
-                .regenerateSession(chSession);
+                .regenerateSession();
 
         httpServletResponse.addCookie(buildSessionCookie(session));
     }

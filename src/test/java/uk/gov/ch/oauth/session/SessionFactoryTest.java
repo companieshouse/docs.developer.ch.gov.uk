@@ -14,38 +14,42 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class SessionFactoryTest {
 
+    private static final String COOKIE_ID = "OldSessionIDsignature";
+
     @Mock
     private Store store;
+    @Mock
+    private Session oldSession = new SessionImpl();
+    @Mock
+    private Session newSession = new SessionImpl();
 
     @InjectMocks
-    SessionFactory sessionFactory;
-
     @Spy
-    Session oldSession = new SessionImpl();
+    SessionFactory sessionFactory;
 
     @Test
     public void testRegenerateSession() {
-        oldSession.setCookieId("OldSessionID" + "signature");
-
         Map<String, Object> data = new HashMap<>();
         data.put(".zxs", "1234567890");
         data.put(".id", "OldSessionID");
 
-        oldSession.setData(data);
+        doReturn(oldSession).when(sessionFactory).getSessionFromContext();
+        doReturn(data).when(oldSession).getData();
+        doReturn(COOKIE_ID).when(oldSession).getCookieId();
+        doReturn(newSession).when(sessionFactory).getSessionByCookieId(COOKIE_ID);
 
-        Session newSession = sessionFactory.regenerateSession(oldSession);
+        Session generatedSession = sessionFactory.regenerateSession();
 
+        verify(oldSession).getData();
         verify(oldSession).clear();
+        verify(newSession).setData(data);
 
-        assertNotEquals("OldSessionID" + "signature", newSession.getCookieId());
-        assertNotEquals("OldSessionID", newSession.getData().get(".id"));
-        assertEquals("1234567890", newSession.getData().get(".zxs"));
-        assertEquals(2, newSession.getData().size());
+        assertEquals(newSession, generatedSession);
     }
 }
