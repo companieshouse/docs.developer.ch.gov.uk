@@ -1,7 +1,8 @@
 package uk.gov.ch.oauth;
 
-import javax.servlet.http.HttpServletResponse;
 import uk.gov.companieshouse.session.Session;
+
+import javax.servlet.http.HttpServletResponse;
 
 public interface IOauth {
 
@@ -13,5 +14,5 @@ public interface IOauth {
             final Session sessions,
             final String attributeName);
 
-    boolean isValid(String state, String code, HttpServletResponse httpServletResponse);
+    boolean validate(String state, String code, HttpServletResponse httpServletResponse);
 }

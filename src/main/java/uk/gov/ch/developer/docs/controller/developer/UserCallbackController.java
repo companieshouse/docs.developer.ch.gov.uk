@@ -1,6 +1,5 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +11,8 @@ import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("${callback.url}")
@@ -33,10 +34,9 @@ public class UserCallbackController {
     public void getCallback(@RequestParam("state") String state, @RequestParam("code") String code,
             final HttpServletResponse httpServletResponse) {
         try {
-            final boolean valid = oauth.isValid(state, code, httpServletResponse);
+            final boolean valid = oauth.validate(state, code, httpServletResponse);
             if (valid) {
                 httpServletResponse.sendRedirect(identityProvider.getRedirectUriPage());
-
             } else {
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
             }
