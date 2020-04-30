@@ -50,6 +50,8 @@
             <home.url>${home.url}</home.url>
             <piwik.siteId>//</piwik.siteId>
             <piwik.url>//</piwik.url>
+
+            <pageNotFound.path>dev-hub/error/404Error</pageNotFound.path>
           </environmentVariables>
         </configuration>
         <dependencies>

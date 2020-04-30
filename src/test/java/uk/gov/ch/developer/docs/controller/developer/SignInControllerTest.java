@@ -1,6 +1,5 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -72,16 +71,4 @@ public class SignInControllerTest {
         verify(response).sendRedirect(AUTHORISE_URI);
     }
 
-    @Test
-    void createAuthoriseURIWithForceAndHintTest() {
-        final String hint = "hint value";
-        when(oauth.oauth2EncodeState(EMAIL, NONCE, "email"))
-                .thenReturn(hint);
-        when(identityProvider.getAuthorisationUrl(ORIGINAL_REQUEST_URI, SCOPE))
-                .thenReturn(AUTH_URL);
-
-        final String authoriseURIWithForceAndHint = signInController
-                .createAuthoriseURIWithForceAndHint(ORIGINAL_REQUEST_URI, SCOPE, NONCE, EMAIL);
-        assertEquals(AUTH_URL + "&reauthenticate=force&hint=" + hint, authoriseURIWithForceAndHint);
-    }
 }

@@ -11,8 +11,6 @@ public abstract class BaseController {
     protected static final Logger LOGGER = LoggerFactory
             .getLogger(BaseController.class.getName());
 
-    protected static final String ERROR_VIEW = "error";
-
     BaseController() {
 
     }
@@ -22,5 +20,10 @@ public abstract class BaseController {
 
     @ModelAttribute("templateTitle")
     public abstract String getTemplateTitle();
+
+    @ModelAttribute("isErrorPage")
+    public boolean isErrorPage() {
+        return false;
+    }
 
 }

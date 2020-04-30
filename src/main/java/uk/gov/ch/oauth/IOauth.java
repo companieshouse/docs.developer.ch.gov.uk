@@ -9,18 +9,6 @@ import uk.gov.companieshouse.session.Session;
 public interface IOauth {
 
     /**
-     * Only referenced in tests and an unused method in {@link uk.gov.ch.developer.docs.controller.developer.SignInController}
-     *
-     * @param attributeName always "email"
-     * @return ?
-     * @see uk.gov.ch.developer.docs.controller.developer.SignInController#createAuthoriseURIWithForceAndHint(String,
-     * String, String, String)
-     */
-    String oauth2EncodeState(final String returnUri,
-            final String nonce,
-            final String attributeName);
-
-    /**
      * Encodes a URI with suitable parameters to enable sign in flow during the redirect for
      * authentication
      *

@@ -13,19 +13,15 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.session.Session;
-import uk.gov.companieshouse.session.SessionImpl;
-import uk.gov.companieshouse.session.store.Store;
 
 @ExtendWith(MockitoExtension.class)
 public class SessionFactoryTest {
 
-    private static final String COOKIE_ID = "OldSessionIDsignature";
+    private static final String COOKIE_ID = "OldSessionIDSignature";
     @Mock
-    private final Session oldSession = new SessionImpl();
+    private Session oldSession;
     @Mock
-    private Store store;
-    @Mock
-    private final Session newSession = new SessionImpl();
+    private Session newSession;
     @InjectMocks
     @Spy
     SessionFactory sessionFactory;
