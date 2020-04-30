@@ -2,7 +2,7 @@
 #
 # Start script for docs.developer.ch.gov.uk
 
-APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if [[ -z "${MESOS_SLAVE_PID}" ]]; then
     source ~/.chs_env/private_env
