@@ -55,21 +55,6 @@ public class Oauth2 implements IOauth {
     /**
      * {@inheritDoc}
      *
-     * @param returnUri where to return to
-     * @param nonce single use number to check against session hijacks in OAuth flow
-     * @param attributeName always "email"
-     * @return s fully encoded oauth state URL
-     */
-    @Override
-    public String oauth2EncodeState(final String returnUri,
-            final String nonce,
-            final String attributeName) {
-        return oAuth2StateHandler.oauth2EncodeState(returnUri, nonce, attributeName);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
      * @param returnUri URI to which the signed in user should be returned after successful sign-in
      * @param attributeName which type of attribute to use. Currently only "content"
      */
