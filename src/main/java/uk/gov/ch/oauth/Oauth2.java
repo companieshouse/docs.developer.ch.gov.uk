@@ -54,9 +54,6 @@ public class Oauth2 implements IOauth {
 
     /**
      * {@inheritDoc}
-     *
-     * @param returnUri URI to which the signed in user should be returned after successful sign-in
-     * @param attributeName which type of attribute to use. Currently only "content"
      */
     @Override
     public String encodeSignInState(final String returnUri,
@@ -76,11 +73,6 @@ public class Oauth2 implements IOauth {
 
     /**
      * {@inheritDoc}
-     *
-     * @param state State string from the callback parameter
-     * @param code Code string from the callback parameter
-     * @param httpServletResponse for security the cookies and state of response need to be
-     * manipulated
      */
     @Override
     public boolean validate(final String state, final String code,
