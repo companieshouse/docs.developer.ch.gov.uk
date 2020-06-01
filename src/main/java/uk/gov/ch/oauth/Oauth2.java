@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -200,5 +202,21 @@ public class Oauth2 implements IOauth {
                 .regenerateSession();
 
         httpServletResponse.addCookie(buildSessionCookie(session));
+    }
+
+    @GetMapping
+    public boolean verifyState(@RequestParam("state") String state,
+            @RequestParam("nonce") String nonce) {
+        try {
+            Payload payload = oauth2DecodeState(state);
+            boolean nonceVerified = oauth2VerifyNonce(nonce);
+            if (nonceVerified && payload != null) {
+                return true;
+            }
+            return false;
+        } catch (final Exception e) {
+            LOGGER.error(e);
+            return false;
+        }
     }
 }
