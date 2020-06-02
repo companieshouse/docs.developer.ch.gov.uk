@@ -1,7 +1,6 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
 import java.io.IOException;
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +29,12 @@ public class SignOutController {
     @Autowired
     private Oauth2 oauth2;
 
+    public SignOutController() {
+    }
+
     @GetMapping("${signout.url}")
     public void doSignOut(final HttpServletResponse httpServletResponse,
-            final HttpServletRequest httpServletRequest) throws IOException {
+                          final HttpServletRequest httpServletRequest) throws IOException {
 
         LOGGER.debug("Processing sign out");
 
