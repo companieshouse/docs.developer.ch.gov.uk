@@ -25,6 +25,7 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
+import uk.gov.companieshouse.session.store.Store;
 
 @Component
 public class Oauth2 implements IOauth {
@@ -200,5 +201,27 @@ public class Oauth2 implements IOauth {
                 .regenerateSession();
 
         httpServletResponse.addCookie(buildSessionCookie(session));
+    }
+
+    public void invalidateSession(Session chSession, String signInfo, Store store){
+        final Map<String, Object> sessionData = chSession.getData();
+        if (chSession.getSignInInfo().isSignedIn()){
+            removeSessionInfo(sessionData, signInfo);
+            removeZXSInfo(sessionData, store);
+        }
+    }
+    private void removeSessionInfo(Map<String, Object> sessionData, String signInfo) {
+            final Map<String, Object> signInInfo =
+                    (Map<String, Object>) sessionData.get(signInfo);
+            signInInfo.replace(SessionKeys.SIGNED_IN.getKey(), 1, 0);
+            sessionData.remove(signInfo);
+    }
+    private void removeZXSInfo(Map<String, Object> sessionData, Store store) {
+        final String zxsKey = (String) sessionData.get(".zxs_key");// This is the id of cookie
+        // stored in redis
+        if (zxsKey != null) {
+            LOGGER.trace("Deleting ZXS info from cache");
+            store.delete(zxsKey);
+        }
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import uk.gov.ch.developer.docs.DocsWebApplication;
+import uk.gov.ch.oauth.Oauth2;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
@@ -26,6 +27,8 @@ public class SignOutController {
     private IIdentityProvider identityProviders;
     @Autowired
     private Store store;
+    @Autowired
+    private Oauth2 oauth2;
 
     @GetMapping("${signout.url}")
     public void doSignOut(final HttpServletResponse httpServletResponse,
@@ -36,22 +39,7 @@ public class SignOutController {
         final Session chSession = (Session) httpServletRequest
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
 
-        if (chSession.getSignInInfo().isSignedIn()) {
-
-            final Map<String, Object> sessionData = chSession.getData();
-            final Map<String, Object> signInInfo =
-                    (Map<String, Object>) sessionData.get(SIGN_IN_INFO);
-
-            signInInfo.replace(SessionKeys.SIGNED_IN.getKey(), 1, 0);
-            sessionData.remove(SIGN_IN_INFO);
-
-            final String zxsKey = (String) sessionData.get(".zxs_key");// This is the id of cookie
-                                                                       // stored in redis
-            if (zxsKey != null) {
-                LOGGER.trace("Deleting ZXS info from cache");
-                store.delete(zxsKey);
-            }
-        }
+        oauth2.invalidateSession(chSession, SIGN_IN_INFO, store);
         httpServletResponse.sendRedirect(identityProviders.getRedirectUriPage());
     }
 
