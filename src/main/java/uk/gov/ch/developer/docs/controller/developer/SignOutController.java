@@ -1,8 +1,5 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +12,10 @@ import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.session.store.Store;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 public class SignOutController {
@@ -40,7 +41,6 @@ public class SignOutController {
 
         final Session chSession = (Session) httpServletRequest
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-
         oauth2.invalidateSession(chSession, SIGN_IN_INFO, store);
         httpServletResponse.sendRedirect(identityProviders.getRedirectUriPage());
     }

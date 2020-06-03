@@ -1,11 +1,5 @@
 package uk.gov.ch.oauth;
 
-import static org.junit.Assert.assertFalse;
-import static org.mockito.Mockito.*;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,9 +8,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
-import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.session.model.SignInInfo;
 import uk.gov.companieshouse.session.store.Store;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class Oauth2Test {
@@ -33,7 +32,7 @@ public class Oauth2Test {
 
     @Test
     @DisplayName("Test that a valid signed in user's session state is correctly altered")
-    public void testInvalidateSessionWhenSignedIn() throws IOException {
+    public void testInvalidateSessionWhenSignedIn() {
         final String zxsValue = "0000000001z";
         signInInfo.setSignedIn(true);
         when(session.getSignInInfo()).thenReturn(signInInfo);
@@ -48,7 +47,7 @@ public class Oauth2Test {
 
     @Test
     @DisplayName("Test that a not signed in user is unable to alter session state")
-    public void testNotSignedInUserIsUnableToAlterTheSessionState() throws IOException {
+    public void testNotSignedInUserIsUnableToAlterTheSessionState() {
         final String zxsValue = "0000000001z";
         Map<String, Object> data = setUserSessionData(zxsValue);
         signInInfo.setSignedIn(false);
@@ -61,7 +60,7 @@ public class Oauth2Test {
 
     @Test
     @DisplayName("Test signout if the user has an invalid ZXSKey")
-    public void testSignoutWhenUserHasAnInvalidKey() throws IOException{
+    public void testSignoutWhenUserHasAnInvalidKey() {
         final String zxsValue = null;
         signInInfo.setSignedIn(true);
         when(session.getSignInInfo()).thenReturn(signInInfo);
