@@ -1,5 +1,11 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,13 +17,6 @@ import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.session.store.Store;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SignOutControllerTest {
@@ -49,8 +48,8 @@ public class SignOutControllerTest {
     }
 
     @Test
-    @DisplayName("Test that a valid signed in user's session state is correctly altered")
-    public void testDoSignOutWhenSignedIn() throws IOException {
+    @DisplayName("Test that a user is redirected upon signing out")
+    public void testDoSignOut() throws IOException {
         when(httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY))
                 .thenReturn(session);
         when(identityProviders.getRedirectUriPage()).thenReturn(REDIRECT_PAGE);

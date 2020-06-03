@@ -1,5 +1,13 @@
 package uk.gov.ch.oauth;
 
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,12 +18,6 @@ import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.model.SignInInfo;
 import uk.gov.companieshouse.session.store.Store;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.assertFalse;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class Oauth2Test {
@@ -46,7 +48,7 @@ public class Oauth2Test {
     }
 
     @Test
-    @DisplayName("Test that a not signed in user is unable to alter session state")
+    @DisplayName("Test that a not signed in user is unable to sign out")
     public void testNotSignedInUserIsUnableToAlterTheSessionState() {
         final String zxsValue = "0000000001z";
         Map<String, Object> data = setUserSessionData(zxsValue);
