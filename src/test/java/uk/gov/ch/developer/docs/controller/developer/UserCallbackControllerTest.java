@@ -1,5 +1,6 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -74,4 +75,8 @@ public class UserCallbackControllerTest {
         verifyNoMoreInteractions(servletResponse);
     }
 
+    @Test
+    void accessRefused() {
+        fail("Not implemented.");
+    }
 }

@@ -16,7 +16,7 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 
 @Controller
 @RequestMapping(DefaultErrorController.ERROR_MAPPING)
-
+//ToDo: implement 403 handling.
 public class DefaultErrorController extends AbstractPageController implements ErrorController {
 
 
@@ -32,6 +32,8 @@ public class DefaultErrorController extends AbstractPageController implements Er
 
     @Value("${error.internalService.path}")
     String serviceError;
+
+    String forbiddenPath;
 
     public DefaultErrorController() {
         super(TITLE);
@@ -65,6 +67,8 @@ public class DefaultErrorController extends AbstractPageController implements Er
                 return getNotFoundPath();
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                 return getServiceErrorPath();
+            } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
+                return serviceError;
             }
         }
         // display generic error
@@ -94,6 +98,10 @@ public class DefaultErrorController extends AbstractPageController implements Er
 
     String getNotFoundPath() {
         return notFoundPath;
+    }
+
+    String getForbiddenErrorPath() {
+        return forbiddenPath;
     }
 
     String getServiceErrorPath() {
