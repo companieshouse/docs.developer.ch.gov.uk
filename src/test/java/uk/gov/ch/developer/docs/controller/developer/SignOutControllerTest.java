@@ -10,7 +10,6 @@ import uk.gov.ch.oauth.Oauth2;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
-import uk.gov.companieshouse.session.model.SignInInfo;
 import uk.gov.companieshouse.session.store.Store;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,11 +36,17 @@ public class SignOutControllerTest {
     private Session session;
     @Mock
     private Oauth2 oauth2;
-
-    private final SignInInfo signInInfo = new SignInInfo();
-
     @InjectMocks
     private SignOutController signOutController;
+
+    @Test
+    @DisplayName("Test that invalidate Session Is Called when signing out")
+    public void testThatInvalidateSessionIsCalled() throws IOException {
+        when(httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY))
+                .thenReturn(session);
+        signOutController.doSignOut(httpServletResponse, httpServletRequest);
+        verify(oauth2).invalidateSession(session, store);
+    }
 
     @Test
     @DisplayName("Test that a valid signed in user's session state is correctly altered")
@@ -52,4 +57,5 @@ public class SignOutControllerTest {
         signOutController.doSignOut(httpServletResponse, httpServletRequest);
         verify(httpServletResponse).sendRedirect(REDIRECT_PAGE);
     }
+
 }

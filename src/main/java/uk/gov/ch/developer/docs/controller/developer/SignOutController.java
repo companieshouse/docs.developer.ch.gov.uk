@@ -9,7 +9,6 @@ import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
-import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.session.store.Store;
 
@@ -21,7 +20,7 @@ import java.io.IOException;
 public class SignOutController {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(DocsWebApplication.APPLICATION_NAME_SPACE);
-    private static final String SIGN_IN_INFO = SessionKeys.SIGN_IN_INFO.getKey();
+    //private static final String SIGN_IN_INFO = SessionKeys.SIGN_IN_INFO.getKey();
 
     @Autowired
     private IIdentityProvider identityProviders;
@@ -41,7 +40,7 @@ public class SignOutController {
 
         final Session chSession = (Session) httpServletRequest
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-        oauth2.invalidateSession(chSession, SIGN_IN_INFO, store);
+        oauth2.invalidateSession(chSession, store);
         httpServletResponse.sendRedirect(identityProviders.getRedirectUriPage());
     }
 

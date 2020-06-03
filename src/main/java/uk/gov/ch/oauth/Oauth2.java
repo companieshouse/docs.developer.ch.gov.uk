@@ -1,12 +1,6 @@
 package uk.gov.ch.oauth;
 
-import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
-
 import com.nimbusds.jose.Payload;
-import java.net.URI;
-import java.time.Duration;
-import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,6 +21,13 @@ import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.store.Store;
 
+import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
+import java.time.Duration;
+import java.util.Map;
+
+import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
+
 @Component
 public class Oauth2 implements IOauth {
 
@@ -36,6 +37,8 @@ public class Oauth2 implements IOauth {
     private final Duration timeoutDuration = Duration.ofSeconds(10L);
     private final NonceGenerator nonceGenerator = new NonceGenerator();
     private final OAuth2StateHandler oAuth2StateHandler;
+    private static final String SIGN_IN_INFO = SessionKeys.SIGN_IN_INFO.getKey();
+
 
     @Autowired
     public Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory) {
@@ -203,22 +206,22 @@ public class Oauth2 implements IOauth {
         httpServletResponse.addCookie(buildSessionCookie(session));
     }
 
-    public void invalidateSession(Session chSession, String signInfo, Store store){
+    public void invalidateSession(Session chSession, Store store) {
         final Map<String, Object> sessionData = chSession.getData();
-        if (chSession.getSignInInfo().isSignedIn()){
-            removeSessionInfo(sessionData, signInfo);
+        if (chSession.getSignInInfo().isSignedIn()) {
+            removeSessionInfo(sessionData, SIGN_IN_INFO);
             removeZXSInfo(sessionData, store);
         }
     }
+
     private void removeSessionInfo(Map<String, Object> sessionData, String signInfo) {
-            final Map<String, Object> signInInfo =
-                    (Map<String, Object>) sessionData.get(signInfo);
-            signInInfo.replace(SessionKeys.SIGNED_IN.getKey(), 1, 0);
-            sessionData.remove(signInfo);
+        final Map<String, Object> signInInfo =
+                (Map<String, Object>) sessionData.get(signInfo);
+        signInInfo.replace(SessionKeys.SIGNED_IN.getKey(), 1, 0);
+        sessionData.remove(signInfo);
     }
     private void removeZXSInfo(Map<String, Object> sessionData, Store store) {
-        final String zxsKey = (String) sessionData.get(".zxs_key");// This is the id of cookie
-        // stored in redis
+        final String zxsKey = (String) sessionData.get(".zxs_key");// This is the id of cookie stored in redis
         if (zxsKey != null) {
             LOGGER.trace("Deleting ZXS info from cache");
             store.delete(zxsKey);

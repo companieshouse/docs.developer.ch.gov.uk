@@ -38,7 +38,7 @@ public class Oauth2Test {
         when(session.getSignInInfo()).thenReturn(signInInfo);
         Map<String, Object> data = setUserSessionData(zxsValue);
         when(session.getData()).thenReturn(data);
-        oauth2.invalidateSession(session, SessionKeys.SIGN_IN_INFO.getKey(), store);
+        oauth2.invalidateSession(session, store);
 
         assertFalse(data.containsKey(SessionKeys.SIGN_IN_INFO.getKey()));
         verify(store, only()).delete(zxsValue);
@@ -53,7 +53,7 @@ public class Oauth2Test {
         signInInfo.setSignedIn(false);
         when(session.getSignInInfo()).thenReturn(signInInfo);
         when(session.getData()).thenReturn(data);
-        oauth2.invalidateSession(session, SessionKeys.SIGN_IN_INFO.getKey(), store);
+        oauth2.invalidateSession(session, store);
 
         verifyNoMoreInteractions(session);
     }
@@ -66,7 +66,7 @@ public class Oauth2Test {
         when(session.getSignInInfo()).thenReturn(signInInfo);
         Map<String, Object> data = setUserSessionData(zxsValue);
         when(session.getData()).thenReturn(data);
-        oauth2.invalidateSession(session, SessionKeys.SIGN_IN_INFO.getKey(), store);
+        oauth2.invalidateSession(session, store);
 
         assertFalse(data.containsKey(SessionKeys.SIGN_IN_INFO.getKey()));
         verifyNoMoreInteractions(session);
