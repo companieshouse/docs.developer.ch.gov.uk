@@ -29,9 +29,6 @@ public class SignOutController {
     @Autowired
     private Oauth2 oauth2;
 
-    public SignOutController() {
-    }
-
     @GetMapping("${signout.url}")
     public void doSignOut(final HttpServletResponse httpServletResponse,
                           final HttpServletRequest httpServletRequest) throws IOException {

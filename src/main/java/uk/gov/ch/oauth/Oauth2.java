@@ -209,17 +209,18 @@ public class Oauth2 implements IOauth {
     public void invalidateSession(Session chSession, Store store) {
         final Map<String, Object> sessionData = chSession.getData();
         if (chSession.getSignInInfo().isSignedIn()) {
-            removeSessionInfo(sessionData, SIGN_IN_INFO);
+            removeSessionInfo(sessionData);
             removeZXSInfo(sessionData, store);
         }
     }
 
-    private void removeSessionInfo(Map<String, Object> sessionData, String signInfo) {
+    private void removeSessionInfo(Map<String, Object> sessionData) {
         final Map<String, Object> signInInfo =
-                (Map<String, Object>) sessionData.get(signInfo);
+                (Map<String, Object>) sessionData.get(SIGN_IN_INFO);
         signInInfo.replace(SessionKeys.SIGNED_IN.getKey(), 1, 0);
-        sessionData.remove(signInfo);
+        sessionData.remove(SIGN_IN_INFO);
     }
+
     private void removeZXSInfo(Map<String, Object> sessionData, Store store) {
         final String zxsKey = (String) sessionData.get(".zxs_key");// This is the id of cookie stored in redis
         if (zxsKey != null) {
