@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.ClientResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -38,34 +39,33 @@ public class Oauth2Test {
     @Mock
     public ClientResponse response;
 
+    private static OAuthToken oauthToken;
 
     @InjectMocks
     public Oauth2 oauth2;
 
     @BeforeAll
-    static void setUp() throws IOException {
+    public static void setUp() throws IOException {
         mockServer = new MockWebServer();
         mockServer.start();
+
+        oauthToken = new OAuthToken();
+
+        oauthToken.setExpiresIn(3600);
+        oauthToken.setRefreshToken("refreshToken");
+        oauthToken.setToken("token");
+        oauthToken.setTokenType("Bearer");
     }
 
     @AfterAll
-    static void tearDown() throws IOException {
+    public static void tearDown() throws IOException {
         mockServer.shutdown();
     }
 
     @Test
     @DisplayName("Test that an empty userProfileResponse object is returned when OAuth server returns a 403 response")
     public void testRequestUserProfileWithAForbiddenResponse() throws Exception {
-
-        OAuthToken oauthToken = new OAuthToken();
-
-        oauthToken.setExpiresIn(3600);
-        oauthToken.setRefreshToken("refreshToken");
-        oauthToken.setToken("token");
-        oauthToken.setTokenType("Bearer");
-
         HttpUrl url = mockServer.url("/user/profile");
-
         when(identityProvider.getProfileUrl()).thenReturn(url.toString());
 
         mockServer.enqueue(new MockResponse()
@@ -85,23 +85,18 @@ public class Oauth2Test {
     @Test
     @DisplayName("Test that the expected userProfileResponse object is returned when OAuth server returns a 202 response")
     public void testRequestUserProfileWithASuccessfulResponse() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
 
-        OAuthToken oauthToken = new OAuthToken();
-
-        oauthToken.setExpiresIn(3600);
-        oauthToken.setRefreshToken("refreshToken");
-        oauthToken.setToken("token");
-        oauthToken.setTokenType("Bearer");
+        UserProfileResponse userProfile = new UserProfileResponse();
+        userProfile.setEmail("demo@test.gov.uk");
 
         HttpUrl url = mockServer.url("/user/profile");
-
         when(identityProvider.getProfileUrl()).thenReturn(url.toString());
 
         mockServer.enqueue(new MockResponse()
                 .setResponseCode(HttpStatus.ACCEPTED.value())
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                .setBody(
-                        "{\"surname\":null,\"forename\":null,\"locale\":\"GB_en\",\"email\":\"demo@test.gov.uk\",\"id\":\"12345\"}"));
+                .setBody(mapper.writeValueAsString(userProfile)));
 
         UserProfileResponse userProfileResponse = oauth2.requestUserProfile(oauthToken);
 
@@ -113,6 +108,5 @@ public class Oauth2Test {
         assertEquals("GET", recordedRequest.getMethod());
         assertEquals("/user/profile", recordedRequest.getPath());
     }
-
 
 }
