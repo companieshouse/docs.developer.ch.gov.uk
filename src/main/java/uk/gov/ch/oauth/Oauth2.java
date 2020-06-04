@@ -35,6 +35,9 @@ public class Oauth2 implements IOauth {
     private final Duration timeoutDuration = Duration.ofSeconds(10L);
     private final NonceGenerator nonceGenerator = new NonceGenerator();
     private final OAuth2StateHandler oAuth2StateHandler;
+    private static final String SIGN_IN_INFO = SessionKeys.SIGN_IN_INFO.getKey();
+
+
 
     @Autowired
     public Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory) {
@@ -200,5 +203,28 @@ public class Oauth2 implements IOauth {
                 .regenerateSession();
 
         httpServletResponse.addCookie(buildSessionCookie(session));
+    }
+
+    public void invalidateSession(Session chSession) {
+        final Map<String, Object> sessionData = chSession.getData();
+        if (chSession.getSignInInfo().isSignedIn()) {
+            removeSignInInfo(sessionData);
+            removeZXSInfo(sessionData);
+        }
+    }
+
+    private void removeSignInInfo(Map<String, Object> sessionData) {
+        final Map<String, Object> signInInfo =
+                (Map<String, Object>) sessionData.get(SIGN_IN_INFO);
+        signInInfo.replace(SessionKeys.SIGNED_IN.getKey(), 1, 0);
+        sessionData.remove(SIGN_IN_INFO);
+    }
+
+    private void removeZXSInfo(Map<String, Object> sessionData) {
+        final String zxsKey = (String) sessionData.get(".zxs_key");// This is the id of cookie stored in redis
+        if (zxsKey != null) {
+            LOGGER.trace("Deleting ZXS info from cache");
+            sessionFactory.getDefaultStore().delete(zxsKey);
+        }
     }
 }

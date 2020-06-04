@@ -1,13 +1,12 @@
 package uk.gov.ch.oauth.session;
 
+import java.util.Map;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.session.store.Store;
-
-import java.util.Map;
 
 /**
  * This is a wrapper component for {@link uk.gov.companieshouse.session.SessionFactory} that allows
@@ -48,5 +47,9 @@ public class SessionFactory {
         final Session session = getSessionByCookieId(chSession.getCookieId());
         session.setData(originalSessionData);
         return session;
+    }
+
+    public Store getDefaultStore() {
+        return uk.gov.companieshouse.session.SessionFactory.getDefaultStoreImpl();
     }
 }

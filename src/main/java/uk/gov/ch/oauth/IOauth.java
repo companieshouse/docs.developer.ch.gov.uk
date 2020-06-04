@@ -32,4 +32,11 @@ public interface IOauth {
      * @return true if inputs are valid and relevant security information has been obtained
      */
     boolean validate(String state, String code, HttpServletResponse httpServletResponse);
+
+    /**
+     * Removes SignIn info and ZXS info from a signed-in session.
+     *
+     * @param chSession The active session.
+     */
+    void invalidateSession(Session chSession);
 }
