@@ -13,7 +13,6 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
-import uk.gov.companieshouse.session.store.Store;
 
 @Controller
 public class SignOutController {
@@ -22,8 +21,6 @@ public class SignOutController {
 
     @Autowired
     private IIdentityProvider identityProviders;
-    @Autowired
-    private Store store;
     @Autowired
     private Oauth2 oauth2;
 
@@ -35,7 +32,7 @@ public class SignOutController {
 
         final Session chSession = (Session) httpServletRequest
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-        oauth2.invalidateSession(chSession, store);
+        oauth2.invalidateSession(chSession);
         httpServletResponse.sendRedirect(identityProviders.getRedirectUriPage());
     }
 

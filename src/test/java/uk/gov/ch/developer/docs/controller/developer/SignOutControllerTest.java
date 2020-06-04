@@ -16,7 +16,6 @@ import uk.gov.ch.oauth.Oauth2;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
-import uk.gov.companieshouse.session.store.Store;
 
 @ExtendWith(MockitoExtension.class)
 public class SignOutControllerTest {
@@ -25,8 +24,6 @@ public class SignOutControllerTest {
 
     @Mock
     private IIdentityProvider identityProviders;
-    @Mock
-    private Store store;
     @Mock
     private HttpServletRequest httpServletRequest;
     @Mock
@@ -44,7 +41,7 @@ public class SignOutControllerTest {
         when(httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY))
                 .thenReturn(session);
         signOutController.doSignOut(httpServletResponse, httpServletRequest);
-        verify(oauth2).invalidateSession(session, store);
+        verify(oauth2).invalidateSession(session);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package uk.gov.ch.oauth;
 
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -8,12 +9,14 @@ import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.model.SignInInfo;
@@ -29,8 +32,15 @@ public class Oauth2Test {
 
     private final SignInInfo signInInfo = new SignInInfo();
 
+    @Mock
+    private SessionFactory sessionFactory;
     @InjectMocks
     private Oauth2 oauth2;
+
+    @BeforeEach
+    public void setUp() {
+        lenient().when(sessionFactory.getDefaultStore()).thenReturn(store);
+    }
 
     @Test
     @DisplayName("Test that a valid signed in user's session state is correctly altered")
@@ -40,7 +50,7 @@ public class Oauth2Test {
         when(session.getSignInInfo()).thenReturn(signInInfo);
         Map<String, Object> data = setUserSessionData(zxsValue);
         when(session.getData()).thenReturn(data);
-        oauth2.invalidateSession(session, store);
+        oauth2.invalidateSession(session);
 
         assertFalse(data.containsKey(SessionKeys.SIGN_IN_INFO.getKey()));
         verify(store, only()).delete(zxsValue);
@@ -49,13 +59,13 @@ public class Oauth2Test {
 
     @Test
     @DisplayName("Test that a not signed in user is unable to sign out")
-    public void testNotSignedInUserIsUnableSignOut() {
+    public void testNotSignedOutUserIsUnableSignOut() {
         final String zxsValue = "0000000001z";
         Map<String, Object> data = setUserSessionData(zxsValue);
         signInInfo.setSignedIn(false);
         when(session.getSignInInfo()).thenReturn(signInInfo);
         when(session.getData()).thenReturn(data);
-        oauth2.invalidateSession(session, store);
+        oauth2.invalidateSession(session);
 
         verifyNoMoreInteractions(session);
     }
@@ -68,7 +78,7 @@ public class Oauth2Test {
         when(session.getSignInInfo()).thenReturn(signInInfo);
         Map<String, Object> data = setUserSessionData(zxsValue);
         when(session.getData()).thenReturn(data);
-        oauth2.invalidateSession(session, store);
+        oauth2.invalidateSession(session);
 
         assertFalse(data.containsKey(SessionKeys.SIGN_IN_INFO.getKey()));
         verifyNoMoreInteractions(session);

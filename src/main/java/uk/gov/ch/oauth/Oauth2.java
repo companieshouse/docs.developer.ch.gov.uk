@@ -25,7 +25,6 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
-import uk.gov.companieshouse.session.store.Store;
 
 @Component
 public class Oauth2 implements IOauth {
@@ -37,6 +36,7 @@ public class Oauth2 implements IOauth {
     private final NonceGenerator nonceGenerator = new NonceGenerator();
     private final OAuth2StateHandler oAuth2StateHandler;
     private static final String SIGN_IN_INFO = SessionKeys.SIGN_IN_INFO.getKey();
+
 
 
     @Autowired
@@ -210,13 +210,12 @@ public class Oauth2 implements IOauth {
      * Removes SignIn info and ZXS info from a signed-in session.
      *
      * @param chSession The active session.
-     * @param store Session data storage.
      */
-    public void invalidateSession(Session chSession, Store store) {
+    public void invalidateSession(Session chSession) {
         final Map<String, Object> sessionData = chSession.getData();
         if (chSession.getSignInInfo().isSignedIn()) {
             removeSignInInfo(sessionData);
-            removeZXSInfo(sessionData, store);
+            removeZXSInfo(sessionData);
         }
     }
 
@@ -227,11 +226,11 @@ public class Oauth2 implements IOauth {
         sessionData.remove(SIGN_IN_INFO);
     }
 
-    private void removeZXSInfo(Map<String, Object> sessionData, Store store) {
+    private void removeZXSInfo(Map<String, Object> sessionData) {
         final String zxsKey = (String) sessionData.get(".zxs_key");// This is the id of cookie stored in redis
         if (zxsKey != null) {
             LOGGER.trace("Deleting ZXS info from cache");
-            store.delete(zxsKey);
+            sessionFactory.getDefaultStore().delete(zxsKey);
         }
     }
 }
