@@ -1,20 +1,20 @@
 package uk.gov.ch.oauth;
 
 import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
-
-import com.nimbusds.jose.Payload;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import com.nimbusds.jose.Payload;
+import net.minidev.json.JSONObject;
 import reactor.core.publisher.Mono;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.nonce.NonceGenerator;
@@ -35,6 +35,9 @@ public class Oauth2 implements IOauth {
     private final Duration timeoutDuration = Duration.ofSeconds(10L);
     private final NonceGenerator nonceGenerator = new NonceGenerator();
     private final OAuth2StateHandler oAuth2StateHandler;
+    private static final String SIGN_IN_INFO = SessionKeys.SIGN_IN_INFO.getKey();
+
+
 
     @Autowired
     public Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory) {
@@ -140,7 +143,7 @@ public class Oauth2 implements IOauth {
         final OAuthToken oauthToken = requestOAuthToken(code);
         regenerateSessionID(httpServletResponse);
         final UserProfileResponse userProfile = requestUserProfile(oauthToken);
-        if ((userProfile.getId() == null) || userProfile.getId().isEmpty()) {
+        if ((null == userProfile.getId()) || userProfile.getId().isEmpty()) {
             return null;
         }
         final Map<String, Object> signInData = oauthToken.saveAccessToken();
@@ -161,7 +164,7 @@ public class Oauth2 implements IOauth {
      * @return user profile data from the account service or an empty {@link UserProfileResponse} if
      * the data was incompatible
      */
-    private UserProfileResponse requestUserProfile(final OAuthToken oauthToken) {
+    protected UserProfileResponse requestUserProfile(final OAuthToken oauthToken) {
         LOGGER.debug("Requesting User Profile");
         final URI profileUrl = URI.create(identityProvider.getProfileUrl());
 
@@ -171,8 +174,22 @@ public class Oauth2 implements IOauth {
                 .headers(h -> h.setBearerAuth(oauthToken.getToken()))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .flatMap(response -> response.bodyToMono(UserProfileResponse.class));
+                .flatMap(response -> validResponse(response));
         return userProfileResponse.block(timeoutDuration);
+    }
+
+    /**
+     * Checks client response for an invalid status code
+     * 
+     * @param response
+     * @return If code is invalid, returns a Mono of an empty {@link UserProfileResponse} else a
+     *         Mono with correct response body
+     */
+    private Mono<UserProfileResponse> validResponse(ClientResponse response) {
+        if (response.statusCode().isError()) {
+            return Mono.just(new UserProfileResponse());
+        }
+        return response.bodyToMono(UserProfileResponse.class);
     }
 
     OAuthToken requestOAuthToken(String code) {
@@ -200,5 +217,28 @@ public class Oauth2 implements IOauth {
                 .regenerateSession();
 
         httpServletResponse.addCookie(buildSessionCookie(session));
+    }
+
+    public void invalidateSession(Session chSession) {
+        final Map<String, Object> sessionData = chSession.getData();
+        if (chSession.getSignInInfo().isSignedIn()) {
+            removeSignInInfo(sessionData);
+            removeZXSInfo(sessionData);
+        }
+    }
+
+    private void removeSignInInfo(Map<String, Object> sessionData) {
+        final Map<String, Object> signInInfo =
+                (Map<String, Object>) sessionData.get(SIGN_IN_INFO);
+        signInInfo.replace(SessionKeys.SIGNED_IN.getKey(), 1, 0);
+        sessionData.remove(SIGN_IN_INFO);
+    }
+
+    private void removeZXSInfo(Map<String, Object> sessionData) {
+        final String zxsKey = (String) sessionData.get(".zxs_key");// This is the id of cookie stored in redis
+        if (zxsKey != null) {
+            LOGGER.trace("Deleting ZXS info from cache");
+            sessionFactory.getDefaultStore().delete(zxsKey);
+        }
     }
 }
