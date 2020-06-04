@@ -1,6 +1,12 @@
 package uk.gov.ch.oauth;
 
+import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
+
 import com.nimbusds.jose.Payload;
+import java.net.URI;
+import java.time.Duration;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,13 +26,6 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.store.Store;
-
-import javax.servlet.http.HttpServletResponse;
-import java.net.URI;
-import java.time.Duration;
-import java.util.Map;
-
-import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
 
 @Component
 public class Oauth2 implements IOauth {
@@ -206,15 +205,22 @@ public class Oauth2 implements IOauth {
         httpServletResponse.addCookie(buildSessionCookie(session));
     }
 
+
+    /**
+     * Removes SignIn info and ZXS info from a signed-in session.
+     *
+     * @param chSession The active session.
+     * @param store Session data storage.
+     */
     public void invalidateSession(Session chSession, Store store) {
         final Map<String, Object> sessionData = chSession.getData();
         if (chSession.getSignInInfo().isSignedIn()) {
-            removeSessionInfo(sessionData);
+            removeSignInInfo(sessionData);
             removeZXSInfo(sessionData, store);
         }
     }
 
-    private void removeSessionInfo(Map<String, Object> sessionData) {
+    private void removeSignInInfo(Map<String, Object> sessionData) {
         final Map<String, Object> signInInfo =
                 (Map<String, Object>) sessionData.get(SIGN_IN_INFO);
         signInInfo.replace(SessionKeys.SIGNED_IN.getKey(), 1, 0);

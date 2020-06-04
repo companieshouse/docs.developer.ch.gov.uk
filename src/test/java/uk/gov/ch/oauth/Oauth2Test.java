@@ -49,7 +49,7 @@ public class Oauth2Test {
 
     @Test
     @DisplayName("Test that a not signed in user is unable to sign out")
-    public void testNotSignedInUserIsUnableToAlterTheSessionState() {
+    public void testNotSignedInUserIsUnableSignOut() {
         final String zxsValue = "0000000001z";
         Map<String, Object> data = setUserSessionData(zxsValue);
         signInInfo.setSignedIn(false);
