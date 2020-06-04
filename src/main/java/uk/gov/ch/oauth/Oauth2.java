@@ -205,12 +205,6 @@ public class Oauth2 implements IOauth {
         httpServletResponse.addCookie(buildSessionCookie(session));
     }
 
-
-    /**
-     * Removes SignIn info and ZXS info from a signed-in session.
-     *
-     * @param chSession The active session.
-     */
     public void invalidateSession(Session chSession) {
         final Map<String, Object> sessionData = chSession.getData();
         if (chSession.getSignInInfo().isSignedIn()) {

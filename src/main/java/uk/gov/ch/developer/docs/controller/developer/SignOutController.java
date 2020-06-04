@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import uk.gov.ch.developer.docs.DocsWebApplication;
-import uk.gov.ch.oauth.Oauth2;
+import uk.gov.ch.oauth.IOauth;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
@@ -22,7 +22,7 @@ public class SignOutController {
     @Autowired
     private IIdentityProvider identityProviders;
     @Autowired
-    private Oauth2 oauth2;
+    private IOauth oauth2;
 
     @GetMapping("${signout.url}")
     public void doSignOut(final HttpServletResponse httpServletResponse,
