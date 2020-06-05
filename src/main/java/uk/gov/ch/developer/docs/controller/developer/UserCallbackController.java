@@ -42,6 +42,12 @@ public class UserCallbackController {
         }
     }
 
+    /**
+     * Callback mapping for error cases which logs and then delegates to the default error
+     * controller of the app that implements this.
+     *
+     * @param error request parameter containing error description
+     */
     @GetMapping(params = {"state", "error"})
     public void accessRefused(@RequestParam("error") String error,
             final HttpServletResponse httpServletResponse) throws IOException {
