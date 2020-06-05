@@ -51,7 +51,7 @@ public class UserCallbackController {
     @GetMapping(params = {"state", "error"})
     public void accessRefused(@RequestParam("error") String error,
             final HttpServletResponse httpServletResponse) throws IOException {
-        LOGGER.error("Was not granted access to user information");
+        LOGGER.error("Error in OAUTH Callback journey: " + error);
         httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, error);
     }
 }

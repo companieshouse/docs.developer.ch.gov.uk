@@ -23,8 +23,8 @@ public class UserCallbackControllerTest {
 
     public static final String HTTP_EXAMPLE_COM_REDIRECT = "http://example.com/redirect";
     private static final String ERROR = "mock_error";
-    private final String STATE = "dummy State";
-    private final String CODE = "dummy Code";
+    private static final String STATE = "dummy State";
+    private static final String CODE = "dummy Code";
 
     @Mock
     IdentityProvider identityProvider;
