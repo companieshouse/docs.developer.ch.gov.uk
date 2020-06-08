@@ -1,10 +1,7 @@
 package uk.gov.ch.oauth;
 
-import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
-import java.net.URI;
-import java.time.Duration;
-import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
+import com.nimbusds.jose.Payload;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
@@ -13,8 +10,6 @@ import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
-import com.nimbusds.jose.Payload;
-import net.minidev.json.JSONObject;
 import reactor.core.publisher.Mono;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.nonce.NonceGenerator;
@@ -25,6 +20,15 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
+import uk.gov.companieshouse.session.handler.SessionHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
+import java.time.Duration;
+import java.util.Map;
+
+import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
 
 @Component
 public class Oauth2 implements IOauth {
@@ -241,4 +245,22 @@ public class Oauth2 implements IOauth {
             sessionFactory.getDefaultStore().delete(zxsKey);
         }
     }
+
+    public String getOriginalRequestURL(final HttpServletRequest request) {
+        final StringBuilder originalRequestUrl = new StringBuilder(
+                request.getRequestURL());
+        final String queryString = request.getQueryString();
+        if (queryString != null) {
+            originalRequestUrl.append("?").append(queryString);
+        }
+        return originalRequestUrl.toString();
+
+    }
+
+    public String prepareState(final HttpServletRequest request) {
+        final Session chSession = (Session) request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
+        String originalURL = getOriginalRequestURL(request);
+        return encodeSignInState(originalURL, chSession, "content");
+    }
+
 }

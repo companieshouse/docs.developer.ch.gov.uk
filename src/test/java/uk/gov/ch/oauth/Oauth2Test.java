@@ -1,44 +1,41 @@
 package uk.gov.ch.oauth;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.client.ClientResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
+import uk.gov.ch.oauth.nonce.NonceGenerator;
 import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.ch.oauth.tokens.OAuthToken;
 import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
+import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.session.model.SignInInfo;
 import uk.gov.companieshouse.session.store.Store;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class Oauth2Test {
@@ -46,9 +43,18 @@ public class Oauth2Test {
     public static MockWebServer mockServer;
     private static OAuthToken oauthToken;
     private final SignInInfo signInInfo = new SignInInfo();
+    static final String ORIGINAL_REQUEST_URL = "https://www.example.com?original";
+    static final StringBuffer REQUEST_URL_STRING_BUFFER = new StringBuffer(
+            "https://www.example.com");
+    public static final String AUTHORISE_URI = "https://example.com/authorise";
+    static final String STATE = "state";
 
     @Mock
     public IIdentityProvider identityProvider;
+    @Mock
+    private OAuth2StateHandler oAuth2StateHandler;
+    @Mock
+    private NonceGenerator nonceGenerator;
     @Mock
     public HttpServletResponse httpServletResponse;
     @Mock
@@ -59,7 +65,9 @@ public class Oauth2Test {
     private Session session;
     @Mock
     private SessionFactory sessionFactory;
-
+    @Mock
+    private HttpServletRequest request;
+    @Spy
     @InjectMocks
     public Oauth2 oauth2;
 
@@ -174,6 +182,27 @@ public class Oauth2Test {
         assertFalse(data.containsKey(SessionKeys.SIGN_IN_INFO.getKey()));
         verifyNoMoreInteractions(session);
     }
+
+    @Test
+    @DisplayName("Test that getOriginalURL takes the request and returns the original request URL ")
+    public void testGetOriginalRequestURLReturnsTheCorrectURLAsAString() {
+        when(request.getRequestURL()).thenReturn(REQUEST_URL_STRING_BUFFER);
+        when(request.getQueryString()).thenReturn("original");
+        String actualUrl = oauth2.getOriginalRequestURL(request);
+        assertEquals(ORIGINAL_REQUEST_URL, actualUrl);
+
+    }
+
+    @Test
+    @DisplayName("Test that prepareState returns a valid State String")
+    public void testPrepareState() {
+        doReturn(STATE).when(oauth2).encodeSignInState(anyString(), any(Session.class), anyString());
+        when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
+        when(request.getRequestURL()).thenReturn(REQUEST_URL_STRING_BUFFER);
+        String state = oauth2.prepareState(request);
+        assertEquals(STATE, state);
+    }
+
 
     private Map<String, Object> setUserSessionData(String zxsValue) {
         Map<String, Object> data = new HashMap<>();
