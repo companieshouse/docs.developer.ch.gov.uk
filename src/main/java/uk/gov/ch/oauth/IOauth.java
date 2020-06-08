@@ -43,15 +43,6 @@ public interface IOauth {
     void invalidateSession(Session chSession);
 
     /**
-     * Will get the request URL and transform it into the original URL.
-     *
-     * @param request the request that will be used to get the request URL.
-     * @return The original requested URL as a String
-     */
-    String getOriginalRequestURL(final HttpServletRequest request);
-
-
-    /**
      * This method takes a HttpRequest and returns the state by getting the original request url from
      * getOriginalRequestUrl() and then calling encodeSignInState() to get the state.
      *

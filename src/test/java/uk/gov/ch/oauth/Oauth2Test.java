@@ -172,21 +172,12 @@ public class Oauth2Test {
     }
 
     @Test
-    @DisplayName("Test that getOriginalURL takes the request and returns the original request URL ")
-    public void testGetOriginalRequestURLReturnsTheCorrectURLAsAString() {
-        when(request.getRequestURL()).thenReturn(REQUEST_URL_STRING_BUFFER);
-        when(request.getQueryString()).thenReturn("original");
-        String actualUrl = oauth2.getOriginalRequestURL(request);
-        assertEquals(ORIGINAL_REQUEST_URL, actualUrl);
-
-    }
-
-    @Test
     @DisplayName("Test that prepareState returns a valid State String")
     public void testPrepareState() {
         doReturn(STATE).when(oauth2).encodeSignInState(ORIGINAL_REQUEST_URL, session, "content");
         when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
-        doReturn(ORIGINAL_REQUEST_URL).when(oauth2).getOriginalRequestURL(request);
+        when(request.getRequestURL()).thenReturn(REQUEST_URL_STRING_BUFFER);
+        when(request.getQueryString()).thenReturn("original");
         String state = oauth2.prepareState(request);
         assertEquals(STATE, state);
     }

@@ -246,7 +246,7 @@ public class Oauth2 implements IOauth {
         }
     }
 
-    public String getOriginalRequestURL(final HttpServletRequest request) {
+    private String getOriginalRequestURL(final HttpServletRequest request) {
         final StringBuilder originalRequestUrl = new StringBuilder(
                 request.getRequestURL());
         final String queryString = request.getQueryString();
