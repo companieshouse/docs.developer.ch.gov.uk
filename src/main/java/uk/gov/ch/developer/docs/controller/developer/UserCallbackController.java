@@ -1,5 +1,7 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +12,6 @@ import uk.gov.ch.oauth.IOauth;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("${callback.url}")
@@ -26,7 +26,7 @@ public class UserCallbackController {
     @Autowired
     private IOauth oauth;
 
-    @GetMapping
+    @GetMapping(params = {"state", "code"})
     public void getCallback(@RequestParam("state") String state, @RequestParam("code") String code,
             final HttpServletResponse httpServletResponse) {
         try {
@@ -40,5 +40,18 @@ public class UserCallbackController {
             LOGGER.error(e);
             httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * Callback mapping for error cases which logs and then delegates to the default error
+     * controller of the app that implements this.
+     *
+     * @param error request parameter containing error description
+     */
+    @GetMapping(params = {"state", "error"})
+    public void accessRefused(@RequestParam("error") String error,
+            final HttpServletResponse httpServletResponse) throws IOException {
+        LOGGER.error("Error in OAUTH Callback journey: " + error);
+        httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, error);
     }
 }

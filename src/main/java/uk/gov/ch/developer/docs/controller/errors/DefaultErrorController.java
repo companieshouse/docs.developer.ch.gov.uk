@@ -16,7 +16,6 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 
 @Controller
 @RequestMapping(DefaultErrorController.ERROR_MAPPING)
-
 public class DefaultErrorController extends AbstractPageController implements ErrorController {
 
 
