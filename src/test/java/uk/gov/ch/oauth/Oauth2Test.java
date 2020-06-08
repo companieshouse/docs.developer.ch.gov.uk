@@ -31,7 +31,6 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -185,9 +184,9 @@ public class Oauth2Test {
     @Test
     @DisplayName("Test that prepareState returns a valid State String")
     public void testPrepareState() {
-        doReturn(STATE).when(oauth2).encodeSignInState(anyString(), any(Session.class), anyString());
+        doReturn(STATE).when(oauth2).encodeSignInState(ORIGINAL_REQUEST_URL, session, "content");
         when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
-        when(request.getRequestURL()).thenReturn(REQUEST_URL_STRING_BUFFER);
+        doReturn(ORIGINAL_REQUEST_URL).when(oauth2).getOriginalRequestURL(request);
         String state = oauth2.prepareState(request);
         assertEquals(STATE, state);
     }
