@@ -14,9 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.client.ClientResponse;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
-import uk.gov.ch.oauth.nonce.NonceGenerator;
 import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.ch.oauth.tokens.OAuthToken;
 import uk.gov.ch.oauth.tokens.UserProfileResponse;
@@ -27,7 +25,6 @@ import uk.gov.companieshouse.session.model.SignInInfo;
 import uk.gov.companieshouse.session.store.Store;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,14 +48,6 @@ public class Oauth2Test {
 
     @Mock
     public IIdentityProvider identityProvider;
-    @Mock
-    private OAuth2StateHandler oAuth2StateHandler;
-    @Mock
-    private NonceGenerator nonceGenerator;
-    @Mock
-    public HttpServletResponse httpServletResponse;
-    @Mock
-    public ClientResponse response;
     @Mock
     private Store store;
     @Mock
