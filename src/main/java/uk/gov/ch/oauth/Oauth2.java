@@ -27,6 +27,7 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
+import uk.gov.companieshouse.session.handler.SessionHandler;
 
 @Component
 public class Oauth2 implements IOauth {
@@ -255,7 +256,8 @@ public class Oauth2 implements IOauth {
 
     }
 
-    public String prepareState(final HttpServletRequest request, final Session chSession) {
+    public String prepareState(final HttpServletRequest request) {
+        final Session chSession = (Session) request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
         String originalURL = getOriginalRequestURL(request);
         return encodeSignInState(originalURL, chSession, "content");
     }

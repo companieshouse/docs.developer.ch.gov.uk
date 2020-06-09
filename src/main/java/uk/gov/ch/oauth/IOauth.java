@@ -48,5 +48,5 @@ public interface IOauth {
      * @param request HttpRequest
      * @return The state as a String
      */
-    String prepareState(final HttpServletRequest request, final Session chSession);
+    String prepareState(final HttpServletRequest request);
 }

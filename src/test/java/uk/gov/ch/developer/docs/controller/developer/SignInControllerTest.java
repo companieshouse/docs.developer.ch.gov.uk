@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.oauth.IOauth;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.session.Session;
-import uk.gov.companieshouse.session.handler.SessionHandler;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -46,8 +45,7 @@ public class SignInControllerTest {
 
     @Test
     void doSignInTestToEnsureThatAUserIsSentToTheAuthorisePage() throws IOException {
-        when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
-        when(oauth2.prepareState(request, session)).thenReturn(STATE);
+        when(oauth2.prepareState(request)).thenReturn(STATE);
         when(identityProvider.getAuthorisationUrl(STATE)).thenReturn(AUTHORISE_URI);
         signInController.doSignIn(request, response);
         verify(response).sendRedirect(AUTHORISE_URI);

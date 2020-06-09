@@ -39,6 +39,7 @@ import uk.gov.ch.oauth.tokens.OAuthToken;
 import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
+import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.session.model.SignInInfo;
 import uk.gov.companieshouse.session.store.Store;
 
@@ -184,9 +185,10 @@ public class Oauth2Test {
     @DisplayName("Test that prepareState returns a valid State String")
     public void testPrepareState() {
         doReturn(STATE).when(oauth2).encodeSignInState(ORIGINAL_REQUEST_URL, session, "content");
+        when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
         when(request.getRequestURL()).thenReturn(REQUEST_URL_STRING_BUFFER);
         when(request.getQueryString()).thenReturn("original");
-        String state = oauth2.prepareState(request, session);
+        String state = oauth2.prepareState(request);
         assertEquals(STATE, state);
     }
 
