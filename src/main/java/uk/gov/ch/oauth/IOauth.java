@@ -1,9 +1,8 @@
 package uk.gov.ch.oauth;
 
-import uk.gov.companieshouse.session.Session;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import uk.gov.companieshouse.session.Session;
 
 /**
  * Handler for the OAuth sight in flow based on the requirements of the CH version of OAuth2
@@ -49,5 +48,5 @@ public interface IOauth {
      * @param request HttpRequest
      * @return The state as a String
      */
-    String prepareState(final HttpServletRequest request);
+    String prepareState(final HttpServletRequest request, final Session chSession);
 }

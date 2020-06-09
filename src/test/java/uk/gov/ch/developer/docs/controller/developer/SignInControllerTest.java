@@ -1,5 +1,11 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,13 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.oauth.IOauth;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.session.Session;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import uk.gov.companieshouse.session.handler.SessionHandler;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -46,7 +46,8 @@ public class SignInControllerTest {
 
     @Test
     void doSignInTestToEnsureThatAUserIsSentToTheAuthorisePage() throws IOException {
-        when(oauth2.prepareState(request)).thenReturn(STATE);
+        when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
+        when(oauth2.prepareState(request, session)).thenReturn(STATE);
         when(identityProvider.getAuthorisationUrl(STATE)).thenReturn(AUTHORISE_URI);
         signInController.doSignIn(request, response);
         verify(response).sendRedirect(AUTHORISE_URI);

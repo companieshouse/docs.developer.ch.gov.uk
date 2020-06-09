@@ -1,6 +1,13 @@
 package uk.gov.ch.oauth;
 
+import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
+
 import com.nimbusds.jose.Payload;
+import java.net.URI;
+import java.time.Duration;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,15 +27,6 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
-import uk.gov.companieshouse.session.handler.SessionHandler;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.net.URI;
-import java.time.Duration;
-import java.util.Map;
-
-import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
 
 @Component
 public class Oauth2 implements IOauth {
@@ -257,8 +255,7 @@ public class Oauth2 implements IOauth {
 
     }
 
-    public String prepareState(final HttpServletRequest request) {
-        final Session chSession = (Session) request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
+    public String prepareState(final HttpServletRequest request, final Session chSession) {
         String originalURL = getOriginalRequestURL(request);
         return encodeSignInState(originalURL, chSession, "content");
     }
