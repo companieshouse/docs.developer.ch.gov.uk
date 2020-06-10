@@ -50,7 +50,7 @@ public class Oauth2Test {
     private final SignInInfo signInInfo = new SignInInfo();
     static final String ORIGINAL_REQUEST_URL = "https://www.example.com?original";
     static final StringBuffer REQUEST_URL_STRING_BUFFER = new StringBuffer(
-            "https://www.example.com");
+            "https://www.example.com"); //TODO decide if we should be expecting StringBuffer here or not
     public static final String AUTHORISE_URI = "https://example.com/authorise";
     static final String STATE = "state";
 
