@@ -16,7 +16,7 @@ public class SignInController {
 
 
     @Autowired
-    private IOauth oauth2;
+    private IOauth oauth;
 
     @Autowired
     IIdentityProvider identityProvider;
@@ -25,7 +25,7 @@ public class SignInController {
     @GetMapping
     public void doSignIn(final HttpServletRequest httpServletRequest,
                          final HttpServletResponse httpServletResponse) throws IOException {
-        final String state = oauth2.prepareState(httpServletRequest);
+        final String state = oauth.prepareState(httpServletRequest);
         final String authoriseUri = identityProvider.getAuthorisationUrl(state);
         httpServletResponse.sendRedirect(authoriseUri);
     }

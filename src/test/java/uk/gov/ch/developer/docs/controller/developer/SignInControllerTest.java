@@ -34,7 +34,7 @@ public class SignInControllerTest {
     @Mock
     HttpServletResponse response;
     @Mock
-    IOauth oauth2;
+    IOauth oauth;
     @Mock
     IIdentityProvider identityProvider;
     @Mock
@@ -45,7 +45,7 @@ public class SignInControllerTest {
 
     @Test
     void doSignInTestToEnsureThatAUserIsSentToTheAuthorisePage() throws IOException {
-        when(oauth2.prepareState(request)).thenReturn(STATE);
+        when(oauth.prepareState(request)).thenReturn(STATE);
         when(identityProvider.getAuthorisationUrl(STATE)).thenReturn(AUTHORISE_URI);
         signInController.doSignIn(request, response);
         verify(response).sendRedirect(AUTHORISE_URI);
