@@ -1,10 +1,13 @@
 package uk.gov.ch.oauth;
 
 import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
+
+import com.nimbusds.jose.Payload;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
@@ -13,13 +16,12 @@ import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
-import com.nimbusds.jose.Payload;
-import net.minidev.json.JSONObject;
 import reactor.core.publisher.Mono;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.nonce.NonceGenerator;
 import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.ch.oauth.tokens.OAuthToken;
+import uk.gov.ch.oauth.tokens.SessionSignInModifier;
 import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
@@ -143,16 +145,16 @@ public class Oauth2 implements IOauth {
         final OAuthToken oauthToken = requestOAuthToken(code);
         regenerateSessionID(httpServletResponse);
         final UserProfileResponse userProfile = requestUserProfile(oauthToken);
+
         if ((null == userProfile.getId()) || userProfile.getId().isEmpty()) {
             return null;
         }
-        final Map<String, Object> signInData = oauthToken.saveAccessToken();
-        userProfile.addUserProfileToMap(signInData);
-        signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
-        final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
-        final Map<String, Object> sData = sessionFactory.getSessionDataFromContext();
-
-        sData.merge(signInInfoKey, signInData, Oauth2::updateSignIn);
+        SessionSignInModifier sessionSignInModifier = new SessionSignInModifier();
+        sessionSignInModifier.alterSessionData(
+                sessionFactory.getSessionFromContext(),
+                oauthToken,
+                userProfile
+        );
 
         return userProfile;
     }
@@ -174,7 +176,7 @@ public class Oauth2 implements IOauth {
                 .headers(h -> h.setBearerAuth(oauthToken.getToken()))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .flatMap(response -> validResponse(response));
+                .flatMap(this::validResponse);
         return userProfileResponse.block(timeoutDuration);
     }
 

@@ -1,5 +1,6 @@
 package uk.gov.ch.oauth.tokens;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
@@ -64,17 +65,16 @@ public class UserProfileResponse extends UserProfile {
         super.setPermissions(permissions);
     }
 
+
     /**
      * This method adds user profile values to an existing session data map. User profiles in {@link
      * uk.gov.companieshouse.session.Session} are stored as separate key value pairs rather than as
      * a structured object. The values that are consumed by the session are added to the supplied
      * map using appropriate {@link SessionKeys} to map from instance values to internal map values.
      * <br /> N.B. This method does not mutate the instance, it appends data to the supplied map.
-     *
-     * @param signInData to which the user profile data is to be added
      */
-    public void addUserProfileToMap(final Map<String, Object> signInData) {
-
+    @JsonIgnore
+    public Map<String, Object> getUserProfileAsMap() {
         final Map<String, Object> userProfileData = new HashMap<>();
 
         userProfileData.put(SessionKeys.EMAIL.getKey(), getEmail());
@@ -84,8 +84,6 @@ public class UserProfileResponse extends UserProfile {
         userProfileData.put(SessionKeys.FORENAME.getKey(), getForename());
         userProfileData.put(SessionKeys.SURNAME.getKey(), getSurname());
         userProfileData.put(SessionKeys.PERMISSIONS.getKey(), getPermissions());
-
-        signInData.put(SessionKeys.USER_PROFILE.getKey(), userProfileData);
+        return userProfileData;
     }
-
 }

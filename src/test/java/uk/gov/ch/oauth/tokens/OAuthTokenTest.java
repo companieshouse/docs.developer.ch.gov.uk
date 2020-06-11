@@ -1,9 +1,17 @@
 package uk.gov.ch.oauth.tokens;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.Map;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import uk.gov.companieshouse.session.SessionKeys;
 
@@ -14,23 +22,75 @@ class OAuthTokenTest {
     public static final String TOKEN = "TOKEN";
     public static final String TOKEN_TYPE = "TOKEN_TYPE";
 
-    @Test
-    void saveAccessToken() {
-        OAuthToken token = new OAuthToken();
+    private final ObjectMapper mapper = new ObjectMapper();
+    private OAuthToken token;
+
+    @BeforeEach
+    public void setup() {
+        token = new OAuthToken();
 
         token.setExpiresIn(EXPIRES_IN);
         token.setRefreshToken(REFRESH_TOKEN);
         token.setToken(TOKEN);
         token.setTokenType(TOKEN_TYPE);
-
-        Map<String, Object> map = token.saveAccessToken();
-
-        Map<String, Object> data = (Map<String, Object>) map.get(SessionKeys.ACCESS_TOKEN.getKey());
-        assertNotNull(data);
-
-        assertEquals(EXPIRES_IN, data.get(SessionKeys.EXPIRES_IN.getKey()));
-        assertEquals(REFRESH_TOKEN, data.get(SessionKeys.REFRESH_TOKEN.getKey()));
-        assertEquals(TOKEN, data.get(SessionKeys.ACCESS_TOKEN.getKey()));
-        assertEquals(TOKEN_TYPE, data.get(SessionKeys.TOKEN_TYPE.getKey()));
     }
+
+    @Test
+    @DisplayName("Check access token serailises with correct keys and values")
+    void accessTokenSerialises() throws JsonProcessingException {
+        String serialised = mapper.writeValueAsString(token);
+        JsonNode tokenAsTree = mapper.readValue(serialised, JsonNode.class);
+
+        final Iterator<Entry<String, JsonNode>> fields = tokenAsTree.fields();
+        AtomicInteger fieldCount = new AtomicInteger();
+        fields.forEachRemaining(entry -> {
+            checkNodeValue(entry, token);
+            fieldCount.getAndIncrement();
+        });
+        assertEquals(4, fieldCount.get());
+    }
+
+    @Test
+    @DisplayName("Check AccessToken deserialises correctly.")
+    void setAccessTokenDeserialises() throws JsonProcessingException {
+        String input = "{\"access_token\":\"TOKEN\",\"expires_in\":1,\"refresh_token\":\"REFRESH_TOKEN\",\"token_type\":\"TOKEN_TYPE\"}";
+        OAuthToken parsedToken = mapper.readValue(input, OAuthToken.class);
+        assertEquals(token.getTokenType(), parsedToken.getTokenType());
+        assertEquals(token.getToken(), parsedToken.getToken());
+        assertEquals(token.getRefreshToken(), parsedToken.getRefreshToken());
+        assertEquals(token.getExpiresIn(), parsedToken.getExpiresIn());
+    }
+
+    private void checkNodeValue(Entry<String, JsonNode> entry, OAuthToken token) {
+        System.out.println(entry.getKey());
+        SessionKeys fieldKey = matchEntryToEnum(entry.getKey());
+        final JsonNode value = entry.getValue();
+        switch (Objects.requireNonNull(fieldKey)) {
+            case ACCESS_TOKEN:
+                assertEquals(token.getToken(), value.textValue());
+                break;
+            case EXPIRES_IN:
+                assertEquals(token.getExpiresIn(), value.asInt());
+                break;
+            case REFRESH_TOKEN:
+                assertEquals(token.getRefreshToken(), value.textValue());
+                break;
+            case TOKEN_TYPE:
+                assertEquals(token.getTokenType(), value.textValue());
+                break;
+            default:
+                fail(String.format("Unknown json property : %s", entry.getKey()));
+        }
+    }
+
+    private SessionKeys matchEntryToEnum(String key) {
+        for (SessionKeys value : SessionKeys.values()) {
+            if (value.getKey().equals(key)) {
+                return value;
+            }
+        }
+        fail(String.format("Unknown json property : %s", key));
+        return null;
+    }
+
 }
