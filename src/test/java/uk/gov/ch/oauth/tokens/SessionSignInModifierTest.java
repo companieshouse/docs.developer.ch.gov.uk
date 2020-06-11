@@ -83,6 +83,22 @@ class SessionSignInModifierTest {
         assertEquals(1, updatedSignInMap.get(SessionKeys.SIGNED_IN.getKey()));
     }
 
+    @Test
+    @DisplayName("Update Sign In should be tested implitly by the alter method but isn' tracked by coverage")
+    void updateSignIn() {
+        Map<String, Object> currentMap = new HashMap<>();
+        Map<String, Object> newMap = new HashMap<>();
+        newMap.put(SessionKeys.ACCESS_TOKEN.getKey(), mockOAuthTokenMap);
+        newMap.put(SessionKeys.USER_PROFILE.getKey(), mockUserResponseMap);
+        newMap.put(SessionKeys.SIGNED_IN.getKey(), 1);
+
+        SessionSignInModifier.updateSignIn(currentMap, newMap);
+
+        assertEquals(mockOAuthTokenMap, currentMap.get(SessionKeys.ACCESS_TOKEN.getKey()));
+        assertEquals(mockUserResponseMap, currentMap.get(SessionKeys.USER_PROFILE.getKey()));
+        assertEquals(1, currentMap.get(SessionKeys.SIGNED_IN.getKey()));
+    }
+
     private ArgumentMatcher<Map<String, Object>> matchesSessionMap() {
         return argument -> argument.equals(sessionMap);
     }

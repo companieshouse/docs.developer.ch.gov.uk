@@ -10,7 +10,7 @@ public class SessionSignInModifier {
 
     @SuppressWarnings("unchecked")
     // This is necessary as the original data on the session is untyped, but expected to be of the correct types
-    private static Map<String, Object> updateSignIn(final Object sInf, final Object sio) {
+    static Map<String, Object> updateSignIn(final Object sInf, final Object sio) {
         final Map<String, Object> original = (Map<String, Object>) sInf;
         final Map<String, Object> extras = (Map<String, Object>) sio;
         original.putAll(extras);
