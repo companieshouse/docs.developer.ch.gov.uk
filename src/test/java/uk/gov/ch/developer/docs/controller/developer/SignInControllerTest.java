@@ -1,7 +1,5 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -17,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.oauth.IOauth;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.companieshouse.session.Session;
-import uk.gov.companieshouse.session.handler.SessionHandler;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -47,27 +44,10 @@ public class SignInControllerTest {
     private SignInController signInController;
 
     @Test
-    void getSignInTest() throws IOException {
-        when(request.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY)).thenReturn(session);
-        doNothing().when(signInController).redirectForAuth(
-                any(Session.class),
-                any(HttpServletRequest.class),
-                any(HttpServletResponse.class));
-
-        signInController.getSignIn(request, response);
-
-        verify(signInController).redirectForAuth(session, request, response);
-    }
-
-    @Test
-    void redirectForAuthTest() throws IOException {
-        when(request.getRequestURL()).thenReturn(REQUEST_URL_STRING_BUFFER);
-        when(oauth.encodeSignInState(REQUEST_URL_STRING_BUFFER.toString(), session, "content"))
-                .thenReturn(STATE);
+    void doSignInTestToEnsureThatAUserIsSentToTheAuthorisePage() throws IOException {
+        when(oauth.prepareState(request)).thenReturn(STATE);
         when(identityProvider.getAuthorisationUrl(STATE)).thenReturn(AUTHORISE_URI);
-
-        signInController.redirectForAuth(session, request, response);
-
+        signInController.doSignIn(request, response);
         verify(response).sendRedirect(AUTHORISE_URI);
     }
 

@@ -4,15 +4,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import okhttp3.HttpUrl;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,16 +28,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.client.ClientResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.HttpUrl;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.ch.oauth.tokens.OAuthToken;
@@ -46,20 +48,23 @@ public class Oauth2Test {
     public static MockWebServer mockServer;
     private static OAuthToken oauthToken;
     private final SignInInfo signInInfo = new SignInInfo();
+    static final String ORIGINAL_REQUEST_URL = "https://www.example.com?original";
+    static final StringBuffer REQUEST_URL_STRING_BUFFER = new StringBuffer(
+            "https://www.example.com"); //TODO decide if we should be expecting StringBuffer here or not
+    public static final String AUTHORISE_URI = "https://example.com/authorise";
+    static final String STATE = "state";
 
     @Mock
     public IIdentityProvider identityProvider;
-    @Mock
-    public HttpServletResponse httpServletResponse;
-    @Mock
-    public ClientResponse response;
     @Mock
     private Store store;
     @Mock
     private Session session;
     @Mock
     private SessionFactory sessionFactory;
-
+    @Mock
+    private HttpServletRequest request;
+    @Spy
     @InjectMocks
     public Oauth2 oauth2;
 
@@ -174,6 +179,18 @@ public class Oauth2Test {
         assertFalse(data.containsKey(SessionKeys.SIGN_IN_INFO.getKey()));
         verifyNoMoreInteractions(session);
     }
+
+    @Test
+    @DisplayName("Test that prepareState returns a valid State String")
+    public void testPrepareState() {
+        doReturn(STATE).when(oauth2).encodeSignInState(ORIGINAL_REQUEST_URL, session, "content");
+        when(sessionFactory.getSessionFromContext()).thenReturn(session);
+        when(request.getRequestURL()).thenReturn(REQUEST_URL_STRING_BUFFER);
+        when(request.getQueryString()).thenReturn("original");
+        String state = oauth2.prepareState(request);
+        assertEquals(STATE, state);
+    }
+
 
     private Map<String, Object> setUserSessionData(String zxsValue) {
         Map<String, Object> data = new HashMap<>();
