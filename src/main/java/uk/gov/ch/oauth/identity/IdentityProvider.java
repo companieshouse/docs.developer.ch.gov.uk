@@ -1,12 +1,13 @@
 package uk.gov.ch.oauth.identity;
 
-import java.util.Base64;
-import java.util.Base64.Decoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.environment.EnvironmentReader;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
+
+import java.util.Base64;
+import java.util.Base64.Decoder;
 
 public class IdentityProvider implements IIdentityProvider {
 
@@ -40,6 +41,37 @@ public class IdentityProvider implements IIdentityProvider {
         grantType = "authorization_code";
     }
 
+    /**
+     * Auth URL with scope
+     */
+    public String getAuthorisationUrl(final String state, final String scope) {
+        StringBuilder sb = new StringBuilder(getAuthorisationUrl(state));
+        if (scope != null) {
+            sb.append("&scope=");
+            sb.append(scope);
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String getAuthorisationUrl(final String state) {
+        final String url = getAuthorizationUri() + "?" + "client_id=" + getClientId()
+                + "&redirect_uri=" + getRedirectUri() + "&response_type=code" + "&state=" + state;
+        LOGGER.trace(url);
+        return url;
+    }
+
+    @Override
+    public String getPostRequestBody(String code) {
+        return "code=" + code + "&client_id=" + getClientId()
+                + "&client_secret=" + getClientSecret() + "&redirect_uri="
+                + getRedirectUri() + "&grant_type=" + getGrantType();
+    }
+
+    public String getAuthorizationUri() {
+        return authorizationUri;
+    }
+
     @Override
     public String getClientSecret() {
         return clientSecret;
@@ -60,19 +92,6 @@ public class IdentityProvider implements IIdentityProvider {
         return clientId;
     }
 
-    /**
-     * Auth URL with scope added
-     */
-    public String getAuthorisationUrl(final String state, final String scope) {
-        StringBuilder sb = new StringBuilder(getAuthorisationUrl(state));
-        if (scope != null) {
-            sb.append("&scope=");
-            sb.append(scope);
-        }
-        return sb.toString();
-    }
-
-
     @Override
     public String getTokenUrl() {
         return tokenUrl;
@@ -89,26 +108,6 @@ public class IdentityProvider implements IIdentityProvider {
     }
 
     @Override
-    public String getAuthorisationUrl(final String state) {
-
-        final String url = getAuthorizationUri() + "?" + "client_id=" + getClientId()
-                + "&redirect_uri=" + getRedirectUri() + "&response_type=code" + "&state=" + state;
-        LOGGER.trace(url);
-        return url;
-    }
-
-    @Override
-    public String getPostRequestBody(String code) {
-        return "code=" + code + "&client_id=" + getClientId()
-                + "&client_secret=" + getClientSecret() + "&redirect_uri="
-                + getRedirectUri() + "&grant_type=" + getGrantType();
-    }
-
-    public String getAuthorizationUri() {
-        return authorizationUri;
-    }
-
-    @Override
     public String getRedirectUriPage() {
         return redirectUriPage;
     }
@@ -122,4 +121,6 @@ public class IdentityProvider implements IIdentityProvider {
     public String getGrantType() {
         return grantType;
     }
+
+
 }
