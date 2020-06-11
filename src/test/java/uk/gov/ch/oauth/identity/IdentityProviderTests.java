@@ -13,17 +13,17 @@ import static org.junit.Assert.assertEquals;
 public class IdentityProviderTests {
 
 
-    private IdentityProvider identityProvider;
+    private IdentityProvider provider;
 
-
-    private EnvironmentReaderImpl reader = new EnvironmentReaderImpl();
-    private final String CODE = "code";
-    private final String STATE = "state";
-    private final String SCOPE = "scope";
+    private EnvironmentReaderImpl reader;
+    private  String code= "code";
+    private  String state = "state";
+    private  String scope = "scope";
 
     @BeforeEach
     public void init() {
-        identityProvider = new IdentityProvider(reader);
+        reader = new EnvironmentReaderImpl();
+        provider = new IdentityProvider(reader);
     }
 
 
@@ -31,7 +31,7 @@ public class IdentityProviderTests {
     @DisplayName("Test that getAuthorisationUrl(final String State) returns the expected result")
     public void testThatGetAuthorisationUrlWithStateParameterReturnsTheExpectedUrl() {
         String expectedAuthUrl = "/oauth2/authorise?client_id=test.apps.ch.gov.test&redirect_uri=/oauth2/user/callback&response_type=code&state=state";
-        String authUrl = identityProvider.getAuthorisationUrl(STATE);
+        String authUrl = provider.getAuthorisationUrl(state);
         assertEquals(expectedAuthUrl, authUrl);
     }
 
@@ -39,15 +39,14 @@ public class IdentityProviderTests {
     @DisplayName("Test that getAuthorisationUrl(final String State, final String scope) returns the expected result")
     public void testThatGetAuthorisationWithScopeAndStateParameterReturnsTheExpectedURL() {
         String expectedUrl = "/oauth2/authorise?client_id=test.apps.ch.gov.test&redirect_uri=/oauth2/user/callback&response_type=code&state=state&scope=scope";
-        String authUrl = identityProvider.getAuthorisationUrl(STATE, SCOPE);
+        String authUrl = provider.getAuthorisationUrl(state, scope);
         assertEquals(expectedUrl, authUrl);
     }
 
     @Test
     public void testThatGetPostRequestBodyReturnsTheExpectedResult() {
         String expectedRequestBody = "code=code&client_id=test.apps.ch.gov.test&client_secret=CLIwYzRkNzIwOGQ1OGQ0OWIzMzViYjJjOTEyYTc2&redirect_uri=/oauth2/user/callback&grant_type=authorization_code";
-        String actualRequestBody = identityProvider.getPostRequestBody(CODE);
+        String actualRequestBody = provider.getPostRequestBody(code);
         assertEquals(expectedRequestBody, actualRequestBody);
     }
-
 }
