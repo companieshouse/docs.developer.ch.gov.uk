@@ -1,6 +1,5 @@
 package uk.gov.ch.oauth.tokens;
 
-import static org.apache.naming.ResourceRef.SCOPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -27,6 +26,7 @@ class UserProfileResponseTest {
     public static final String SURNAME = "SURNAME";
     private static final Map<String, Object> USER_PROFILE = new HashMap<>();
     private static final Map<String, Boolean> PERMISSIONS = new HashMap<>();
+    private static final String SCOPE = "SCOPE";
     private UserProfileResponse userProfileResponse;
 
     @BeforeEach
@@ -110,6 +110,7 @@ class UserProfileResponseTest {
             }
         }
         fail(String.format("Unknown json property : %sf", key));
-        return null;
+        return SessionKeys.NONCE;//Randomly chosen value used to hide potential null pointer
+        //Should be stopped by the fail above.
     }
 }
