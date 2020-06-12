@@ -26,7 +26,7 @@ class UserProfileResponseTest {
     public static final String SURNAME = "SURNAME";
     private static final Map<String, Object> USER_PROFILE = new HashMap<>();
     private static final Map<String, Boolean> PERMISSIONS = new HashMap<>();
-    private static final String SCOPE = "SCOPE";
+    private static final String SCOPE = "scope";
     private UserProfileResponse userProfileResponse;
 
     @BeforeEach
