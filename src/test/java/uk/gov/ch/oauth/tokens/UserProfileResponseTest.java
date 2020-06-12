@@ -73,7 +73,6 @@ class UserProfileResponseTest {
 
     private void checkNodeValue(Entry<String, JsonNode> entry,
             UserProfileResponse userProfileResponse) {
-        System.out.println(entry.getKey());
         SessionKeys fieldKey = matchEntryToEnum(entry.getKey());
         final JsonNode value = entry.getValue();
         switch (fieldKey) {

@@ -62,7 +62,6 @@ class OAuthTokenTest {
     }
 
     private void checkNodeValue(Entry<String, JsonNode> entry, OAuthToken token) {
-        System.out.println(entry.getKey());
         SessionKeys fieldKey = matchEntryToEnum(entry.getKey());
         final JsonNode value = entry.getValue();
         switch (Objects.requireNonNull(fieldKey)) {
