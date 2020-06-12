@@ -1,6 +1,5 @@
 package uk.gov.ch.oauth.tokens;
 
-import static org.apache.naming.ResourceRef.SCOPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashMap;
@@ -21,6 +20,7 @@ class SignInInfoMapTest {
     public static final String TOKEN = "TOKEN";
     public static final String TOKEN_TYPE = "TOKEN_TYPE";
     private static final Map<String, Boolean> PERMISSIONS = new HashMap<>();
+    private static final String SCOPE = "SCOPE";
     private UserProfileResponse userProfileResponse;
     private OAuthToken token;
 
@@ -62,8 +62,9 @@ class SignInInfoMapTest {
         assertEquals(1, map.get(SessionKeys.SIGNED_IN.getKey()));
     }
 
+    @SuppressWarnings("unchecked")
     private void assertMapHasUserDetails(UserProfileResponse userProfileResponse,
-            Map<String, Object> map) {
+                                         Map<String, Object> map) {
         map = (Map<String, Object>) map.get(SessionKeys.USER_PROFILE.getKey());
 
         map.forEach((key, entry) -> System.out.println(key + " : " + entry));
@@ -83,6 +84,7 @@ class SignInInfoMapTest {
                 map.get(SessionKeys.PERMISSIONS.getKey()));
     }
 
+    @SuppressWarnings("unchecked")
     private void assertMapHasAccessToken(OAuthToken token, Map<String, Object> map) {
         map = (Map<String, Object>) map.get(SessionKeys.ACCESS_TOKEN.getKey());
         assertEquals(token.getRefreshToken(),
