@@ -41,9 +41,6 @@ public class IdentityProvider implements IIdentityProvider {
         grantType = "authorization_code";
     }
 
-    /**
-     * Auth URL with scope
-     */
     public String getAuthorisationUrl(final String state, final String scope) {
         StringBuilder sb = new StringBuilder(getAuthorisationUrl(state));
         if (scope != null) {
