@@ -42,6 +42,8 @@
             <OAUTH2_REDIRECT_URI>redirectUri</OAUTH2_REDIRECT_URI>
             <REDIRECT_URI>redirectUriPage</REDIRECT_URI>
 
+            <OAUTH_LOGGING_NAMESPACE>docs.developer.ch.gov.uk</OAUTH_LOGGING_NAMESPACE>
+
             <!-- path mappings -->
             <createAccount.url>${home.url}/create-account</createAccount.url>
             <developerGuidelines.url>${home.url}/developer-guidelines</developerGuidelines.url>
