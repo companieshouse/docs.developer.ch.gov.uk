@@ -50,7 +50,6 @@ class SignInInfoMapTest {
         signInInfoMap.setAccessToken(token);
 
         Map<String, Object> map = signInInfoMap.toMap();
-        map.forEach((key, entry) -> System.out.println(key + ": " + entry));
 
         assertMapIsSignedIn(map);
         assertMapHasUserDetails(userProfileResponse, map);
@@ -67,7 +66,6 @@ class SignInInfoMapTest {
                                          Map<String, Object> map) {
         map = (Map<String, Object>) map.get(SessionKeys.USER_PROFILE.getKey());
 
-        map.forEach((key, entry) -> System.out.println(key + " : " + entry));
         assertEquals(userProfileResponse.getEmail(),
                 map.get(SessionKeys.EMAIL.getKey()));
         assertEquals(userProfileResponse.getSurname(),
