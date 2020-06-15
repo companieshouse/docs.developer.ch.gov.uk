@@ -31,7 +31,7 @@ public interface IIdentityProvider {
 
     /**
      * @param code
-     * @return The body of the post request as a String
+     * @return The post request body as a String
      */
     String getPostRequestBody(final String code);
 
