@@ -2,9 +2,7 @@ package uk.gov.ch.oauth.tokens;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -18,7 +16,6 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 
@@ -46,10 +43,6 @@ class SessionSignInModifierTest {
         when(mockOAuthToken.getAccessTokenAsMap()).thenReturn(mockOAuthTokenMap);
         when(mockUserResponse.getUserProfileAsMap()).thenReturn(mockUserResponseMap);
 
-        //Guys want a second opinion on whether this is good or bad practice
-        doAnswer(assertNewMapIsCorrect()).when(sessionSignInModifier)
-                .alterSessionData(argThat(matchesSessionMap()), anyMap());
-
         sessionSignInModifier.alterSessionData(mockSession, mockOAuthToken, mockUserResponse);
 
         verify(mockOAuthToken).getAccessTokenAsMap();
@@ -57,10 +50,13 @@ class SessionSignInModifierTest {
         verify(mockSession).getData();
         verify(sessionSignInModifier)
                 .alterSessionData(mockSession, mockOAuthToken, mockUserResponse);
+        verify(sessionSignInModifier).alterSessionData(argThat(matchesSessionMap()),
+                argThat(isCorrectlyConstructedSignInMap()));
         verifyNoMoreInteractions(mockSession, mockOAuthToken, mockUserResponse,
                 sessionSignInModifier);
     }
 
+    @SuppressWarnings({"RedundantOperationOnEmptyContainer", "unchecked"})
     @Test
     @DisplayName("Test Alter Session Data Puts values in places")
     void testAlterSessionData_UpdatesWhenThereIsNoExistingSignIn() {
@@ -103,15 +99,25 @@ class SessionSignInModifierTest {
         return argument -> argument.equals(sessionMap);
     }
 
-    private Answer assertNewMapIsCorrect() {
-        return invocation -> {
-            Map<String, Object> generatedMap = invocation.getArgument(1);
-            assertEquals(1, generatedMap.get(SessionKeys.SIGNED_IN.getKey()));
-            assertEquals(mockOAuthTokenMap,
-                    generatedMap.get(SessionKeys.ACCESS_TOKEN.getKey()));
-            assertEquals(mockUserResponseMap,
-                    generatedMap.get(SessionKeys.USER_PROFILE.getKey()));
-            return null;
+    private ArgumentMatcher<Map<String, Object>> isCorrectlyConstructedSignInMap() {
+        return new ArgumentMatcher<Map<String, Object>>() {
+            @Override
+            public boolean matches(Map<String, Object> argument) {
+                return isSignedIn(argument) && hasAuthToken(argument) && hasUserProfile(argument);
+            }
+
+            private boolean hasUserProfile(Map<String, Object> argument) {
+                return argument.get(SessionKeys.USER_PROFILE.getKey()).equals(mockUserResponseMap);
+            }
+
+            private boolean hasAuthToken(Map<String, Object> argument) {
+                return argument.get(SessionKeys.ACCESS_TOKEN.getKey()).equals(mockOAuthTokenMap);
+            }
+
+            private boolean isSignedIn(Map<String, Object> argument) {
+                return argument.get(SessionKeys.SIGNED_IN.getKey()).equals(1);
+            }
         };
     }
+
 }
