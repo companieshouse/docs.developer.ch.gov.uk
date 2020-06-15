@@ -16,9 +16,9 @@ public class IdentityProviderTests {
     private IdentityProvider provider;
 
     private EnvironmentReaderImpl reader;
-    private  String code= "code";
-    private  String state = "state";
-    private  String scope = "scope";
+    private static final String code = "code";
+    private static final String state = "state";
+    private static final String scope = "scope";
 
     @BeforeEach
     public void init() {
