@@ -14,6 +14,27 @@ package uk.gov.ch.oauth.identity;
  */
 public interface IIdentityProvider {
 
+    /**
+     * Authorisation URL generated with {@literal state} and {@literal scope}
+     *
+     * @see #getAuthorisationUrl(String)
+     */
+    String getAuthorisationUrl(final String originalRequestUri, final String scope);
+
+    /**
+     * Authorisation URL needs to include {@literal state} information
+     *
+     * @return URL with embedded state information
+     * @see #getAuthorisationUrl(String, String)
+     */
+    String getAuthorisationUrl(final String state);
+
+    /**
+     * @param code
+     * @return The post request body as a String
+     */
+    String getPostRequestBody(final String code);
+
     String getClientSecret();
 
     /**
@@ -25,23 +46,6 @@ public interface IIdentityProvider {
 
     String getClientId();
 
-    /**
-     * Authorisation URL needs to include {@literal state} information
-     *
-     * @return URL with embedded state information
-     * @see #getAuthorisationUrl(String, String)
-     */
-    String getAuthorisationUrl(final String state);
-    
-    /**
-     * Authorisation URL generated with {@literal state} and {@literal scope}
-     *
-     * @see #getAuthorisationUrl(String)
-     */
-    String getAuthorisationUrl(final String originalRequestUri, final String scope);
-
-    String getPostRequestBody(final String code);
-    
     String getTokenUrl();
 
     String getProfileUrl();
