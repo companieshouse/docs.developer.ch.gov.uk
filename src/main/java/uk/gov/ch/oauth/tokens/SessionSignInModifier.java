@@ -3,8 +3,6 @@ package uk.gov.ch.oauth.tokens;
 import java.util.Map;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
-import uk.gov.companieshouse.session.model.AccessToken;
-import uk.gov.companieshouse.session.model.UserProfile;
 
 public class SessionSignInModifier {
 
@@ -17,8 +15,8 @@ public class SessionSignInModifier {
         return original;
     }
 
-    public void alterSessionData(Session session, AccessToken accessToken,
-            UserProfile userProfileResponse) {
+    public void alterSessionData(Session session, OAuthToken accessToken,
+            UserProfileResponse userProfileResponse) {
         SignInInfoMap signInInfo = new SignInInfoMap();
         signInInfo.setUserProfile(userProfileResponse);
         signInInfo.setAccessToken(accessToken);
@@ -27,7 +25,7 @@ public class SessionSignInModifier {
         alterSessionData(session.getData(), signInInfo.toMap());
     }
 
-    public void alterSessionData(Map<String, Object> currentSessionData,
+    void alterSessionData(Map<String, Object> currentSessionData,
             Map<String, Object> desiredSignInInfo) {
 
         final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
