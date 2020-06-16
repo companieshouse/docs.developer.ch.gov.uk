@@ -1,5 +1,6 @@
 package uk.gov.ch.oauth.tokens;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
@@ -41,23 +42,19 @@ public class OAuthToken extends AccessToken {
     }
 
     /**
-     * Convert properties into the format that can be processed by the {@link
+     * Convert properties into the map format that can be processed by the {@link
      * uk.gov.companieshouse.session.Session} for access token sign in information.
      *
      * @return members mapped to appropriate {@link SessionKeys}
      */
-    public Map<String, Object> saveAccessToken() {
-
+    @JsonIgnore
+    public Map<String, Object> getAccessTokenAsMap() {
         Map<String, Object> accessTokenData = new HashMap<>();
 
         accessTokenData.put(SessionKeys.ACCESS_TOKEN.getKey(), getToken());
         accessTokenData.put(SessionKeys.EXPIRES_IN.getKey(), getExpiresIn());
         accessTokenData.put(SessionKeys.REFRESH_TOKEN.getKey(), getRefreshToken());
         accessTokenData.put(SessionKeys.TOKEN_TYPE.getKey(), getTokenType());
-
-        Map<String, Object> signInData = new HashMap<>();
-        signInData.put(SessionKeys.ACCESS_TOKEN.getKey(), accessTokenData);
-
-        return signInData;
+        return accessTokenData;
     }
 }

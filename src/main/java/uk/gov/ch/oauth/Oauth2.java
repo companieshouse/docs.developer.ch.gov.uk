@@ -22,6 +22,7 @@ import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.nonce.NonceGenerator;
 import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.ch.oauth.tokens.OAuthToken;
+import uk.gov.ch.oauth.tokens.SessionSignInModifier;
 import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
@@ -46,15 +47,6 @@ public class Oauth2 implements IOauth {
         this.identityProvider = identityProvider;
         this.sessionFactory = sessionFactory;
         oAuth2StateHandler = new OAuth2StateHandler(this.identityProvider);
-    }
-
-    @SuppressWarnings("unchecked")
-    // This is necessary as the original data on the session is untyped, but expected to be of the correct types
-    private static Map<String, Object> updateSignIn(final Object sInf, final Object sio) {
-        final Map<String, Object> original = (Map<String, Object>) sInf;
-        final Map<String, Object> extras = (Map<String, Object>) sio;
-        original.putAll(extras);
-        return original;
     }
 
     /**
@@ -145,16 +137,16 @@ public class Oauth2 implements IOauth {
         final OAuthToken oauthToken = requestOAuthToken(code);
         regenerateSessionID(httpServletResponse);
         final UserProfileResponse userProfile = requestUserProfile(oauthToken);
+
         if ((null == userProfile.getId()) || userProfile.getId().isEmpty()) {
             return null;
         }
-        final Map<String, Object> signInData = oauthToken.saveAccessToken();
-        userProfile.addUserProfileToMap(signInData);
-        signInData.put(SessionKeys.SIGNED_IN.getKey(), 1);
-        final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
-        final Map<String, Object> sData = sessionFactory.getSessionDataFromContext();
-
-        sData.merge(signInInfoKey, signInData, Oauth2::updateSignIn);
+        SessionSignInModifier sessionSignInModifier = new SessionSignInModifier();
+        sessionSignInModifier.alterSessionData(
+                sessionFactory.getSessionFromContext(),
+                oauthToken,
+                userProfile
+        );
 
         return userProfile;
     }
@@ -176,7 +168,7 @@ public class Oauth2 implements IOauth {
                 .headers(h -> h.setBearerAuth(oauthToken.getToken()))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .flatMap(response -> validResponse(response));
+                .flatMap(this::validResponse);
         return userProfileResponse.block(timeoutDuration);
     }
 
@@ -229,6 +221,7 @@ public class Oauth2 implements IOauth {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void removeSignInInfo(Map<String, Object> sessionData) {
         final Map<String, Object> signInInfo =
                 (Map<String, Object>) sessionData.get(SIGN_IN_INFO);
