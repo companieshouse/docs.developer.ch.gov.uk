@@ -9,55 +9,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.ch.oauth.IOauth;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
-import uk.gov.companieshouse.session.Session;
-import uk.gov.companieshouse.session.handler.SessionHandler;
 
 @Controller
 @RequestMapping("${signin.url}")
 public class SignInController {
 
+
     @Autowired
-    IOauth oauth;
+    private IOauth oauth;
 
     @Autowired
     IIdentityProvider identityProvider;
 
-    private static String getRequestURL(final HttpServletRequest request) {
-        // Find the original requested url
-        final StringBuilder originalRequestUrl = new StringBuilder(
-                request.getRequestURL());
-        final String queryString = request.getQueryString();
-        if (queryString != null) {
-            originalRequestUrl.append("?").append(queryString);
-        }
-        return originalRequestUrl.toString();
-    }
 
     @GetMapping
-    public void getSignIn(final HttpServletRequest httpServletRequest,
-            final HttpServletResponse httpServletResponse) throws IOException {
-
-        final Session chSession = (Session) httpServletRequest
-                .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-        // Redirect for user authentication (no scope specified)
-        redirectForAuth(chSession, httpServletRequest, httpServletResponse);
-    }
-
-    /**
-     * Redirects to a URI for the user to authenticate themselves
-     *
-     * @param session The user's session, retrieved from context
-     */
-    void redirectForAuth(final Session session, final HttpServletRequest request,
-            final HttpServletResponse response)
-            throws IOException {
-
-        final String originalRequestUrl = getRequestURL(request);
-
-        // Build oauth uri and redirect
-        final String state = oauth.encodeSignInState(originalRequestUrl, session, "content");
+    public void doSignIn(final HttpServletRequest httpServletRequest,
+                         final HttpServletResponse httpServletResponse) throws IOException {
+        final String state = oauth.prepareState(httpServletRequest);
         final String authoriseUri = identityProvider.getAuthorisationUrl(state);
-        response.sendRedirect(authoriseUri);
+        httpServletResponse.sendRedirect(authoriseUri);
     }
-
 }

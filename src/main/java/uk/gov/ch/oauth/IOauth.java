@@ -1,5 +1,6 @@
 package uk.gov.ch.oauth;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import uk.gov.companieshouse.session.Session;
 
@@ -39,4 +40,13 @@ public interface IOauth {
      * @param chSession The active session.
      */
     void invalidateSession(Session chSession);
+
+    /**
+     * This method takes a HttpRequest and returns the state by getting the original request url from
+     * getOriginalRequestUrl() and then calling encodeSignInState() to get the state.
+     *
+     * @param request HttpRequest
+     * @return The state as a String
+     */
+    String prepareState(final HttpServletRequest request);
 }
