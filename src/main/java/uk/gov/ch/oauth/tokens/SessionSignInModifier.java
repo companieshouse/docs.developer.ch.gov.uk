@@ -3,6 +3,7 @@ package uk.gov.ch.oauth.tokens;
 import java.util.Map;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
+import uk.gov.companieshouse.session.model.AccessToken;
 
 public class SessionSignInModifier {
 
@@ -15,9 +16,16 @@ public class SessionSignInModifier {
         return original;
     }
 
-    public void alterSessionData(Session session, OAuthToken accessToken,
-            UserProfileResponse userProfileResponse) {
-        SignInInfoMap signInInfo = new SignInInfoMap();
+    /**
+     * Accepts a User session and updates its sign in info with the provided Access Token and User
+     * Profile.
+     *
+     * @param accessToken extended implementation of {@link AccessToken}
+     * @param userProfileResponse extended implementation of {@link uk.gov.companieshouse.session.model.UserProfile}
+     */
+    public void alterSessionData(final Session session, final OAuthToken accessToken,
+            final UserProfileResponse userProfileResponse) {
+        final SignInInfoMap signInInfo = new SignInInfoMap();
         signInInfo.setUserProfile(userProfileResponse);
         signInInfo.setAccessToken(accessToken);
         signInInfo.setSignedIn(true);
@@ -25,8 +33,15 @@ public class SessionSignInModifier {
         alterSessionData(session.getData(), signInInfo.toMap());
     }
 
-    void alterSessionData(Map<String, Object> currentSessionData,
-            Map<String, Object> desiredSignInInfo) {
+    /**
+     * Functional method to alter sessions underlying data map with the new signin info.
+     *
+     * @param currentSessionData the sessions current data map.
+     * @param desiredSignInInfo which will be added, to the session data, overwriting anything that
+     * conflicts.
+     */
+    void alterSessionData(final Map<String, Object> currentSessionData,
+            final Map<String, Object> desiredSignInInfo) {
 
         final String signInInfoKey = SessionKeys.SIGN_IN_INFO.getKey();
 
