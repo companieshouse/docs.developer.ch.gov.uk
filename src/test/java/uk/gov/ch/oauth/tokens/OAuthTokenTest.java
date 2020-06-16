@@ -53,7 +53,13 @@ class OAuthTokenTest {
     @Test
     @DisplayName("Check AccessToken deserialises correctly.")
     void setAccessTokenDeserialises() throws JsonProcessingException {
-        String input = "{\"access_token\":\"TOKEN\",\"expires_in\":1,\"refresh_token\":\"REFRESH_TOKEN\",\"token_type\":\"TOKEN_TYPE\"}";
+        String input = String.format(
+                "{\"access_token\":\"%s\",\"expires_in\":%d,\"refresh_token\":\"%s\",\"token_type\":\"%s\"}",
+                TOKEN,
+                EXPIRES_IN,
+                REFRESH_TOKEN,
+                TOKEN_TYPE
+        );
         OAuthToken parsedToken = mapper.readValue(input, OAuthToken.class);
         assertEquals(token.getTokenType(), parsedToken.getTokenType());
         assertEquals(token.getToken(), parsedToken.getToken());
