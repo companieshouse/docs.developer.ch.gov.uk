@@ -8,10 +8,8 @@ import com.nimbusds.jose.JWEObject;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.DirectDecrypter;
 import com.nimbusds.jose.crypto.DirectEncrypter;
-import java.util.Optional;
 import net.minidev.json.JSONObject;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
-import uk.gov.companieshouse.environment.impl.EnvironmentReaderImpl;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -26,10 +24,7 @@ public class OAuth2StateHandler {
 
     public OAuth2StateHandler(final IIdentityProvider identityProvider) {
         this.identityProvider = identityProvider;
-        EnvironmentReaderImpl environmentReader = new EnvironmentReaderImpl();
-        final String oauth_logging_namespace = Optional.ofNullable(environmentReader
-                .getOptionalString("OAUTH_LOGGING_NAMESPACE"))
-                .orElse("oauth-signin-java-library");
+        final String oauth_logging_namespace = "oauth-signin-java-library";
         logger = LoggerFactory.getLogger(oauth_logging_namespace);
     }
 
