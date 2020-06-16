@@ -3,10 +3,15 @@ package uk.gov.ch.oauth;
 import static com.nimbusds.jose.JWEObject.parse;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.matches;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWEObject;
 import com.nimbusds.jose.Payload;
 import java.text.ParseException;
@@ -54,6 +59,15 @@ class OAuth2StateHandlerTest {
     }
 
     @Test
+    @DisplayName("Encoding handles error messages")
+    void encodeStateLogsErrorsAndCatchesException() {
+        when(mockIdentityProvider.getRequestKey()).thenReturn(new byte[11]);
+
+        assertNull(stateHandler.oauth2EncodeState(RETURN_URI, NONCE, ATTRIBUTE_NAME));
+        verify(mockLogger).error(matches("Could not encode OAuth state"), any(JOSEException.class));
+    }
+
+    @Test
     @DisplayName("Encoded string can be decoded.")
     void oauth2DecodeState() {
         when(mockIdentityProvider.getRequestKey()).thenReturn(REQUEST_KEY);
@@ -65,6 +79,14 @@ class OAuth2StateHandlerTest {
 
         assertEquals(RETURN_URI, decodedJson.get(ATTRIBUTE_NAME));
         assertEquals(NONCE, decodedJson.get("nonce"));
+    }
+
+    @Test
+    @DisplayName("Decoding process handles exception and logs.")
+    void oauth2DecodeHandlesExceptionAndLogs() {
+        String encoded = "words.words.words.words.words";
+        assertNull(stateHandler.oauth2DecodeState(encoded));
+        verify(mockLogger).error(matches("Could not decode OAuth state"), any(JOSEException.class));
     }
 
     @Test
