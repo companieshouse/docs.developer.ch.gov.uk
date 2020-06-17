@@ -1,18 +1,16 @@
 package uk.gov.ch.oauth.identity;
 
+import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.companieshouse.environment.EnvironmentReader;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
-import java.util.Base64;
-import java.util.Base64.Decoder;
-
 public class IdentityProvider implements IIdentityProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
-    private static final Decoder decoder = Base64.getDecoder();
+    private static final Logger LOGGER = LoggerFactory.getLogger("oauth-signin-java-library");
+    private static final Base64.Decoder decoder = Base64.getDecoder();
     private final byte[] requestKey;
     private final String authorizationUri;
     private final String clientId;
@@ -113,7 +111,7 @@ public class IdentityProvider implements IIdentityProvider {
     public String getAccountLocalUrl() {
         return accountLocalUrl;
     }
-    
+
     @Override
     public String getGrantType() {
         return grantType;
