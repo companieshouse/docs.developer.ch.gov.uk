@@ -30,9 +30,9 @@ public class SignOutController {
 
         final Session chSession = (Session) httpServletRequest
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-        String redirectUrl = ioAuthCoordinator.getSignoutUri();
+        String redirectUri = ioAuthCoordinator.getSignoutUri();
         ioAuthCoordinator.invalidateSession(chSession);
-        httpServletResponse.sendRedirect(redirectUrl);
+        httpServletResponse.sendRedirect(redirectUri);
     }
 
 }
