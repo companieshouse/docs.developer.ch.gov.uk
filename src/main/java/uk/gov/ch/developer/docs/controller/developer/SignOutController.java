@@ -1,18 +1,18 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import uk.gov.ch.developer.docs.DocsWebApplication;
-import uk.gov.ch.oauth.IOauth;
-import uk.gov.ch.oauth.identity.IIdentityProvider;
+import uk.gov.ch.oauth.IOAuthCoordinator;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 public class SignOutController {
@@ -20,9 +20,7 @@ public class SignOutController {
             LoggerFactory.getLogger(DocsWebApplication.APPLICATION_NAME_SPACE);
 
     @Autowired
-    private IIdentityProvider identityProviders;
-    @Autowired
-    private IOauth oauth2;
+    private IOAuthCoordinator ioAuthCoordinator;
 
     @GetMapping("${signout.url}")
     public void doSignOut(final HttpServletResponse httpServletResponse,
@@ -32,8 +30,9 @@ public class SignOutController {
 
         final Session chSession = (Session) httpServletRequest
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-        oauth2.invalidateSession(chSession);
-        httpServletResponse.sendRedirect(identityProviders.getRedirectUriPage());
+        String redirectUrl = ioAuthCoordinator.getSignoutUri();
+        ioAuthCoordinator.invalidateSession(chSession);
+        httpServletResponse.sendRedirect(redirectUrl);
     }
 
 }
