@@ -5,10 +5,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,10 +20,13 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.oauth.exceptions.UnauthorisedException;
+import uk.gov.ch.oauth.identity.IIdentityProvider;
 
 
 @ExtendWith(MockitoExtension.class)
 class OAuthCoordinatorTest {
+
+    static final String STATE = "state";
 
     @Spy
     @InjectMocks
@@ -29,6 +34,12 @@ class OAuthCoordinatorTest {
 
     @Mock
     private HttpServletResponse mockResponse;
+    @Mock
+    private HttpServletRequest request;
+    @Mock
+    private IIdentityProvider mockIdentityProvider;
+    @Mock
+    private IOauth mockOauth;
 
     @Test
     @DisplayName("Throws Exception if callback params contains error.")
@@ -72,5 +83,14 @@ class OAuthCoordinatorTest {
                 .validateResponse(anyString(), anyString(), any(HttpServletResponse.class));
     }
 
+    @Test
+    @DisplayName("getAuthoriseUriFromRequestTest")
+    void getAuthoriseUriFromRequestTest() {
+        when(oAuthCoordinator.getOAuth()).thenReturn(mockOauth);
+        when(mockOauth.prepareState(request)).thenReturn(STATE);
+        when(oAuthCoordinator.getIdentityProvider()).thenReturn(mockIdentityProvider);
+        oAuthCoordinator.getAuthoriseUriFromRequest(request);
+        verify(mockIdentityProvider).getAuthorisationUrl(STATE);
+    }
 
 }

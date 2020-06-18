@@ -2,6 +2,7 @@ package uk.gov.ch.oauth;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import uk.gov.ch.oauth.exceptions.UnauthorisedException;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
@@ -33,6 +34,12 @@ public class OAuthCoordinator implements IOAuthCoordinator {
         } else {
             return validateResponse(params.get("state"), params.get("code"), response);
         }
+    }
+
+    @Override
+    public String getAuthoriseUriFromRequest(HttpServletRequest request) {
+        final String state = getOAuth().prepareState(request);
+        return getIdentityProvider().getAuthorisationUrl(state);
     }
 
     String validateResponse(String state, String code, HttpServletResponse response)
@@ -72,7 +79,7 @@ public class OAuthCoordinator implements IOAuthCoordinator {
         return sessionFactory;
     }
 
-    private IIdentityProvider getIdentityProvider() {
+    protected IIdentityProvider getIdentityProvider() {
         if (identityProvider == null) {
             identityProvider = new IdentityProvider(getEnvironmentReader());
         }

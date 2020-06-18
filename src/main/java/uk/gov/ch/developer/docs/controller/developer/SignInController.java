@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import uk.gov.ch.oauth.IOauth;
-import uk.gov.ch.oauth.identity.IIdentityProvider;
+import uk.gov.ch.oauth.IOAuthCoordinator;
 
 @Controller
 @RequestMapping("${signin.url}")
@@ -16,17 +15,13 @@ public class SignInController {
 
 
     @Autowired
-    private IOauth oauth;
-
-    @Autowired
-    IIdentityProvider identityProvider;
+    private IOAuthCoordinator coordinator;
 
 
     @GetMapping
     public void doSignIn(final HttpServletRequest httpServletRequest,
                          final HttpServletResponse httpServletResponse) throws IOException {
-        final String state = oauth.prepareState(httpServletRequest);
-        final String authoriseUri = identityProvider.getAuthorisationUrl(state);
+        final String authoriseUri = coordinator.getAuthoriseUriFromRequest(httpServletRequest);
         httpServletResponse.sendRedirect(authoriseUri);
     }
 }

@@ -12,9 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.ch.oauth.IOauth;
-import uk.gov.ch.oauth.identity.IIdentityProvider;
-import uk.gov.companieshouse.session.Session;
+import uk.gov.ch.oauth.IOAuthCoordinator;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -34,19 +32,14 @@ public class SignInControllerTest {
     @Mock
     HttpServletResponse response;
     @Mock
-    IOauth oauth;
-    @Mock
-    IIdentityProvider identityProvider;
-    @Mock
-    Session session;
+    IOAuthCoordinator coordinator;
     @Spy
     @InjectMocks
     private SignInController signInController;
 
     @Test
     void doSignInTestToEnsureThatAUserIsSentToTheAuthorisePage() throws IOException {
-        when(oauth.prepareState(request)).thenReturn(STATE);
-        when(identityProvider.getAuthorisationUrl(STATE)).thenReturn(AUTHORISE_URI);
+        when(coordinator.getAuthoriseUriFromRequest(request)).thenReturn(AUTHORISE_URI);
         signInController.doSignIn(request, response);
         verify(response).sendRedirect(AUTHORISE_URI);
     }
