@@ -11,4 +11,5 @@ public interface IOAuthCoordinator {
             throws UnauthorisedException;
 
     String getAuthoriseUriFromRequest(HttpServletRequest request);
+
 }

@@ -42,13 +42,14 @@ public class OAuthCoordinator implements IOAuthCoordinator {
         return getIdentityProvider().getAuthorisationUrl(state);
     }
 
+
     String validateResponse(String state, String code, HttpServletResponse response)
             throws UnauthorisedException {
 
         final boolean valid = state != null && code != null &&
                 getOAuth().validate(state, code, response);
         if (valid) {
-            return identityProvider.getRedirectUriPage();
+            return getIdentityProvider().getRedirectUriPage();
         } else {
             return logAuthServerError("Invalid access token", response);
         }
@@ -65,28 +66,28 @@ public class OAuthCoordinator implements IOAuthCoordinator {
         throw new UnauthorisedException(error);
     }
 
-    public IOauth getOAuth() {
+    IOauth getOAuth() {
         if (this.oAuth == null) {
             this.oAuth = new Oauth2(getIdentityProvider(), getSessionFactory());
         }
         return oAuth;
     }
 
-    private SessionFactory getSessionFactory() {
+    SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             sessionFactory = new SessionFactory();
         }
         return sessionFactory;
     }
 
-    protected IIdentityProvider getIdentityProvider() {
+    IIdentityProvider getIdentityProvider() {
         if (identityProvider == null) {
             identityProvider = new IdentityProvider(getEnvironmentReader());
         }
         return identityProvider;
     }
 
-    private EnvironmentReader getEnvironmentReader() {
+    EnvironmentReader getEnvironmentReader() {
         if (environmentReader == null) {
             environmentReader = new EnvironmentReaderImpl();
         }
