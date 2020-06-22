@@ -1,6 +1,8 @@
 package uk.gov.ch.oauth.session;
 
+import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
 import java.util.Map;
+import javax.servlet.http.Cookie;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
@@ -51,5 +53,9 @@ public class SessionFactory {
 
     public Store getDefaultStore() {
         return uk.gov.companieshouse.session.SessionFactory.getDefaultStoreImpl();
+    }
+    
+    public Cookie buildSessionCookie(final Session session) {
+        return SessionHandler.buildSessionCookie(session);
     }
 }
