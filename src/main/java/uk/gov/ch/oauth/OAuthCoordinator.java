@@ -39,12 +39,12 @@ public class OAuthCoordinator implements IOAuthCoordinator {
 
     @Override
     public String getSignoutUri() {
-        return identityProvider.getRedirectUriPage();
+        return getIdentityProvider().getRedirectUriPage();
     }
 
     @Override
     public void invalidateSession(Session session) {
-        oAuth.invalidateSession(session);
+        getOAuth().invalidateSession(session);
     }
 
     String validateResponse(String state, String code, HttpServletResponse response)
