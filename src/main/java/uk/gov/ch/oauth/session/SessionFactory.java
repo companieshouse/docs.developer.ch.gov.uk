@@ -1,6 +1,5 @@
 package uk.gov.ch.oauth.session;
 
-import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
 import java.util.Map;
 import javax.servlet.http.Cookie;
 import org.springframework.stereotype.Component;
