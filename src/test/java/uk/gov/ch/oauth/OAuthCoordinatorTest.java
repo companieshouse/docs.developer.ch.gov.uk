@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,6 +31,8 @@ import uk.gov.companieshouse.environment.EnvironmentReader;
 
 @ExtendWith(MockitoExtension.class)
 class OAuthCoordinatorTest {
+
+    static final String STATE = "state";
 
     public static final String CODE_KEY = "code";
     public static final String CODE_VALUE = "Code";
@@ -50,6 +53,8 @@ class OAuthCoordinatorTest {
     private IIdentityProvider mockIdentityProvider;
     @Mock
     private IOauth mockOAuth;
+    @Mock
+    private HttpServletRequest request;
 
     @Nested
     class CallbackTests {
@@ -135,6 +140,17 @@ class OAuthCoordinatorTest {
             verify(mockOAuth).validate(STATE_VALUE, CODE_VALUE, mockResponse);
             verify(mockIdentityProvider).getRedirectUriPage();
         }
+    }
+
+    @DisplayName("getAuthoriseUriFromRequestTest")
+    void getAuthoriseUriFromRequestTest() {
+        when(oAuthCoordinator.getOAuth()).thenReturn(mockOAuth);
+        when(mockOAuth.prepareState(request)).thenReturn(STATE);
+        when(oAuthCoordinator.getIdentityProvider()).thenReturn(mockIdentityProvider);
+
+        oAuthCoordinator.getAuthoriseUriFromRequest(request);
+
+        verify(mockIdentityProvider).getAuthorisationUrl(STATE);
     }
 
     @Nested
