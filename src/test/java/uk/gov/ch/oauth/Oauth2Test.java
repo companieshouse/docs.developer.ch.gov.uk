@@ -27,6 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
@@ -34,8 +35,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.Payload;
-import net.minidev.json.JSONObject;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -61,9 +60,7 @@ public class Oauth2Test {
     public static MockWebServer mockServer;
     static final String ORIGINAL_REQUEST_URL = "https://www.example.com?original";
     static final StringBuffer REQUEST_URL_STRING_BUFFER =
-            new StringBuffer("https://www.example.com"); // TODO decide if we should be expecting
-                                                         // StringBuffer here or not
-    public static final String AUTHORISE_URI = "https://example.com/authorise";
+            new StringBuffer("https://www.example.com");
 
     @Mock
     public IIdentityProvider identityProvider;
@@ -80,13 +77,8 @@ public class Oauth2Test {
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private OAuth2StateHandler oAuth2StateHandler;
     @Mock
-    private Payload payload;
-    @Mock
-    private JSONObject jsonObject;
-    @Mock
     private HttpServletResponse httpServletResponse;
-    @Spy
-    private Map<String, Object> data;
+
     @Spy
     @InjectMocks
     public Oauth2 oauth2;
@@ -292,8 +284,10 @@ public class Oauth2Test {
     public void testGetSessionNonceThrowsNullPointer() {
         when(oAuth2StateHandler.oauth2DecodeState(anyString()).toJSONObject().getAsString("nonce"))
                 .thenReturn(NONCE);
-        when(sessionFactory.getSessionDataFromContext()).thenReturn(data);
-        when(data.remove(SessionKeys.NONCE.getKey())).thenThrow(new NullPointerException());
+        
+        final Map<String, Object> sessionData = Mockito.spy(new HashMap<>());
+        when(sessionFactory.getSessionDataFromContext()).thenReturn(sessionData);
+        when(sessionData.remove(SessionKeys.NONCE.getKey())).thenThrow(new NullPointerException());
 
         assertFalse(oauth2.validate(STATE, CODE, httpServletResponse));
     }
