@@ -56,5 +56,4 @@ public class UserCallbackControllerTest {
         verify(mockCoordinator).getPostCallbackRedirectURL(mockResponse, mockParams);
         verifyNoMoreInteractions(mockCoordinator, mockResponse, mockParams);
     }
-
 }

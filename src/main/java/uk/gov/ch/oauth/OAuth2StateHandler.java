@@ -18,17 +18,24 @@ import uk.gov.companieshouse.logging.LoggerFactory;
  */
 public class OAuth2StateHandler {
 
-    //TODO correct domain for Logging
-    private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
+    private final Logger logger;
 
     private final IIdentityProvider identityProvider;
 
     public OAuth2StateHandler(final IIdentityProvider identityProvider) {
         this.identityProvider = identityProvider;
+        final String oauth_logging_namespace = "oauth-signin-java-library";
+        logger = LoggerFactory.getLogger(oauth_logging_namespace);
+    }
+
+    public OAuth2StateHandler(final IIdentityProvider identityProvider, Logger logger) {
+        this.identityProvider = identityProvider;
+        this.logger = logger;
     }
 
     /**
      * Encodes a URI with a nonce according to a JWE encoding algorithm
+     *
      * @return JWE encoded string, comprised of the return URI and a nonce
      */
     public String oauth2EncodeState(final String returnUri,
@@ -44,11 +51,11 @@ public class OAuth2StateHandler {
         final JWEObject jweObject = new JWEObject(header, payload);
 
         try {
-            final DirectEncrypter encrypter = new DirectEncrypter(
+            @SuppressWarnings("SpellCheckingInspection") final DirectEncrypter encrypter = new DirectEncrypter(
                     identityProvider.getRequestKey());
             jweObject.encrypt(encrypter);
         } catch (final JOSEException e) {
-            LOGGER.error("Could not encode OAuth state", e);
+            logger.error("Could not encode OAuth state", e);
             return null;
         }
         return jweObject.serialize();
@@ -68,7 +75,7 @@ public class OAuth2StateHandler {
             jweObject.decrypt(new DirectDecrypter(key));
             payload = jweObject.getPayload();
         } catch (final Exception e) {
-            LOGGER.error("Could not decode OAuth state", e);
+            logger.error("Could not decode OAuth state", e);
             payload = null;
         }
         return payload;
