@@ -31,6 +31,15 @@ import uk.gov.companieshouse.environment.EnvironmentReader;
 @ExtendWith(MockitoExtension.class)
 class OAuthCoordinatorTest {
 
+    public static final String CODE_KEY = "code";
+    public static final String CODE_VALUE = "Code";
+    public static final String STATE_KEY = "state";
+    public static final String STATE_VALUE = "State";
+    public static final String ERROR_KEY = "error";
+    public static final String ERROR_VALUE = "Error Value";
+    public static final String REDIRECT_URL = "Redirect URL";
+    public static final String INVALID_ACCESS_TOKEN_MSG = "Invalid access token";
+
     @Spy
     @InjectMocks
     OAuthCoordinator oAuthCoordinator;
@@ -49,12 +58,12 @@ class OAuthCoordinatorTest {
         @DisplayName("Throws Exception if callback params contains error.")
         void getPostCallbackRedirectURLWhenErrorResponse() throws IOException {
             Map<String, String> params = new HashMap<>();
-            params.put("error", "Error Value");
+            params.put(ERROR_KEY, ERROR_VALUE);
 
             assertThrows(UnauthorisedException.class,
                     () -> oAuthCoordinator.getPostCallbackRedirectURL(mockResponse, params));
 
-            verify(mockResponse).sendError(HttpServletResponse.SC_FORBIDDEN, "Error Value");
+            verify(mockResponse).sendError(HttpServletResponse.SC_FORBIDDEN, ERROR_VALUE);
         }
 
         @Test
@@ -62,13 +71,13 @@ class OAuthCoordinatorTest {
         void getPostCallbackRedirectURLWhenMissingValuesState()
                 throws UnauthorisedException, IOException {
             Map<String, String> params = new HashMap<>();
-            params.put("code", "Code");
+            params.put(CODE_KEY, CODE_VALUE);
 
             assertThrows(UnauthorisedException.class,
                     () -> oAuthCoordinator.getPostCallbackRedirectURL(mockResponse, params));
 
             verify(mockResponse)
-                    .sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid access token");
+                    .sendError(HttpServletResponse.SC_FORBIDDEN, INVALID_ACCESS_TOKEN_MSG);
             verify(oAuthCoordinator, never())
                     .validateResponse(anyString(), anyString(), any(HttpServletResponse.class));
         }
@@ -78,13 +87,13 @@ class OAuthCoordinatorTest {
         void getPostCallbackRedirectURLWhenMissingValuesCode()
                 throws UnauthorisedException, IOException {
             Map<String, String> params = new HashMap<>();
-            params.put("state", "State");
+            params.put(STATE_KEY, STATE_VALUE);
 
             assertThrows(UnauthorisedException.class,
                     () -> oAuthCoordinator.getPostCallbackRedirectURL(mockResponse, params));
 
             verify(mockResponse)
-                    .sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid access token");
+                    .sendError(HttpServletResponse.SC_FORBIDDEN, INVALID_ACCESS_TOKEN_MSG);
             verify(oAuthCoordinator, never())
                     .validateResponse(anyString(), anyString(), any(HttpServletResponse.class));
         }
@@ -97,33 +106,33 @@ class OAuthCoordinatorTest {
                     .thenReturn(false);
 
             Map<String, String> params = new HashMap<>();
-            params.put("state", "State");
-            params.put("code", "Code");
+            params.put(STATE_KEY, STATE_VALUE);
+            params.put(CODE_KEY, CODE_VALUE);
 
             assertThrows(UnauthorisedException.class,
                     () -> oAuthCoordinator.getPostCallbackRedirectURL(mockResponse, params));
 
-            verify(mockOAuth).validate("State", "Code", mockResponse);
+            verify(mockOAuth).validate(STATE_VALUE, CODE_VALUE, mockResponse);
         }
 
         @Test
         @DisplayName("Get Post Back Returns identity provider results")
         void getPostCallbackRedirectReturnsRedirectURLWhenValuesAreCorrect()
                 throws UnauthorisedException {
-            doReturn("Redirect URL").when(mockIdentityProvider).getRedirectUriPage();
+            doReturn(REDIRECT_URL).when(mockIdentityProvider).getRedirectUriPage();
             doReturn(mockIdentityProvider).when(oAuthCoordinator).getIdentityProvider();
             doReturn(mockOAuth).when(oAuthCoordinator).getOAuth();
             when(mockOAuth.validate(anyString(), anyString(), any(HttpServletResponse.class)))
                     .thenReturn(true);
 
             Map<String, String> params = new HashMap<>();
-            params.put("state", "State");
-            params.put("code", "Code");
+            params.put(STATE_KEY, STATE_VALUE);
+            params.put(CODE_KEY, CODE_VALUE);
 
             String ret = oAuthCoordinator.getPostCallbackRedirectURL(mockResponse, params);
 
-            assertEquals("Redirect URL", ret);
-            verify(mockOAuth).validate("State", "Code", mockResponse);
+            assertEquals(REDIRECT_URL, ret);
+            verify(mockOAuth).validate(STATE_VALUE, CODE_VALUE, mockResponse);
             verify(mockIdentityProvider).getRedirectUriPage();
         }
     }
