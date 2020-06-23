@@ -1,12 +1,15 @@
 package uk.gov.ch.oauth.tokens;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.companieshouse.session.SessionKeys;
+import uk.gov.companieshouse.session.model.AccessToken;
+import uk.gov.companieshouse.session.model.UserProfile;
 
 class SignInInfoMapTest {
 
@@ -22,7 +25,7 @@ class SignInInfoMapTest {
     private static final Map<String, Boolean> PERMISSIONS = new HashMap<>();
     private static final String SCOPE = "SCOPE";
     private UserProfileResponse userProfileResponse;
-    private OAuthToken token;
+    private OAuthToken authToken;
 
     @BeforeEach
     void setup() {
@@ -34,12 +37,12 @@ class SignInInfoMapTest {
         userProfileResponse.setPermissions(PERMISSIONS);
         userProfileResponse.setScope(SCOPE);
         userProfileResponse.setSurname(SURNAME);
-        token = new OAuthToken();
+        authToken = new OAuthToken();
 
-        token.setExpiresIn(EXPIRES_IN);
-        token.setRefreshToken(REFRESH_TOKEN);
-        token.setToken(TOKEN);
-        token.setTokenType(TOKEN_TYPE);
+        authToken.setExpiresIn(EXPIRES_IN);
+        authToken.setRefreshToken(REFRESH_TOKEN);
+        authToken.setToken(TOKEN);
+        authToken.setTokenType(TOKEN_TYPE);
     }
 
     @Test
@@ -47,13 +50,13 @@ class SignInInfoMapTest {
         SignInInfoMap signInInfoMap = new SignInInfoMap();
         signInInfoMap.setSignedIn(true);
         signInInfoMap.setUserProfile(userProfileResponse);
-        signInInfoMap.setAccessToken(token);
+        signInInfoMap.setAccessToken(authToken);
 
         Map<String, Object> map = signInInfoMap.toMap();
 
         assertMapIsSignedIn(map);
         assertMapHasUserDetails(userProfileResponse, map);
-        assertMapHasAccessToken(token, map);
+        assertMapHasAccessToken(authToken, map);
     }
 
 
@@ -63,7 +66,7 @@ class SignInInfoMapTest {
 
     @SuppressWarnings("unchecked")
     private void assertMapHasUserDetails(UserProfileResponse userProfileResponse,
-                                         Map<String, Object> map) {
+            Map<String, Object> map) {
         map = (Map<String, Object>) map.get(SessionKeys.USER_PROFILE.getKey());
 
         assertEquals(userProfileResponse.getEmail(),
@@ -93,5 +96,19 @@ class SignInInfoMapTest {
                 map.get(SessionKeys.ACCESS_TOKEN.getKey()));
         assertEquals(token.getTokenType(),
                 map.get(SessionKeys.TOKEN_TYPE.getKey()));
+    }
+
+    @Test
+    void setAccessTokenThrowsIfNonOAuthTokenIsGiven() {
+        SignInInfoMap signInInfoMap = new SignInInfoMap();
+        assertThrows(IllegalArgumentException.class,
+                () -> signInInfoMap.setAccessToken(new AccessToken()));
+    }
+
+    @Test
+    void setUserProfileThrowsIfNonUserProfileResponseIsGiven() {
+        SignInInfoMap signInInfoMap = new SignInInfoMap();
+        assertThrows(IllegalArgumentException.class,
+                () -> signInInfoMap.setUserProfile(new UserProfile()));
     }
 }

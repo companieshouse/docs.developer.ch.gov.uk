@@ -2,7 +2,9 @@ package uk.gov.ch.developer.docs.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import uk.gov.ch.oauth.IOAuthCoordinator;
 import uk.gov.ch.oauth.IOauth;
+import uk.gov.ch.oauth.OAuthCoordinator;
 import uk.gov.ch.oauth.Oauth2;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.identity.IdentityProvider;
@@ -11,6 +13,11 @@ import uk.gov.companieshouse.environment.EnvironmentReader;
 
 @Configuration
 public class OauthBean {
+
+    @Bean
+    public IOAuthCoordinator oAuthCoordinator() {
+        return new OAuthCoordinator("docs.developer.ch.gov.uk");
+    }
 
     @Bean
     public IOauth oauth(IIdentityProvider identityProvider, SessionFactory sessionFactory) {
