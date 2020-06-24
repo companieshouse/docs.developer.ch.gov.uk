@@ -64,7 +64,7 @@ class OAuth2StateHandlerTest {
         when(mockIdentityProvider.getRequestKey()).thenReturn(new byte[11]);
 
         assertNull(stateHandler.oauth2EncodeState(RETURN_URI, NONCE, ATTRIBUTE_NAME));
-        verify(mockLogger).error(matches("Could not encode OAuth state"), any(JOSEException.class));
+        verify(mockLogger).error(matches("Could not encode OAuth state"), any(Exception.class));
     }
 
     @Test
@@ -86,7 +86,7 @@ class OAuth2StateHandlerTest {
     void oauth2DecodeHandlesExceptionAndLogs() {
         String encoded = "words.words.words.words.words";
         assertNull(stateHandler.oauth2DecodeState(encoded));
-        verify(mockLogger).error(matches("Could not decode OAuth state"), any(ParseException.class));
+        verify(mockLogger).error(matches("Could not decode OAuth state"), any(Exception.class));
     }
 
     @Test
