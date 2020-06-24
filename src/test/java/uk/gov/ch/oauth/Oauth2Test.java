@@ -54,6 +54,7 @@ public class Oauth2Test {
     private SessionFactory sessionFactory;
     @Mock
     private HttpServletRequest request;
+
     @Spy
     @InjectMocks
     public Oauth2 oauth2;
