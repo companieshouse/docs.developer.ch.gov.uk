@@ -33,4 +33,3 @@ public class OauthBean {
     SessionFactory sessionFactory() {
         return new SessionFactory();
     }
-}
