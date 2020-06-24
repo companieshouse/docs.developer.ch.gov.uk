@@ -1,14 +1,10 @@
 package uk.gov.ch.oauth;
 
-import static uk.gov.companieshouse.session.handler.SessionHandler.buildSessionCookie;
-
-import com.nimbusds.jose.Payload;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
@@ -17,6 +13,8 @@ import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import com.nimbusds.jose.Payload;
+import net.minidev.json.JSONObject;
 import reactor.core.publisher.Mono;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.nonce.NonceGenerator;
@@ -49,6 +47,12 @@ public class Oauth2 implements IOauth {
         oAuth2StateHandler = new OAuth2StateHandler(this.identityProvider);
     }
 
+    private Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory, final OAuth2StateHandler oAuth2StateHandler ) {
+        this.identityProvider = identityProvider;
+        this.sessionFactory = sessionFactory;
+        this.oAuth2StateHandler = oAuth2StateHandler;
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -210,7 +214,7 @@ public class Oauth2 implements IOauth {
         Session session = sessionFactory
                 .regenerateSession();
 
-        httpServletResponse.addCookie(buildSessionCookie(session));
+        httpServletResponse.addCookie(sessionFactory.buildSessionCookie(session));
     }
 
     public void invalidateSession(Session chSession) {
