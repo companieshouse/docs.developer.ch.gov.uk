@@ -281,13 +281,15 @@ public class Oauth2Test {
 
     @Test
     @DisplayName("Test validate() when getSessionNonce() throws a NullPointerException")
-    public void testGetSessionNonceThrowsNullPointer() {
+    public void testGetSessionNonceThrowsClassCastException() {
         when(oAuth2StateHandler.oauth2DecodeState(anyString()).toJSONObject().getAsString("nonce"))
                 .thenReturn(NONCE);
-        
+
         final Map<String, Object> sessionData = Mockito.spy(new HashMap<>());
         when(sessionFactory.getSessionDataFromContext()).thenReturn(sessionData);
-        when(sessionData.remove(SessionKeys.NONCE.getKey())).thenThrow(new NullPointerException());
+        when(sessionData.remove(SessionKeys.NONCE.getKey())).thenReturn(1);// Returns an int to
+                                                                           // trigger a
+                                                                           // ClassCastException.
 
         assertFalse(oauth2.validate(STATE, CODE, httpServletResponse));
     }
