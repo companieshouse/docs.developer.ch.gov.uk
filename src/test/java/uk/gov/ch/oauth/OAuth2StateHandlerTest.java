@@ -86,7 +86,7 @@ class OAuth2StateHandlerTest {
     void oauth2DecodeHandlesExceptionAndLogs() {
         String encoded = "words.words.words.words.words";
         assertNull(stateHandler.oauth2DecodeState(encoded));
-        verify(mockLogger).error(matches("Could not decode OAuth state"), any(JOSEException.class));
+        verify(mockLogger).error(matches("Could not decode OAuth state"), any(ParseException.class));
     }
 
     @Test
