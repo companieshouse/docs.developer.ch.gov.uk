@@ -1,10 +1,6 @@
 package uk.gov.ch.oauth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.HttpUrl;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +14,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.HttpUrl;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.ch.oauth.tokens.OAuthToken;
@@ -58,6 +59,7 @@ public class Oauth2Test {
     private SessionFactory sessionFactory;
     @Mock
     private HttpServletRequest request;
+    
     @Spy
     @InjectMocks
     public Oauth2 oauth2;
