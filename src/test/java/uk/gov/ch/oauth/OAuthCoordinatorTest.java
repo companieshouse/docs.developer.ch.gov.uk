@@ -32,8 +32,6 @@ import uk.gov.companieshouse.environment.EnvironmentReader;
 @ExtendWith(MockitoExtension.class)
 class OAuthCoordinatorTest {
 
-    static final String STATE = "state";
-
     public static final String CODE_KEY = "code";
     public static final String CODE_VALUE = "Code";
     public static final String STATE_KEY = "state";
@@ -145,12 +143,12 @@ class OAuthCoordinatorTest {
     @DisplayName("getAuthoriseUriFromRequestTest")
     void getAuthoriseUriFromRequestTest() {
         when(oAuthCoordinator.getOAuth()).thenReturn(mockOAuth);
-        when(mockOAuth.prepareState(request)).thenReturn(STATE);
+        when(mockOAuth.prepareState(request)).thenReturn(STATE_VALUE);
         when(oAuthCoordinator.getIdentityProvider()).thenReturn(mockIdentityProvider);
 
         oAuthCoordinator.getAuthoriseUriFromRequest(request);
 
-        verify(mockIdentityProvider).getAuthorisationUrl(STATE);
+        verify(mockIdentityProvider).getAuthorisationUrl(STATE_VALUE);
     }
 
     @Nested
