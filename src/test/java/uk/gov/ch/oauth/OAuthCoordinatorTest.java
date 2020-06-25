@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -29,16 +28,6 @@ import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.companieshouse.environment.EnvironmentReader;
 import uk.gov.companieshouse.session.Session;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -159,7 +148,7 @@ class OAuthCoordinatorTest {
     @DisplayName("getAuthoriseUriFromRequestTest")
     void getAuthoriseUriFromRequestTest() {
         when(oAuthCoordinator.getOAuth()).thenReturn(mockOAuth);
-        when(mockOAuth.prepareState(request)).thenReturn(STATE_VALUE);
+        when(mockOAuth.prepareState(request)).thenReturn(STATE_KEY);
         when(oAuthCoordinator.getIdentityProvider()).thenReturn(mockIdentityProvider);
 
         oAuthCoordinator.getAuthoriseUriFromRequest(request);
