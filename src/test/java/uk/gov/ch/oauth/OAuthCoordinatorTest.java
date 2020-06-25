@@ -54,9 +54,7 @@ class OAuthCoordinatorTest {
     private IOauth mockOAuth;
     @Mock
     private HttpServletRequest request;
-
     private Session session;
-
 
     @Nested
     class CallbackTests {
@@ -171,7 +169,6 @@ class OAuthCoordinatorTest {
         when(oAuthCoordinator.getOAuth()).thenReturn(mockOAuth);
         oAuthCoordinator.invalidateSession(session);
         verify(mockOAuth).invalidateSession(session);
-
     }
 
     @Nested

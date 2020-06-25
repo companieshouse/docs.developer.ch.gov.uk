@@ -1,11 +1,9 @@
 package uk.gov.ch.oauth;
 
-
 import java.io.IOException;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import uk.gov.ch.oauth.exceptions.UnauthorisedException;
 import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.identity.IdentityProvider;
@@ -15,10 +13,6 @@ import uk.gov.companieshouse.environment.impl.EnvironmentReaderImpl;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Map;
 
 public class OAuthCoordinator implements IOAuthCoordinator {
 
