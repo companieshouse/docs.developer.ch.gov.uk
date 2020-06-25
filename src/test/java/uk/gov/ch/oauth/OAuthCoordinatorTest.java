@@ -148,7 +148,7 @@ class OAuthCoordinatorTest {
     @DisplayName("getAuthoriseUriFromRequestTest")
     void getAuthoriseUriFromRequestTest() {
         when(oAuthCoordinator.getOAuth()).thenReturn(mockOAuth);
-        when(mockOAuth.prepareState(request)).thenReturn(STATE_KEY);
+        when(mockOAuth.prepareState(request)).thenReturn(STATE_VALUE);
         when(oAuthCoordinator.getIdentityProvider()).thenReturn(mockIdentityProvider);
 
         oAuthCoordinator.getAuthoriseUriFromRequest(request);
