@@ -1,5 +1,20 @@
 package uk.gov.ch.oauth;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,16 +28,6 @@ import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.companieshouse.environment.EnvironmentReader;
 import uk.gov.companieshouse.session.Session;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -48,6 +53,7 @@ class OAuthCoordinatorTest {
     @Mock
     private IOauth mockOAuth;
     @Mock
+    private HttpServletRequest request;
     private Session session;
 
     @Nested
@@ -134,6 +140,18 @@ class OAuthCoordinatorTest {
             verify(mockOAuth).validate(STATE_VALUE, CODE_VALUE, mockResponse);
             verify(mockIdentityProvider).getRedirectUriPage();
         }
+    }
+
+
+    @DisplayName("getAuthoriseUriFromRequestTest")
+    void getAuthoriseUriFromRequestTest() {
+        when(oAuthCoordinator.getOAuth()).thenReturn(mockOAuth);
+        when(mockOAuth.prepareState(request)).thenReturn(STATE_VALUE);
+        when(oAuthCoordinator.getIdentityProvider()).thenReturn(mockIdentityProvider);
+
+        oAuthCoordinator.getAuthoriseUriFromRequest(request);
+
+        verify(mockIdentityProvider).getAuthorisationUrl(STATE_VALUE);
     }
 
     @Test

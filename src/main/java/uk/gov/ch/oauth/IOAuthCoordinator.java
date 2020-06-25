@@ -1,5 +1,9 @@
 package uk.gov.ch.oauth;
 
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import uk.gov.ch.oauth.exceptions.UnauthorisedException;
 import uk.gov.companieshouse.session.Session;
 
@@ -19,6 +23,8 @@ public interface IOAuthCoordinator {
      */
     String getPostCallbackRedirectURL(HttpServletResponse response, Map<String, String> params)
             throws UnauthorisedException;
+
+    String getAuthoriseUriFromRequest(HttpServletRequest request);
 
     /**
      * Calls the getRedirectUriPage method from the oauth library.
