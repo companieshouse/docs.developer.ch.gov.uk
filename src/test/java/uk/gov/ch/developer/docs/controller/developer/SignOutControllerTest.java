@@ -1,21 +1,21 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.ch.oauth.Oauth2;
-import uk.gov.ch.oauth.identity.IIdentityProvider;
+import uk.gov.ch.oauth.IOAuthCoordinator;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SignOutControllerTest {
@@ -23,15 +23,13 @@ public class SignOutControllerTest {
     private static final String REDIRECT_PAGE = "/home";
 
     @Mock
-    private IIdentityProvider identityProviders;
+    private IOAuthCoordinator ioAuthCoordinator;
     @Mock
     private HttpServletRequest httpServletRequest;
     @Mock
     private HttpServletResponse httpServletResponse;
     @Mock
     private Session session;
-    @Mock
-    private Oauth2 oauth2;
     @InjectMocks
     private SignOutController signOutController;
 
@@ -41,7 +39,7 @@ public class SignOutControllerTest {
         when(httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY))
                 .thenReturn(session);
         signOutController.doSignOut(httpServletResponse, httpServletRequest);
-        verify(oauth2).invalidateSession(session);
+        verify(ioAuthCoordinator).invalidateSession(session);
     }
 
     @Test
@@ -49,7 +47,7 @@ public class SignOutControllerTest {
     public void testDoSignOut() throws IOException {
         when(httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY))
                 .thenReturn(session);
-        when(identityProviders.getRedirectUriPage()).thenReturn(REDIRECT_PAGE);
+        when(ioAuthCoordinator.getSignoutUri()).thenReturn(REDIRECT_PAGE);
         signOutController.doSignOut(httpServletResponse, httpServletRequest);
         verify(httpServletResponse).sendRedirect(REDIRECT_PAGE);
     }
