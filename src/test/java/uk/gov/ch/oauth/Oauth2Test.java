@@ -43,6 +43,7 @@ import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.ch.oauth.tokens.OAuthToken;
 import uk.gov.ch.oauth.tokens.UserProfileResponse;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.model.SignInInfo;
@@ -78,6 +79,8 @@ public class Oauth2Test {
     private OAuth2StateHandler oAuth2StateHandler;
     @Mock
     private HttpServletResponse httpServletResponse;
+    @Mock
+    private Logger mockLog;
 
     @Spy
     @InjectMocks
@@ -123,6 +126,7 @@ public class Oauth2Test {
 
         assertNotNull(userProfileResponse);
         assertNull(userProfileResponse.getId());
+        verify(mockLog).error("OAuth server has returned a status of [403 FORBIDDEN] when attempting to request a User Profile");
 
         RecordedRequest recordedRequest = mockServer.takeRequest();
 
@@ -180,6 +184,31 @@ public class Oauth2Test {
         assertEquals(3600, oauthTokenResponse.getExpiresIn());
         assertEquals("refreshToken", oauthTokenResponse.getRefreshToken());
         assertEquals("token", oauthTokenResponse.getToken());
+
+        RecordedRequest recordedRequest = mockServer.takeRequest();
+
+        assertEquals("POST", recordedRequest.getMethod());
+        assertEquals("/oauth2/token", recordedRequest.getPath());
+    }
+    
+    @Test
+    @DisplayName("Test that the expected OAuthToken object is returned when server returns a successful response")
+    public void testRequestOAuthTokenWithAForbiddenResponse()
+            throws JsonProcessingException, InterruptedException {
+        HttpUrl url = mockServer.url("/oauth2/token");
+        when(identityProvider.getTokenUrl()).thenReturn(url.toString());
+
+        when(identityProvider.getPostRequestBody(anyString())).thenReturn("");
+
+        mockServer.enqueue(new MockResponse()
+                .setResponseCode(HttpStatus.FORBIDDEN.value()));
+
+        OAuthToken oauthTokenResponse = oauth2.requestOAuthToken(anyString());
+
+        assertNotNull(oauthTokenResponse);
+        assertNull(oauthTokenResponse.getTokenType());
+        verify(mockLog).error(
+                "OAuth server has returned a status of [403 FORBIDDEN] when attempting to request an Access Token");
 
         RecordedRequest recordedRequest = mockServer.takeRequest();
 
