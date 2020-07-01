@@ -140,6 +140,11 @@ public class Oauth2 implements IOauth {
     private UserProfileResponse fetchUserProfile(final String code,
             final HttpServletResponse httpServletResponse) {
         final OAuthToken oauthToken = requestOAuthToken(code);
+        
+        if((null == oauthToken.getToken()) || (oauthToken.getToken().isEmpty())) {
+            return null;
+        }
+        
         regenerateSessionID(httpServletResponse);
         final UserProfileResponse userProfile = requestUserProfile(oauthToken);
 

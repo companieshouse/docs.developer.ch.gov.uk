@@ -192,7 +192,7 @@ public class Oauth2Test {
     }
     
     @Test
-    @DisplayName("Test that the expected OAuthToken object is returned when server returns a successful response")
+    @DisplayName("Test that the an empty OAuthToken object is returned when server returns a forbidden response")
     public void testRequestOAuthTokenWithAForbiddenResponse()
             throws JsonProcessingException, InterruptedException {
         HttpUrl url = mockServer.url("/oauth2/token");
@@ -279,7 +279,7 @@ public class Oauth2Test {
         data.put(SessionKeys.NONCE.getKey(), NONCE);
         when(sessionFactory.getSessionDataFromContext()).thenReturn(data);
 
-        doReturn(oauthToken).when(oauth2).requestOAuthToken(anyString());
+        doReturn(oauthToken).when(oauth2).requestOAuthToken(CODE);
         when(sessionFactory.regenerateSession()).thenReturn(session);
         when(sessionFactory.buildSessionCookie(session)).thenReturn(cookie);
         doReturn(userProfile).when(oauth2).requestUserProfile(oauthToken);
@@ -304,6 +304,23 @@ public class Oauth2Test {
 
         UserProfileResponse userProfile = new UserProfileResponse();
         doReturn(userProfile).when(oauth2).requestUserProfile(oauthToken);
+
+        assertFalse(oauth2.validate(STATE, CODE, httpServletResponse));
+    }
+    
+    @Test
+    @DisplayName("Test validate() returns false when fetchUserProfile() returns null due to an empty oauth token being returned")
+    public void testValidateReturnsFalseWithEmptyAccessToken()
+            throws JsonProcessingException, InterruptedException {
+        when(oAuth2StateHandler.oauth2DecodeState(anyString()).toJSONObject().getAsString("nonce"))
+                .thenReturn(NONCE);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put(SessionKeys.NONCE.getKey(), NONCE);
+        when(sessionFactory.getSessionDataFromContext()).thenReturn(data);
+
+        OAuthToken oauthToken = new OAuthToken();
+        doReturn(oauthToken).when(oauth2).requestOAuthToken(CODE);
 
         assertFalse(oauth2.validate(STATE, CODE, httpServletResponse));
     }
