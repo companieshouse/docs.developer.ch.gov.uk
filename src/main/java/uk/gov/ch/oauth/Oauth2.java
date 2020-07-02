@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,6 @@ import uk.gov.ch.oauth.tokens.OAuthToken;
 import uk.gov.ch.oauth.tokens.SessionSignInModifier;
 import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.logging.Logger;
-import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 
@@ -38,22 +36,14 @@ public class Oauth2 implements IOauth {
     private final OAuth2StateHandler oAuth2StateHandler;
     private static final String SIGN_IN_INFO = SessionKeys.SIGN_IN_INFO.getKey();
 
-    @Autowired
-    public Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory) {
-        this.identityProvider = identityProvider;
-        this.sessionFactory = sessionFactory;
-        oAuth2StateHandler = new OAuth2StateHandler(this.identityProvider);
-        logger = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
-    }
-
-    private Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory,
+    public Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory,
             final OAuth2StateHandler oAuth2StateHandler, final Logger logger) {
         this.identityProvider = identityProvider;
         this.sessionFactory = sessionFactory;
         this.oAuth2StateHandler = oAuth2StateHandler;
         this.logger = logger;
     }
-    
+
     /**
      * {@inheritDoc}
      */
