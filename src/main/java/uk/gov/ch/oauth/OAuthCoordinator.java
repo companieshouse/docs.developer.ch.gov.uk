@@ -21,11 +21,11 @@ public class OAuthCoordinator implements IOAuthCoordinator {
     private SessionFactory sessionFactory;
     private IIdentityProvider identityProvider;
     private EnvironmentReader environmentReader;
+    private OAuth2StateHandler oAuth2StateHandler;
 
     public OAuthCoordinator(String loggerNameSpace) {
         this.logger = LoggerFactory.getLogger(loggerNameSpace);
     }
-
 
     @Override
     public String getPostCallbackRedirectURL(HttpServletResponse response,
@@ -42,7 +42,6 @@ public class OAuthCoordinator implements IOAuthCoordinator {
         final String state = getOAuth().prepareState(request);
         return getIdentityProvider().getAuthorisationUrl(state);
     }
-
 
     String validateResponse(String state, String code, HttpServletResponse response)
             throws UnauthorisedException {
@@ -77,10 +76,10 @@ public class OAuthCoordinator implements IOAuthCoordinator {
         getOAuth().invalidateSession(session);
     }
 
-
     IOauth getOAuth() {
         if (this.oAuth == null) {
-            this.oAuth = new Oauth2(getIdentityProvider(), getSessionFactory());
+            this.oAuth = new Oauth2(getIdentityProvider(), getSessionFactory(),
+                    getOAuth2StateHandler(), logger);
         }
         return oAuth;
     }
@@ -105,4 +104,12 @@ public class OAuthCoordinator implements IOAuthCoordinator {
         }
         return environmentReader;
     }
+    
+    OAuth2StateHandler getOAuth2StateHandler() {
+        if (oAuth2StateHandler == null) {
+            oAuth2StateHandler = new OAuth2StateHandler(getIdentityProvider());
+        }
+        return oAuth2StateHandler;
+    }
+
 }

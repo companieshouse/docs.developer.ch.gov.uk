@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.stereotype.Component;
@@ -23,14 +22,13 @@ import uk.gov.ch.oauth.tokens.OAuthToken;
 import uk.gov.ch.oauth.tokens.SessionSignInModifier;
 import uk.gov.ch.oauth.tokens.UserProfileResponse;
 import uk.gov.companieshouse.logging.Logger;
-import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 
 @Component
 public class Oauth2 implements IOauth {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger("docs.developer.ch.gov.uk");
+    private final Logger logger;
     private final IIdentityProvider identityProvider;
     private final SessionFactory sessionFactory;
     private final Duration timeoutDuration = Duration.ofSeconds(10L);
@@ -38,21 +36,14 @@ public class Oauth2 implements IOauth {
     private final OAuth2StateHandler oAuth2StateHandler;
     private static final String SIGN_IN_INFO = SessionKeys.SIGN_IN_INFO.getKey();
 
-
-
-    @Autowired
-    public Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory) {
-        this.identityProvider = identityProvider;
-        this.sessionFactory = sessionFactory;
-        oAuth2StateHandler = new OAuth2StateHandler(this.identityProvider);
-    }
-
-    private Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory, final OAuth2StateHandler oAuth2StateHandler ) {
+    public Oauth2(final IIdentityProvider identityProvider, final SessionFactory sessionFactory,
+            final OAuth2StateHandler oAuth2StateHandler, final Logger logger) {
         this.identityProvider = identityProvider;
         this.sessionFactory = sessionFactory;
         this.oAuth2StateHandler = oAuth2StateHandler;
+        this.logger = logger;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -85,9 +76,9 @@ public class Oauth2 implements IOauth {
             if (validProfile) {
                 return true;
             }
-            LOGGER.error("No user profile returned in OAuth");
+            logger.error("No user profile returned in OAuth");
         } else {
-            LOGGER.error("Invalid nonce value in state");
+            logger.error("Invalid nonce value in state");
         }
         return false;
     }
@@ -129,9 +120,9 @@ public class Oauth2 implements IOauth {
         try {
             final Map<String, Object> data = sessionFactory.getSessionDataFromContext();
             oauth2Nonce = (String) data.remove(SessionKeys.NONCE.getKey());
-            LOGGER.debug("Extracting nonce value");
+            logger.debug("Extracting nonce value");
         } catch (final Exception e) {
-            LOGGER.error("Unable to extract OAuth2 Nonce from session", e);
+            logger.error("Unable to extract OAuth2 Nonce from session", e);
         }
         return oauth2Nonce;
     }
@@ -139,6 +130,11 @@ public class Oauth2 implements IOauth {
     private UserProfileResponse fetchUserProfile(final String code,
             final HttpServletResponse httpServletResponse) {
         final OAuthToken oauthToken = requestOAuthToken(code);
+        
+        if((null == oauthToken.getToken()) || (oauthToken.getToken().isEmpty())) {
+            return null;
+        }
+        
         regenerateSessionID(httpServletResponse);
         final UserProfileResponse userProfile = requestUserProfile(oauthToken);
 
@@ -163,7 +159,7 @@ public class Oauth2 implements IOauth {
      * the data was incompatible
      */
     protected UserProfileResponse requestUserProfile(final OAuthToken oauthToken) {
-        LOGGER.debug("Requesting User Profile");
+        logger.debug("Requesting User Profile");
         final URI profileUrl = URI.create(identityProvider.getProfileUrl());
 
         final WebClient webClient = WebClient.create();
@@ -185,13 +181,16 @@ public class Oauth2 implements IOauth {
      */
     private Mono<UserProfileResponse> validResponse(ClientResponse response) {
         if (response.statusCode().isError()) {
+            logger.error(String.format(
+                    "OAuth server has returned a status of [%s] when attempting to request a User Profile",
+                    response.statusCode()));
             return Mono.just(new UserProfileResponse());
         }
         return response.bodyToMono(UserProfileResponse.class);
     }
 
     OAuthToken requestOAuthToken(String code) {
-        LOGGER.debug("Getting OAuth Token");
+        logger.debug("Getting OAuth Token");
 
         final WebClient webClient = WebClient.create();
 
@@ -205,9 +204,26 @@ public class Oauth2 implements IOauth {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(bodyInsert)
-                .retrieve()
-                .bodyToMono(OAuthToken.class);
+                .exchange()
+                .flatMap(this::validateTokenResponse);
         return postReq.block(timeoutDuration);
+    }
+    
+    /**
+     * Validates response from OAuth server when requesting an Access Token
+     * 
+     * @param response
+     * @return If response is unsuccessful then return a Mono of empty {@link OAuthToken} else a
+     *         Mono with correct response body
+     */
+    private Mono<OAuthToken> validateTokenResponse(ClientResponse response) {
+        if (!response.statusCode().is2xxSuccessful()) {
+            logger.error(String.format(
+                    "OAuth server has returned a status of [%s] when attempting to request an Access Token",
+                    response.statusCode()));
+            return Mono.just(new OAuthToken());
+        }
+        return response.bodyToMono(OAuthToken.class);
     }
 
     private void regenerateSessionID(HttpServletResponse httpServletResponse) {
@@ -236,7 +252,7 @@ public class Oauth2 implements IOauth {
     private void removeZXSInfo(Map<String, Object> sessionData) {
         final String zxsKey = (String) sessionData.get(".zxs_key");// This is the id of cookie stored in redis
         if (zxsKey != null) {
-            LOGGER.trace("Deleting ZXS info from cache");
+            logger.trace("Deleting ZXS info from cache");
             sessionFactory.getDefaultStore().delete(zxsKey);
         }
     }

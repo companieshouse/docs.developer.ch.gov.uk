@@ -43,6 +43,7 @@ import uk.gov.ch.oauth.identity.IIdentityProvider;
 import uk.gov.ch.oauth.session.SessionFactory;
 import uk.gov.ch.oauth.tokens.OAuthToken;
 import uk.gov.ch.oauth.tokens.UserProfileResponse;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.SessionKeys;
 import uk.gov.companieshouse.session.model.SignInInfo;
@@ -78,6 +79,8 @@ public class Oauth2Test {
     private OAuth2StateHandler oAuth2StateHandler;
     @Mock
     private HttpServletResponse httpServletResponse;
+    @Mock
+    private Logger mockLog;
 
     @Spy
     @InjectMocks
@@ -123,6 +126,7 @@ public class Oauth2Test {
 
         assertNotNull(userProfileResponse);
         assertNull(userProfileResponse.getId());
+        verify(mockLog).error("OAuth server has returned a status of [403 FORBIDDEN] when attempting to request a User Profile");
 
         RecordedRequest recordedRequest = mockServer.takeRequest();
 
@@ -180,6 +184,31 @@ public class Oauth2Test {
         assertEquals(3600, oauthTokenResponse.getExpiresIn());
         assertEquals("refreshToken", oauthTokenResponse.getRefreshToken());
         assertEquals("token", oauthTokenResponse.getToken());
+
+        RecordedRequest recordedRequest = mockServer.takeRequest();
+
+        assertEquals("POST", recordedRequest.getMethod());
+        assertEquals("/oauth2/token", recordedRequest.getPath());
+    }
+    
+    @Test
+    @DisplayName("Test that the an empty OAuthToken object is returned when server returns a forbidden response")
+    public void testRequestOAuthTokenWithAForbiddenResponse()
+            throws JsonProcessingException, InterruptedException {
+        HttpUrl url = mockServer.url("/oauth2/token");
+        when(identityProvider.getTokenUrl()).thenReturn(url.toString());
+
+        when(identityProvider.getPostRequestBody(anyString())).thenReturn("");
+
+        mockServer.enqueue(new MockResponse()
+                .setResponseCode(HttpStatus.FORBIDDEN.value()));
+
+        OAuthToken oauthTokenResponse = oauth2.requestOAuthToken(anyString());
+
+        assertNotNull(oauthTokenResponse);
+        assertNull(oauthTokenResponse.getTokenType());
+        verify(mockLog).error(
+                "OAuth server has returned a status of [403 FORBIDDEN] when attempting to request an Access Token");
 
         RecordedRequest recordedRequest = mockServer.takeRequest();
 
@@ -250,7 +279,7 @@ public class Oauth2Test {
         data.put(SessionKeys.NONCE.getKey(), NONCE);
         when(sessionFactory.getSessionDataFromContext()).thenReturn(data);
 
-        doReturn(oauthToken).when(oauth2).requestOAuthToken(anyString());
+        doReturn(oauthToken).when(oauth2).requestOAuthToken(CODE);
         when(sessionFactory.regenerateSession()).thenReturn(session);
         when(sessionFactory.buildSessionCookie(session)).thenReturn(cookie);
         doReturn(userProfile).when(oauth2).requestUserProfile(oauthToken);
@@ -275,6 +304,23 @@ public class Oauth2Test {
 
         UserProfileResponse userProfile = new UserProfileResponse();
         doReturn(userProfile).when(oauth2).requestUserProfile(oauthToken);
+
+        assertFalse(oauth2.validate(STATE, CODE, httpServletResponse));
+    }
+    
+    @Test
+    @DisplayName("Test validate() returns false when fetchUserProfile() returns null due to an empty oauth token being returned")
+    public void testValidateReturnsFalseWithEmptyAccessToken()
+            throws JsonProcessingException, InterruptedException {
+        when(oAuth2StateHandler.oauth2DecodeState(anyString()).toJSONObject().getAsString("nonce"))
+                .thenReturn(NONCE);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put(SessionKeys.NONCE.getKey(), NONCE);
+        when(sessionFactory.getSessionDataFromContext()).thenReturn(data);
+
+        OAuthToken oauthToken = new OAuthToken();
+        doReturn(oauthToken).when(oauth2).requestOAuthToken(CODE);
 
         assertFalse(oauth2.validate(STATE, CODE, httpServletResponse));
     }
