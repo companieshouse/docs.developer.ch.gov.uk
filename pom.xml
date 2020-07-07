@@ -139,6 +139,35 @@
       <groupId>uk.gov.companieshouse</groupId>
       <version>${java-session-handler.version}</version>
     </dependency>
+    
+    
+    <dependency>
+      <groupId>uk.gov.companieshouse</groupId>
+      <artifactId>web-security-java</artifactId>
+      <version>${web-security-java.version}</version>
+    </dependency>
+    
+    <dependency>
+      <artifactId>oauth-signin-java-library</artifactId>
+      <groupId>uk.gov.companieshouse</groupId>
+      <version>${oauth-signin-java.version}</version>
+    </dependency>
+    
+        <!-- Security dependencies -->
+    <dependency>
+      <artifactId>spring-security-core</artifactId>
+      <groupId>org.springframework.security</groupId>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-security-web</artifactId>
+      <groupId>org.springframework.security</groupId>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-security-config</artifactId>
+      <groupId>org.springframework.security</groupId>
+    </dependency>
   </dependencies>
   <description>Static content for the developer hub,
     such as "getting started" and "introduction" documentation
@@ -172,6 +201,7 @@
     <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
 
     <web-security-java.version>1.1.0-rc1</web-security-java.version>
+    <oauth-signin-java.version>0.1.7</oauth-signin-java.version>
 
 
     <home.url></home.url>
