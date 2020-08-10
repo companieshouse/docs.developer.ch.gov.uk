@@ -22,6 +22,10 @@ public class NavBarConfig {
     private String devGuideURL;
     @Value("${overview.url}")
     private String overviewURL;
+    @Value("${manageApplications.url}")
+    private String manageApplicationsURL;
+    @Value("${addApplication.url}")
+    private String addApplicationURL;
 
     /**
      * Constructs the entire model along with visibility restrictions.
@@ -34,8 +38,8 @@ public class NavBarConfig {
         NavBarModelBuilder model = new NavBarModelBuilder();
         NavItemList manageApplications = model
                 .addHeading("Manage Applications", DisplayRestrictions.USER_REQUIRED);
-        manageApplications.add("View all applications", "example.com");
-        manageApplications.add("Add an application", "example.com");
+        manageApplications.add("View all applications", manageApplicationsURL);
+        manageApplications.add("Add an application", addApplicationURL);
 
         NavItemList documentation = model
                 .addHeading("General Documentation", DisplayRestrictions.none());
