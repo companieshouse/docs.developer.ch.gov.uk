@@ -46,9 +46,9 @@
       consumed by issuing simple <code>GET</code> requests on the required resource URI.
     </p>
     <p class="govuk-body">
-      Read the <a class="govuk-link"
-                  th:href="@{{manageApplicationsUrl}/(manageApplicationsUrl=${@environment.getProperty('manageApplications.url')})}">Companies
-      House REST API overview</a> for more information about our API approach, REST
+      <a class="govuk-link"
+         th:href="@{{overviewUrl}/(overviewUrl=${@environment.getProperty('overview.url')})}">Read
+        the Companies House REST API overview</a> for more information about our API approach, REST
       web services and the JSON data format.
     </p>
   </section>
