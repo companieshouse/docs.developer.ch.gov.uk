@@ -4,6 +4,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
@@ -39,8 +42,9 @@ public class SignInControllerTest {
 
     @Test
     void doSignInTestToEnsureThatAUserIsSentToTheAuthorisePage() throws IOException {
-        when(coordinator.getAuthoriseUriFromRequest(request)).thenReturn(AUTHORISE_URI);
-        signInController.doSignIn(request, response);
+        Map<String, String> params = new HashMap<String, String>();
+        when(coordinator.getAuthoriseUriFromRequest(request, params)).thenReturn(AUTHORISE_URI);
+        signInController.doSignIn(params, request, response);
         verify(response).sendRedirect(AUTHORISE_URI);
     }
 

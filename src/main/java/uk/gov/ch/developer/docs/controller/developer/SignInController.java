@@ -1,12 +1,16 @@
 package uk.gov.ch.developer.docs.controller.developer;
 
 import java.io.IOException;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import uk.gov.ch.oauth.IOAuthCoordinator;
 
 @Controller
@@ -19,9 +23,10 @@ public class SignInController {
 
 
     @GetMapping
-    public void doSignIn(final HttpServletRequest httpServletRequest,
+    public void doSignIn(@RequestParam final Map<String, String> allParams,
+                         final HttpServletRequest httpServletRequest,
                          final HttpServletResponse httpServletResponse) throws IOException {
-        final String authoriseUri = coordinator.getAuthoriseUriFromRequest(httpServletRequest);
+        final String authoriseUri = coordinator.getAuthoriseUriFromRequest(httpServletRequest, allParams);
         httpServletResponse.sendRedirect(authoriseUri);
     }
 }
