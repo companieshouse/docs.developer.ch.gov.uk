@@ -201,7 +201,7 @@
     <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
 
     <web-security-java.version>1.3.8</web-security-java.version>
-    <oauth-signin-java.version>0.2.1</oauth-signin-java.version>
+    <oauth-signin-java.version>0.2.2</oauth-signin-java.version>
 
 
     <home.url></home.url>
