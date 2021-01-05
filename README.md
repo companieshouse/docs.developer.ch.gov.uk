@@ -1,6 +1,6 @@
 # **docs.developer.ch.gov.uk**
 
-Static General Documentation pages for the Companies House Developer Hub.
+Static General Documentation pages for the Companies House Developer Hub. This application is written using the [Spring Boot](http://projects.spring.io/spring-boot/) Java framework.
 
 ## Requirements
 
@@ -23,7 +23,7 @@ Or start developer-hub by using:
 Service can be accessed using the following link: http://dev.chs-dev.internal:4904
 
 ## Environment Variables
-The supported environmental variables have been categorised by use case and are as follows.
+The following is a list of mandatory environment variables for the service to run:
 
 | Name | Description |
 |------|-------------|
