@@ -6,14 +6,6 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>docs.developer.ch.gov.uk</artifactId>
-  <version>unversioned</version>
-  <packaging>jar</packaging>
-  <name>docs.developer.ch.gov.uk</name>
-  <description>Static content for the developer hub,
-    such as "getting started" and "introduction" documentation
-  </description>
-
   <parent>
     <artifactId>companies-house-parent</artifactId>
     <groupId>uk.gov.companieshouse</groupId>
@@ -21,27 +13,39 @@
     <relativePath/>
   </parent>
 
+  <artifactId>docs.developer.ch.gov.uk</artifactId>
+
+  <version>unversioned</version>
+
+  <packaging>jar</packaging>
+
+  <name>docs.developer.ch.gov.uk</name>
+
+  <description>Static general documentation content</description>
+
   <properties>
-    <common-web-java.version>1.1.0-rc1</common-web-java.version>
+    <!--Java -->
     <java-session-handler.version>2.2.0</java-session-handler.version>
     <java.version>1.8</java.version>
     <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <junit-platform-surefire-provider.version>1.2.0</junit-platform-surefire-provider.version>
     <!--    These versions are earlier than in the Parent POM-->
-    <maven.compiler.target>${java.version}</maven.compiler.target>
     <mockito-junit-jupiter.version>3.1.0</mockito-junit-jupiter.version>
-
     <structured-logging.version>1.5.0-rc2</structured-logging.version>
     <thymeleaf-extras-java8time.version>3.0.1.RELEASE</thymeleaf-extras-java8time.version>
     <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
     <web-security-java.version>1.3.8</web-security-java.version>
     <oauth-signin-java.version>0.2.2</oauth-signin-java.version>
+    <common-web-java.version>1.1.0-rc1</common-web-java.version>
+    <home.url></home.url>
+    <!--Spring -->
     <spring-boot-dependencies.version>2.2.0.RELEASE</spring-boot-dependencies.version>
     <spring-test.version>5.1.3.RELEASE</spring-test.version>
     <spring-boot-maven-plugin.version>2.2.0.RELEASE</spring-boot-maven-plugin.version>
+    <!--Maven -->
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-    <home.url></home.url>
-    <junit-platform-surefire-provider.version>1.2.0</junit-platform-surefire-provider.version>
   </properties>
 
   <dependencyManagement>
@@ -146,8 +150,6 @@
     </dependency>
   </dependencies>
 
-
-
   <build>
     <plugins>
       <plugin>
@@ -207,5 +209,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>
