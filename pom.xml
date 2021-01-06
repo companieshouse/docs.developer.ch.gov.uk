@@ -24,7 +24,7 @@
   <description>Static general documentation content</description>
 
   <properties>
-    <!--Java -->
+    <!--Java & Junit-->
     <java-session-handler.version>2.2.0</java-session-handler.version>
     <java.version>1.8</java.version>
     <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
