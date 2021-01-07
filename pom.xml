@@ -14,13 +14,9 @@
   </parent>
 
   <artifactId>docs.developer.ch.gov.uk</artifactId>
-
   <version>unversioned</version>
-
   <packaging>jar</packaging>
-
   <name>docs.developer.ch.gov.uk</name>
-
   <description>Static general documentation content</description>
 
   <properties>
