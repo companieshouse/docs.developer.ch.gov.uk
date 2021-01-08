@@ -3,11 +3,151 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>companies-house-parent</artifactId>
+    <groupId>uk.gov.companieshouse</groupId>
+    <version>1.3.0</version>
+    <relativePath/>
+  </parent>
+
   <artifactId>docs.developer.ch.gov.uk</artifactId>
+  <version>unversioned</version>
+  <packaging>jar</packaging>
+  <name>docs.developer.ch.gov.uk</name>
+  <description>Static general documentation content</description>
+
+  <properties>
+    <!--Java & Junit-->
+    <java-session-handler.version>2.2.0</java-session-handler.version>
+    <java.version>1.8</java.version>
+    <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
+    <junit-platform-surefire-provider.version>1.2.0</junit-platform-surefire-provider.version>
+    <!--    These versions are earlier than in the Parent POM-->
+    <mockito-junit-jupiter.version>3.1.0</mockito-junit-jupiter.version>
+    <structured-logging.version>1.5.0-rc2</structured-logging.version>
+    <thymeleaf-extras-java8time.version>3.0.1.RELEASE</thymeleaf-extras-java8time.version>
+    <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
+    <web-security-java.version>1.3.8</web-security-java.version>
+    <oauth-signin-java.version>0.2.2</oauth-signin-java.version>
+    <common-web-java.version>1.1.0-rc1</common-web-java.version>
+    <home.url></home.url>
+    <!--Spring -->
+    <spring-boot-dependencies.version>2.2.0.RELEASE</spring-boot-dependencies.version>
+    <spring-test.version>5.1.3.RELEASE</spring-test.version>
+    <spring-boot-maven-plugin.version>2.2.0.RELEASE</spring-boot-maven-plugin.version>
+    <!--Maven -->
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot-dependencies.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <artifactId>jackson-databind</artifactId>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <version>2.10.0</version>
+    </dependency>
+    <!--    Testing (Apart from Spring-Test; see Spring Modules)-->
+    <dependency>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <scope>test</scope>
+      <version>${junit-jupiter-engine.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>  <!--    Using Parent but overriding scope to Test -->
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <groupId>org.mockito</groupId>
+      <scope>test</scope>
+      <version>${mockito-junit-jupiter.version}</version>
+    </dependency>
+    <!--  Spring Modules-->
+    <dependency>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-test</artifactId>
+      <groupId>org.springframework</groupId>
+      <scope>test</scope>
+    </dependency>
+    <!--    Thmyeleaf - These versions are earlier than in parent POM -->
+    <dependency>
+      <artifactId>thymeleaf-layout-dialect</artifactId>
+      <groupId>nz.net.ultraq.thymeleaf</groupId>
+      <version>${thymeleaf-layout-dialect.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>thymeleaf-extras-java8time</artifactId>
+      <groupId>org.thymeleaf.extras</groupId>
+      <version>${thymeleaf-extras-java8time.version}</version>
+    </dependency>
+    <!-- Logging dependencies -->
+    <dependency>
+      <artifactId>structured-logging</artifactId>
+      <groupId>uk.gov.companieshouse</groupId>
+      <version>${structured-logging.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>common-web-java</artifactId>
+      <groupId>uk.gov.companieshouse</groupId>
+      <version>${common-web-java.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>java-session-handler</artifactId>
+      <groupId>uk.gov.companieshouse</groupId>
+      <version>${java-session-handler.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>uk.gov.companieshouse</groupId>
+      <artifactId>web-security-java</artifactId>
+      <version>${web-security-java.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>oauth-signin-java-library</artifactId>
+      <groupId>uk.gov.companieshouse</groupId>
+      <version>${oauth-signin-java.version}</version>
+    </dependency>
+        <!-- Security dependencies -->
+    <dependency>
+      <artifactId>spring-security-core</artifactId>
+      <groupId>org.springframework.security</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-security-web</artifactId>
+      <groupId>org.springframework.security</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-security-config</artifactId>
+      <groupId>org.springframework.security</groupId>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>
-
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
@@ -19,13 +159,9 @@
             <COOKIE_SECRET>iamasecret</COOKIE_SECRET>
             <DEFAULT_SESSION_EXPIRATION>3600</DEFAULT_SESSION_EXPIRATION>
             <HUMAN_LOG>1</HUMAN_LOG>
-            <REDIRECT_URI>/</REDIRECT_URI>
-
             <cdn.url>//</cdn.url>
             <chs.url>//</chs.url>
-
             <account.url>//</account.url>
-
             <createAccount.url>${home.url}/create-account</createAccount.url>
             <developerGuidelines.url>${home.url}/developer-guidelines</developerGuidelines.url>
             <gettingStarted.url>${home.url}/getting-started</gettingStarted.url>
@@ -33,7 +169,6 @@
             <home.url>${home.url}</home.url>
             <piwik.siteId>//</piwik.siteId>
             <piwik.url>//</piwik.url>
-
             <pageNotFound.path>dev-hub/error/404Error</pageNotFound.path>
           </environmentVariables>
         </configuration>
@@ -47,8 +182,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <version>${maven-surefire-plugin.version}</version>
       </plugin>
-
-
       <plugin>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring-boot-maven-plugin.version}</version>
@@ -72,163 +205,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring-boot-dependencies.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
-  <dependencies>
-    <dependency>
-      <artifactId>jackson-databind</artifactId>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <version>2.10.0</version>
-    </dependency>
-
-    <!--    Testing (Apart from Spring-Test; see Spring Modules)-->
-    <dependency>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <groupId>org.junit.jupiter</groupId>
-      <scope>test</scope>
-      <version>${junit-jupiter-engine.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <groupId>org.springframework.boot</groupId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>  <!--    Using Parent but overriding scope to Test -->
-      <artifactId>mockito-junit-jupiter</artifactId>
-      <groupId>org.mockito</groupId>
-      <scope>test</scope>
-      <version>${mockito-junit-jupiter.version}</version>
-    </dependency>
-
-    <!--  Spring Modules-->
-    <dependency>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-    <dependency>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-    <dependency>
-      <artifactId>spring-test</artifactId>
-      <groupId>org.springframework</groupId>
-      <scope>test</scope>
-    </dependency>
-
-    <!--    Thmyeleaf - These versions are earlier than in parent POM -->
-    <dependency>
-      <artifactId>thymeleaf-layout-dialect</artifactId>
-      <groupId>nz.net.ultraq.thymeleaf</groupId>
-      <version>${thymeleaf-layout-dialect.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>thymeleaf-extras-java8time</artifactId>
-      <groupId>org.thymeleaf.extras</groupId>
-      <version>${thymeleaf-extras-java8time.version}</version>
-    </dependency>
-
-    <!-- Logging dependencies -->
-    <dependency>
-      <artifactId>structured-logging</artifactId>
-      <groupId>uk.gov.companieshouse</groupId>
-      <version>${structured-logging.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>common-web-java</artifactId>
-      <groupId>uk.gov.companieshouse</groupId>
-      <version>${common-web-java.version}</version>
-    </dependency>
-
-    <dependency>
-      <artifactId>java-session-handler</artifactId>
-      <groupId>uk.gov.companieshouse</groupId>
-      <version>${java-session-handler.version}</version>
-    </dependency>
-    
-    
-    <dependency>
-      <groupId>uk.gov.companieshouse</groupId>
-      <artifactId>web-security-java</artifactId>
-      <version>${web-security-java.version}</version>
-    </dependency>
-    
-    <dependency>
-      <artifactId>oauth-signin-java-library</artifactId>
-      <groupId>uk.gov.companieshouse</groupId>
-      <version>${oauth-signin-java.version}</version>
-    </dependency>
-    
-        <!-- Security dependencies -->
-    <dependency>
-      <artifactId>spring-security-core</artifactId>
-      <groupId>org.springframework.security</groupId>
-    </dependency>
-
-    <dependency>
-      <artifactId>spring-security-web</artifactId>
-      <groupId>org.springframework.security</groupId>
-    </dependency>
-
-    <dependency>
-      <artifactId>spring-security-config</artifactId>
-      <groupId>org.springframework.security</groupId>
-    </dependency>
-  </dependencies>
-  <description>Static content for the developer hub,
-    such as "getting started" and "introduction" documentation
-  </description>
-
-  <modelVersion>4.0.0</modelVersion>
-  <name>docs.developer.ch.gov.uk</name>
-
-  <packaging>jar</packaging>
-
-  <parent>
-    <artifactId>companies-house-parent</artifactId>
-    <groupId>uk.gov.companieshouse</groupId>
-    <version>1.2.0</version>
-    <relativePath/>
-  </parent>
-
-  <properties>
-    <common-web-java.version>1.1.0-rc1</common-web-java.version>
-    <java-session-handler.version>2.2.0</java-session-handler.version>
-    <java.version>1.8</java.version>
-    <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <!--    These versions are earlier than in the Parent POM-->
-    <maven.compiler.target>${java.version}</maven.compiler.target>
-    <mockito-junit-jupiter.version>3.1.0</mockito-junit-jupiter.version>
-
-    <structured-logging.version>1.5.0-rc2</structured-logging.version>
-    <thymeleaf-extras-java8time.version>3.0.1.RELEASE</thymeleaf-extras-java8time.version>
-
-    <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
-
-    <web-security-java.version>1.3.8</web-security-java.version>
-    <oauth-signin-java.version>0.2.2</oauth-signin-java.version>
-
-    <spring-boot-dependencies.version>2.2.0.RELEASE</spring-boot-dependencies.version>
-    <spring-test.version>5.1.3.RELEASE</spring-test.version>
-    <spring-boot-maven-plugin.version>2.2.0.RELEASE</spring-boot-maven-plugin.version>
-    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-    <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
-
-    <home.url></home.url>
-    <junit-platform-surefire-provider.version>1.2.0</junit-platform-surefire-provider.version>
-  </properties>
-
-
-  <version>unversioned</version>
 </project>
