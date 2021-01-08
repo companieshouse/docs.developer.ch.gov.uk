@@ -159,6 +159,7 @@
             <COOKIE_SECRET>iamasecret</COOKIE_SECRET>
             <DEFAULT_SESSION_EXPIRATION>3600</DEFAULT_SESSION_EXPIRATION>
             <HUMAN_LOG>1</HUMAN_LOG>
+            <REDIRECT_URI>/</REDIRECT_URI>
             <cdn.url>//</cdn.url>
             <chs.url>//</chs.url>
             <account.url>//</account.url>
