@@ -20,15 +20,15 @@
   <section id="ratelimits">
     <h2 class="govuk-heading-l">API rate limits</h2>
     <p class="govuk-body">Rate limiting is applied to the Companies House API to ensure a
-      high-quality service is delivered for all users, and to protect client applications from
+      high quality service is delivered for all users, and to protect client applications from
       unexpected loops.
     </p>
     <p class="govuk-body">
-      You can make up to 600 requests within a five-minute period. If you exceed this limit, you
+      You can make up to 600 requests within a 5 minute period. If you exceed this limit, you
       will receive a <code>429 Too Many Requests</code> HTTP status code for each request made
       within the
-      remainder of the five-minute window. At the end of the period, your rate limit will reset back
-      to its maximum value of 600 requests.
+      remainder of the 5 minute time frame. At the end of the period, your rate limit will reset back
+      to 600 requests.
     </p>
     <p class="govuk-body">
       If you have an application that requires a higher rate limit than this default, <a
@@ -40,12 +40,12 @@
   <section id="enumtypes">
     <h2 class="govuk-heading-l">Enumerated types</h2>
     <p class="govuk-body">A majority of the resources returned by the Companies House API contain
-      members that reference enumeration types. This helps make the resources self-documenting, and
+      members that reference enumeration types. This helps the resources to be self-documenting, and
       allows clients to interpret the meaning of a resource member without needing to parse a text
       description.
     </p>
     <p class="govuk-body">
-      Enumeration types are used to supplement or replace a text description, which allows clients
+      Enumeration types are used to supplement or replace a text description. This allows clients
       to display their own version of a description or provide descriptions in multiple languages.
     </p>
     <p class="govuk-body">
@@ -93,9 +93,9 @@
       </li>
       <li><p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Do not store API
         keys in your source tree</p>
-        <p class="govuk-body">If you store API keys in files, for example configuration or
+        <p class="govuk-body">If you store API keys in files, for example, configuration or
           environment files, do not store them inside the application source tree. If all or part of
-          the source is made public the key may be compromised.
+          the source is made public, the key may be compromised.
         </p>
       </li>
       <li><p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Restrict API key
@@ -107,12 +107,12 @@
       <li><p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Regenerate your API
         keys</p>
         <p class="govuk-body">Regenerate your API keys regularly, including with each application
-          release, to lessen the chance that a key will be discovered.
+          release, to reduce the chance that a key will be discovered.
         </p>
       </li>
       <li><p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Delete API keys
         when no longer required</p>
-        <p class="govuk-body">Remove unused keys from your Developer Hub registered-applications
+        <p class="govuk-body">Remove unused keys from your Developer Hub registered applications
           page to limit the number of entry points into your account.
         </p>
       </li>

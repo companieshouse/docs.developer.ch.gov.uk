@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       layout:decorate="~{layouts/baseLayout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="https://www.thymeleaf.org">
 <head>
   <title th:utext="${templateTitle}"></title>
 </head>
@@ -10,41 +10,40 @@
     <h1 class="govuk-heading-xl">Companies House REST API Overview</h1>
   <section>
     <p class="govuk-body">The Companies House API is a REST API that provides a simple, consistent
-      approach to requesting and modifying data. REST stands for Representational State Transfer, an
-      architectural software style in which standard HTTP request methods are used to retrieve and
+      approach to requesting and modifying data. REST stands for Representational State Transfer which
+      is an architectural software style in which standard HTTP request methods are used to retrieve and
       modify representations of data. This is identical to the process of retrieving a web page or
       submitting a web form.
     </p>
     <p class="govuk-body">Previous versions of the Companies House API implemented an XML-RPC style
-      of interface. Data was retrieved or submitted by POSTing XML documents to the service, each
-      defining the method to be called and the data to be processed.
+      of interface. Data was retrieved or submitted by POSTing XML documents to the service. Each version
+      defined the method to be called and the data to be processed.
     </p>
-    <p class="govuk-body">The difference between both API approaches is defined below.
+    <p class="govuk-body">The difference between both API approaches is explained below.
     </p>
   </section>
   <section id="rest">
     <h2 class="govuk-heading-l">Representational State Transfer (REST) web services</h2>
-    <p class="govuk-body">REST is an architectural software style in which standard HTTP requests
+    <!--<p class="govuk-body">REST is an architectural software style in which standard HTTP requests
       are used to provide a simple and consistent approach to requesting and modifying data.
-    </p>
+    </p>-->
     <p class="govuk-body">In a RESTful style of API, data resources are allocated unique URLs and
       manipulated through standard HTTP verbs such as <code>GET</code> to request a resource, <code>POST</code>
       to create a resource, <code>PUT</code> to change a resource, and <code>DELETE</code> to remove
       a resource.
     </p>
-    <p class="govuk-body">In contrast to the above XML-RPC examples, the equivalent RESTful API
+    <p class="govuk-body">In contrast to the above XML-RPC examples, the same RESTful API
       request for a <code>customer</code> record would be:
     </p>
     <pre class="request"><span class="request">GET <span
-        class="string">http://api.example.domain/customer/12345</span> HTTP/1.1</span></pre>
-    <p class="govuk-body">The resource request is made using the <code>GET</code> method, and that
-      there is no request body.
+        class="string">https://api.example.domain/customer/12345</span> HTTP/1.1</span></pre>
+    <p class="govuk-body">The resource request is made using the <code>GET</code> method with no request body.
     </p>
     <p class="govuk-body">In a RESTful API, a resource is modified by POSTing a revised resource
       representation, in this case JSON, to the same resource URL:
     </p>
     <pre><code><span class="request">POST <span
-        class="string">http://api.example.domain/customer/12345</span> HTTP/1.1</span></code></pre>
+        class="string">https://api.example.domain/customer/12345</span> HTTP/1.1</span></code></pre>
     <pre><code class="http">Content-Type: <span class="string">text/json</span></code></pre>
     <pre><code class="http">{
     "CustomerName": <span class="string">"Joe Bloggs"</span>,
@@ -56,10 +55,10 @@
       URL:
     </p>
     <pre><code><span class="request">DELETE <span
-        class="string">http://api.example.domain/customer/12345</span> HTTP/1.1</span></code></pre>
+        class="string">https://api.example.domain/customer/12345</span> HTTP/1.1</span></code></pre>
     <p class="govuk-body">REST uses the existing features of the HTTP protocol and does not permit
       the designer to
-      define application specific operations. In addition, because each resource has a globally
+      define application specific operations. Also, because each resource has a globally
       unique URI and is able to make use of the <code>GET</code> method for resource requests, these
       APIs benefit from existing network components such as caches, proxies and intelligent routing.
     </p>
@@ -70,6 +69,18 @@
       storing and exchanging data. It is easier to use than XML and more compact. It can be used as
       a data format by any programming language, which makes it ideal for HTTP-based API
       services.
+    </p>
+  </section>
+  <section id="api-specs">
+    <h2 class="govuk-heading-l">API specifications</h2>
+    <p class="govuk-body">The <a class="govuk-link"
+      th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${@environment.getProperty('developerSpecs.url')})}">
+      API specifications list</a> documents all of the available Companies House public API operations from
+      reading public company data to submitting a data change for a specific company.
+    </p>
+    <p class="govuk-body">API specifications for all Companies House public API operations are
+      documented using <a class="govuk-link" href="https://en.wikipedia.org/wiki/OpenAPI_Specification">
+      openAPI specifications</a>.
     </p>
   </section>
 </div>

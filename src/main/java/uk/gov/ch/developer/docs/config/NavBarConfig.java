@@ -26,6 +26,10 @@ public class NavBarConfig {
     private String manageApplicationsURL;
     @Value("${addApplication.url}")
     private String addApplicationURL;
+    @Value("${howToCreateApplication.url}")
+    private String howToCreateApplicationURL;
+    @Value("${developerSpecs.url}")
+    private String developerSpecsURL;
 
     /**
      * Constructs the entire model along with visibility restrictions.
@@ -37,16 +41,20 @@ public class NavBarConfig {
 
         NavBarModelBuilder model = new NavBarModelBuilder();
         NavItemList manageApplications = model
-                .addHeading("Manage Applications", DisplayRestrictions.USER_REQUIRED);
+                .addHeading("Manage applications", DisplayRestrictions.USER_REQUIRED);
         manageApplications.add("View all applications", manageApplicationsURL);
-        manageApplications.add("Add an application", addApplicationURL);
+        manageApplications.add("Create an application", addApplicationURL);
 
         NavItemList documentation = model
-                .addHeading("General Documentation", DisplayRestrictions.none());
-        documentation.add("Get Started", getStartedURL);
+                .addHeading("General documentation", DisplayRestrictions.none());
+        documentation.add("Get started", getStartedURL);
         documentation.add("Companies House REST API overview", overviewURL);
-        documentation.add("How to add an API key", authenticationUrl);
-        documentation.add("Developer Guidelines", devGuideURL);
+        documentation.add("How to create an application", howToCreateApplicationURL);
+        documentation.add("API authentication", authenticationUrl);
+        documentation.add("Developer guidelines", devGuideURL);
+        
+        NavItemList specs = model.addHeading("API specifications", DisplayRestrictions.none());
+        specs.add("API specifications list", developerSpecsURL);
 
         return model;
     }

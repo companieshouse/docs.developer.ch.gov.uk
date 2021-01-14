@@ -7,45 +7,101 @@
 </head>
 <body>
 <div layout:fragment="content">
-  <h1 class="govuk-heading-xl">How to add an API key</h1>
-  <h2 class="govuk-heading-l">API key authentication</h2>
+  <h1 class="govuk-heading-xl">API authentication</h1>
+  <h2 class="govuk-heading-l">API and stream key authentication</h2>
   <p class="govuk-body">The Companies House API requires authentication credentials to be sent with
-    each request, which take the form of an API key.
+    each request, in most cases this can be sent as an API or stream key for streaming API connections.
   </p>
-  <p class="govuk-body">To add an API key:
-  </p>
-  <ol class="govuk-list govuk-list--number">
-    <li><a class="govuk-link" href="/manage-applications">Go to Application overview</a></li>
-    <li>Select the application you’d like to add a key to, or select Add an application to create a
-      new one.
-    </li>
-    <li>Select Add new key at the bottom of the page.</li>
-    <li>Provide a name for the key and choose the client type.</li>
-    <li>Select Create.</li>
-    <li>A unique key will be generated, which can be sent with any <code>GET</code> request for a
-      public resource
-      served by the Companies House API.
-    </li>
-  </ol>
-  <h3 class="govuk-heading-m">Sending the API key</h3>
+  <h3 class="govuk-heading-m">Sending the key</h3>
   <p class="govuk-body">
-    The Companies House API uses HTTP basic access authentication to send an API key between the
+    The Companies House API uses HTTP basic access authentication to send an API key or stream key between the
     client application and the server.
   </p>
   <p class="govuk-body">
-    Basic authentication is usually made up of a username and password. The Companies House API
-    takes the username as the API key and ignores the password, so it can be left blank.
+    Basic authentication is usually consists of a username and password. The Companies House API
+    takes the username as the API or stream key and ignores the password, so it can be left blank.
   </p>
-  <h2 class="govuk-heading-l">Example</h2>
-  <h3 class="govuk-heading-m">HTTP Basic Authentication</h3>
+  <h3 class="govuk-heading-l">Example of HTTP basic authentication</h3>
   <p class="govuk-body">For an API key of my_api_key, the following curl request demonstrates the
-    setting of the <code>Authorization</code> HTTP request header, as defined by RFC2617.
+    setting of the <code>Authorization</code> HTTP request header, as defined by RFC2617:
   </p>
-  <pre><code>curl -XGET -u my_api_key: https:<span>//api.companieshouse.gov.uk/company/00000006</span></code></pre>
+  <pre><code>curl -XGET -u my_api_key: https:<span>//api.company-information.service.gov.uk/company/00000006</span></code></pre>
   <pre><code class="http"><span class="request">GET <span class="string">/company/00000006</span> HTTP/1.1</span>
-<span class="attribute">Host</span>: <span class="string">api.companieshouse.gov.uk</span>
+<span class="attribute">Host</span>: <span class="string">api.company-information.service.gov.uk</span>
 <span class="attribute">Authorization</span>: <span class="string">Basic bXlfYXBpX2tleTo=</span>
   </code></pre>
+  <h2 class="govuk-heading-l">OAuth 2.0 authentication</h2>
+  <p class="govuk-body">Interaction with some Companies House API functionality requires oauth2 authorisation. 
+    In web server apps, interaction with the Companies House API requires end-user involvement for authentication to 
+    prove their identity before the API will allow access. The Companies House API uses HTTP bearer access 
+    authentication to send an access token between the client application and the server.
+  </p>
+  <h3 class="govuk-heading-m">Overview</h3>
+  <p class="govuk-body">In a web server process flow, there must be end user involvement and the process flow is as follows:
+  </p>
+  <h3 class="govuk-heading-m">Developer setup</h3>
+  <ol class="govuk-list govuk-list--bullet">
+    <li>The developer registers an application.</li>
+    <li>The developer then creates a web client for their application obtaining a <code>client_id</code> and a 
+      <code>client_secret</code> which must be stored securely by the developer.</li>
+    <li>The web server application must be configured to use this <code>client_id</code> and <code>client_secret</code> 
+      combination for interactions with the Companies House OAuth 2.0 service.</li>
+  </ol>
+  <h3 class="govuk-heading-m">Initiating the OAuth Web Server Flow</h3>
+  <ol class="govuk-list govuk-list--bullet">
+    <li>When the web server wants to sign an end user in with their Companies House account it redirects the users 
+      browser to the <code>/oauth2/authorise</code> endpoint with the developers <code>client_id</code> and other 
+      details including the requested scope(s) and a registered <code>redirect_uri</code>.</li>
+    <li>The end user signs in to their Companies House account and provides a Company Auth Code if any requested scopes 
+      contain a specific company number.</li>
+    <li>The end user will be prompted to grant access for the Application to perform certain actions on their behalf.</li>
+    <li>When the end user grants this permission they they will be redirected to the <code>redirect_uri</code> provided 
+      with a <code>code</code> parameter to be used in the next stage.</li>
+  </ol>
+  <h3 class="govuk-heading-m">Handling the Redirect back</h3>
+  <ol class="govuk-list govuk-list--bullet">
+    <li>The web server can then use the code to exchange for the users <code>access_token</code> and 
+      <code>refresh_token</code> by making a <code>POST</code> request to the <code>/oauth/token</code>endpoint.</li>
+    <li>This request is not done via a browser but directly from the web server to the Companies House OAuth 2.0 service.</li>
+    <li>This request body includes the <code>code</code>, the developers <code>client_id</code>, 
+      <code>client_secret</code> and some other relevant information. The <code>grant_type</code> must be set to 
+      <code>authorization_code</code> to exchange an authorization code for an access token.</li>
+    <li>The Companies House OAuth 2.0 service verifies this request, and if access is permitted, responds with access 
+      and refresh tokens.</li>
+    <li>The application uses this access token when making requests to the Companies House API.</li>
+  </ol>
+  <h3 class="govuk-heading-m">Verifying the access token</h3>
+  <ol class="govuk-list govuk-list--bullet">
+    <li>The web server can verify the access token before using it against other Companies House APIs.</li>
+    <li>To verify the access token the web server should make another request directly (not in the users browser) to 
+      the <code>/oauth/verify</code> endpoint.</li>
+  </ol>
+  <h3 class="govuk-heading-m">Refreshing an access token</h3>
+  <ol class="govuk-list govuk-list--bullet">
+    <li>When the access token expires, the application can use the <code>/oauth/token</code> endpoint again to exchange 
+      the refresh token for a new access token. The <code>grant_type</code> must be set to <code>refresh_token</code> 
+      to exchange an refresh token for an access token.</li>
+  </ol>
+  <h3 class="govuk-heading-l">Example of HTTP Bearer authentication</h3>
+  <p class="govuk-body">For an access token of my_access_token, the following curl request demonstrates the
+    setting of the <code>Authorization</code> HTTP request header, as defined by RFC2617:
+  </p>
+  <pre><code>curl -XGET -H "Authorization: Bearer my_api_key" https:<span>//api.company-information.service.gov.uk/company/00000006</span></code></pre>
+  <pre><code class="http"><span class="request">GET <span class="string">/company/00000006</span> HTTP/1.1</span>
+<span class="attribute">Host</span>: <span class="string">api.company-information.service.gov.uk</span>
+<span class="attribute">Authorization</span>: <span class="string">Bearer my_api_key</span>
+  </code></pre>
+  <h3 class="govuk-heading-m">OAuth 2.0 service specifications</h3>
+  <p class="govuk-body">Each Companies House OAuth 2.0 service endpoint is documented with examples within the 
+    <a class="govuk-link"
+    th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${@environment.getProperty('developerSpecs.url')})}">
+    API specifications list</a>.
+  </p>
+  <p class="govuk-body">Companies House have also written an example <a class="govuk-body"
+    href="https://github.com/companieshouse/third-party-test-harness">Third Party Test Harness</a> application that 
+    shows how a web server application can interact with the Companies House OAuth 2.0 service. The README of this 
+    GitHub repository details how to configure and run the test harness.
+  </p>
 </div>
 </body>
 </html>

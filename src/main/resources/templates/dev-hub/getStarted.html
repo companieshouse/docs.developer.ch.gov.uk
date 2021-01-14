@@ -20,7 +20,7 @@
   <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Using the Companies House
     user account</p>
   <ul class="govuk-list govuk-list--bullet">
-    <li><a class="govuk-link" href="#authentication">API key authentication</a></li>
+    <li><a class="govuk-link" href="#authentication">API authentication</a></li>
     <li><a class="govuk-link" href="#guidelines">Developer guidelines</a></li>
   </ul>
   <section id="register">
@@ -53,15 +53,17 @@
     </p>
   </section>
   <section id="authentication">
-    <h2 class="govuk-heading-l">API key authentication</h2>
+    <h2 class="govuk-heading-l">API authentication</h2>
     <p class="govuk-body">Access to API services requires authentication. The Companies House API
-      requires authentication credentials to be sent with each request, which take the form of an
-      API key.
+      requires <a class="govuk-link"
+        th:href="@{{authenticationUrl}/(authenticationUrl=${@environment.getProperty('authentication.url')})}">authentication
+        </a> credentials to be sent with each request, which takes the form of an API key, stream key 
+        or oauth access token.
     </p>
     <p class="govuk-body">
-      Learn how to <a class="govuk-link"
-                      th:href="@{{authenticationUrl}/(authenticationUrl=${@environment.getProperty('authentication.url')})}">create
-      an API key</a>.
+      Learn <a class="govuk-link"
+        th:href="@{{howToCreateApplicationUrl}/(howToCreateApplicationUrl=${@environment.getProperty('howToCreateApplication.url')})}">how 
+        to create an application</a> and an API keys, stream keys and oauth web clients.
     </p>
   </section>
   <section id="guidelines">
