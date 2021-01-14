@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.ch.developer.docs.ApplicationVariables;
@@ -61,7 +60,6 @@ class CreateAccountControllerTest {
     void Test_GetRequest_ThrowsException_ForNullPath() {
         //Inspection suppressed because we are passing null to a @NotNull parameter.
         //noinspection ConstantConditions
-        MockHttpServletRequestBuilder mockGetRequest = get(null);
-        assertThrows(IllegalArgumentException.class, () -> this.mockMvc.perform(mockGetRequest));
+        assertThrows(IllegalArgumentException.class, () -> this.mockMvc.perform(get(null)));
     }
 }
