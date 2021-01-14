@@ -19,7 +19,7 @@ import uk.gov.ch.oauth.IOAuthCoordinator;
 import uk.gov.ch.oauth.exceptions.UnauthorisedException;
 
 @ExtendWith(MockitoExtension.class)
-public class UserCallbackControllerTest {
+class UserCallbackControllerTest {
 
     public static final String REDIRECT_URL = "redirectURL";
 
@@ -37,7 +37,7 @@ public class UserCallbackControllerTest {
 
     @Test
     @DisplayName("Returns error page when coordinator errors")
-    public void testReturnsErrorWhenCoordinatorThrowsException() throws UnauthorisedException {
+    void testReturnsErrorWhenCoordinatorThrowsException() throws UnauthorisedException {
         when(mockCoordinator.getPostCallbackRedirectURL(any(HttpServletResponse.class), anyMap()))
                 .thenThrow(mockException);
         String ret = userCallbackController.callback(mockParams, mockResponse);
@@ -48,7 +48,7 @@ public class UserCallbackControllerTest {
 
     @Test
     @DisplayName("Returns redirect when coordinator errors")
-    public void testReturnsRedirectThatCoordinatorReturns() throws UnauthorisedException {
+    void testReturnsRedirectThatCoordinatorReturns() throws UnauthorisedException {
         when(mockCoordinator.getPostCallbackRedirectURL(any(HttpServletResponse.class), anyMap()))
                 .thenReturn(REDIRECT_URL);
         String ret = userCallbackController.callback(mockParams, mockResponse);

@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import uk.gov.companieshouse.session.handler.SessionHandler;
 
 @EnableWebSecurity
-public class WebSecurity {
+public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Configuration
     @Order(1)
