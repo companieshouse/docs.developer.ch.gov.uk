@@ -171,6 +171,9 @@
             <piwik.siteId>//</piwik.siteId>
             <piwik.url>//</piwik.url>
             <pageNotFound.path>dev-hub/error/404Error</pageNotFound.path>
+            <developerSpecs.url>//</developerSpecs.url>
+            <howToCreateApplication.path>//</howToCreateApplication.path>
+            <howToCreateApplication.url>//</howToCreateApplication.url>
           </environmentVariables>
         </configuration>
         <dependencies>
