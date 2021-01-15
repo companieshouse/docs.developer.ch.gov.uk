@@ -9,39 +9,35 @@
 <div layout:fragment="content">
   <h1 class="govuk-heading-xl">How to create an application</h1>
   <h2 class="govuk-heading-l">Creating an application</h2>
-  <p class="govuk-body">To create an application:
-  </p>
   <ol class="govuk-list govuk-list--number">
-    <li>Go to <a class="govuk-link" href="/manage-applications/add">create an application</a></li>
-    <li>Provide a name and description for the application</li>
+    <li><a class="govuk-link" href="/manage-applications/add">Sign in to create an application.</a></li>
+    <li>Provide a name and description for the application.</li>
     <li>Choose whether you want a test application for use against our sandbox environment or a 
-      live application for use in production</li>
-    <li>Provide optional links to the privacy policy URL and terms and conditions URL of your service</li>
-    <li>Select Create.</li>
+      live application for use in production.</li>
+    <li>Provide optional links to the privacy policy URL and terms and conditions URL of your service.</li>
+    <li>Select 'Create'.</li>
     <li>A new application will be created. You can then create API clients for your application.</li>
   </ol>
-  <p class="govuk-body">API clients created for to your aplication can then be used to interact with the Companies 
-    House API and OAuth 2.0 service. There are 3 types of API client: API key, stream key and oauth web client.
+  <p class="govuk-body">API clients created for to your application can then be used to interact with the Companies 
+    House API and OAuth 2.0 service. There are 3 types of API client: API key, stream key and OAuth web client.
   </p>
   <h2 class="govuk-heading-l">Creating an API client</h2>
-  <p class="govuk-body">To create an API client:
-  </p>
   <ol class="govuk-list govuk-list--number">
-    <li>Go to <a class="govuk-link" href="/manage-applications">application overview</a></li>
+    <li><a class="govuk-link" href="/manage-applications">Sign in to see the application overview.</a></li>
     <li>Select the application you’d like to create a key for, or select create an application to create a
       new one.</li>
-    <li>Select create new key at the bottom of the page.</li>
+    <li>Select 'Create new key'.</li>
     <li>Provide a name for the key and choose the client type.</li>
-    <li>Select Create.</li>
+    <li>Select 'Create'.</li>
     <li>Unique API client credentials will be generated.</li>
   </ol>
   <p class="govuk-body">API or stream keys can be sent with most <code>GET</code> 
-      requests for a public resource served by the Companies House API while oauth web client id and secret combinations 
+      requests for a public resource served by the Companies House API, while OAuth web client ID and secret combinations 
       can be used to interact with the Companies House OAuth 2.0 service.
   </p>
   <p class="govuk-body"><a class="govuk-link"
-        th:href="@{{authenticationUrl}/(authenticationUrl=${@environment.getProperty('authentication.url')})}">API authentication
-        </a> details how to use each type of API client with the Companies House API and OAuth 2.0 services.
+        th:href="@{{authenticationUrl}/(authenticationUrl=${@environment.getProperty('authentication.url')})}">API authentication</a> 
+        details how to use each type of API client with the Companies House API and OAuth 2.0 services.
   </p>
 </div>
 </body>

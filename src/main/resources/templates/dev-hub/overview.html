@@ -7,7 +7,7 @@
   <title th:utext="${templateTitle}"></title>
 </head>
 <div id="temp-home-main-content" layout:fragment="content">
-    <h1 class="govuk-heading-xl">Companies House REST API Overview</h1>
+    <h1 class="govuk-heading-xl">Companies House REST API</h1>
   <section>
     <p class="govuk-body">The Companies House API is a REST API that provides a simple, consistent
       approach to requesting and modifying data. REST stands for Representational State Transfer which
@@ -24,14 +24,15 @@
   </section>
   <section id="rest">
     <h2 class="govuk-heading-l">Representational State Transfer (REST) web services</h2>
-    <!--<p class="govuk-body">REST is an architectural software style in which standard HTTP requests
-      are used to provide a simple and consistent approach to requesting and modifying data.
-    </p>-->
     <p class="govuk-body">In a RESTful style of API, data resources are allocated unique URLs and
-      manipulated through standard HTTP verbs such as <code>GET</code> to request a resource, <code>POST</code>
-      to create a resource, <code>PUT</code> to change a resource, and <code>DELETE</code> to remove
-      a resource.
+      manipulated through standard HTTP verbs such as 
     </p>
+    <ol class="govuk-list govuk-list--number">
+      <li><code>GET</code> to request a resource</li>
+      <li><code>POST</code> to create a resource</li>
+      <li><code>PUT</code> to change a resource</li>
+      <li><code>DELETE</code> to remove a resource</li>
+    </ol>
     <p class="govuk-body">In contrast to the above XML-RPC examples, the same RESTful API
       request for a <code>customer</code> record would be:
     </p>
@@ -75,12 +76,12 @@
     <h2 class="govuk-heading-l">API specifications</h2>
     <p class="govuk-body">The <a class="govuk-link"
       th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${@environment.getProperty('developerSpecs.url')})}">
-      API specifications list</a> documents all of the available Companies House public API operations from
+      API specifications list</a> documents all of the available Companies House public API operations, from
       reading public company data to submitting a data change for a specific company.
     </p>
     <p class="govuk-body">API specifications for all Companies House public API operations are
       documented using <a class="govuk-link" href="https://en.wikipedia.org/wiki/OpenAPI_Specification">
-      openAPI specifications</a>.
+      OpenAPI specifications</a>.
     </p>
   </section>
 </div>

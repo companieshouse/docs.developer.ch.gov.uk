@@ -9,14 +9,6 @@
 <body>
 <div layout:fragment="content">
   <h1 class="govuk-heading-xl">Developer guidelines</h1>
-  <h2 class="govuk-heading-l">Contents</h2>
-  <ol class="govuk-list govuk-list--number">
-    <li><a class="govuk-link" href="#ratelimits">API rate limits</a></li>
-    <li><a class="govuk-link" href="#enumtypes">Enumerated types</a></li>
-    <li><a class="govuk-link" href="#resources">Data resources</a></li>
-    <li><a class="govuk-link" href="#appsecurity">Application security</a></li>
-    <li><a class="govuk-link" href="#keysecurity">API key security</a></li>
-  </ol>
   <section id="ratelimits">
     <h2 class="govuk-heading-l">API rate limits</h2>
     <p class="govuk-body">Rate limiting is applied to the Companies House API to ensure a
@@ -27,7 +19,7 @@
       You can make up to 600 requests within a 5 minute period. If you exceed this limit, you
       will receive a <code>429 Too Many Requests</code> HTTP status code for each request made
       within the
-      remainder of the 5 minute time frame. At the end of the period, your rate limit will reset back
+      rest of the 5 minute time frame. At the end of the period, your rate limit will reset back
       to 600 requests.
     </p>
     <p class="govuk-body">
@@ -82,7 +74,7 @@
       being discovered, your account from being compromised and your rate-limit quota from being
       exceeded.
     </p>
-    <ul class="govuk-list govuk-list--bullet">
+    <ul class="govuk-list">
       <li><p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Do not embed API
         keys in your code</p>
         <p class="govuk-body">Storing keys in your application code increases the risk that they

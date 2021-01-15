@@ -8,7 +8,7 @@
 </head>
 <div id="temp-home-main-content" layout:fragment="content">
   <header class="page-header group">
-    <h1 class="govuk-heading-xl">Companies House API Overview</h1>
+    <h1 class="govuk-heading-xl">Companies House API overview</h1>
   </header>
   <p class="govuk-body">Companies House is an executive agency of the Department for Business
     Innovation and Skills (BEIS).
@@ -16,13 +16,8 @@
     information delivered under the Companies Act and related
     legislation; and make this information available to the public.
   </p>
-  <p class="govuk-body">Companies House digitally records almost all information it receives, and
-    makes this available
-    to the public through its own website and through the Companies House RESTful API. Being
-    RESTful, each record of information is assigned a globally
-    unique URI, and the operations available on each resource are directly mapped to HTTP verbs.
-    This means data can be easily consumed by issuing simple GET requests on the required resource
-    URI.
+  <p class="govuk-body">The Companies House API lets you retrieve information about limited companies (and other 
+    companies that fall within the Companies Act 2006). The data returned is live and real-time, and is simple to use and understand.
   </p>
   <h2 class="govuk-heading-l">Beta release</h2>
   <p class="govuk-body">The Companies House API and Developer Hub are currently at a
@@ -32,23 +27,20 @@
   </p>
   <p class="govuk-body">
     We have a proposed approach to versioning the API and documentation that is currently being discussed in the <a class="govuk-link"
-                                               href="https://forum.aws.chdev.org">Developer Hub
+                                               href="https://forum.aws.chdev.org">Developer
     Forum</a>. In the meantime, existing resources will remain as they are and can be considered as at 'version 0'.
   </p>
-  <p class="govuk-body">You can refer to the <a class="govuk-link"
-                                               href="https://forum.aws.chdev.org">Developer Hub
-    Forum</a> for ongoing feature and documentation discussions, and announcements about upcoming
+  <p class="govuk-body">You can refer to the Developer
+    Forum for ongoing feature and documentation discussions, and announcements about upcoming
     feature releases.
   </p>
   <h2 class="govuk-heading-l">Before you start</h2>
   <p class="govuk-body">If you are new to the Companies House API, take a look at the <a
       class="govuk-link"
       th:href="@{{startUrl}/(startUrl=${@environment.getProperty('getStarted.url')})}">
-    get started</a> guide, with the resources and examples to help you.
+    get started</a> guide, which has resources and examples to help you.
   </p>
-  <p class="govuk-body">We also have a support <a class="govuk-link"
-                                                  href="https://forum.aws.chdev.org">forum</a> where
-    you can discuss the API, find help and provide feedback.
+  <p class="govuk-body">In the Developer Forum, you can also discuss the API, find help and provide feedback
   </p>
 </div>
 </html>

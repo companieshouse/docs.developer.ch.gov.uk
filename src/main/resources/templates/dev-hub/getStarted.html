@@ -11,18 +11,6 @@
   <h1 class="govuk-heading-xl">
     Get started
   </h1>
-  <h2 class="govuk-heading-l">Contents</h2>
-  <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Before you start </p>
-  <ul class="govuk-list govuk-list--bullet">
-    <li><a class="govuk-link" href="#register">Register a Companies House user account</a></li>
-    <li><a class="govuk-link" href="#about">About the Companies House API</a></li>
-  </ul>
-  <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Using the Companies House
-    user account</p>
-  <ul class="govuk-list govuk-list--bullet">
-    <li><a class="govuk-link" href="#authentication">API authentication</a></li>
-    <li><a class="govuk-link" href="#guidelines">Developer guidelines</a></li>
-  </ul>
   <section id="register">
     <h2 class="govuk-heading-l">Register a Companies House user account </h2>
     <p class="govuk-body">
@@ -30,7 +18,7 @@
       to explore and perform tests with the Companies House API.
     </p>
     <p class="govuk-body">
-      Quick start tip: each Companies House API reference page contains an embedded explorer to try
+      To get started quickly, each Companies House API reference page contains an embedded explorer to try
       out the service without having to write any client code.
     </p>
   </section>
@@ -46,9 +34,9 @@
       consumed by issuing simple <code>GET</code> requests on the required resource URI.
     </p>
     <p class="govuk-body">
-      <a class="govuk-link"
-         th:href="@{{overviewUrl}/(overviewUrl=${@environment.getProperty('overview.url')})}">Read
-        the Companies House REST API overview</a> for more information about our API approach, REST
+      Read me <a class="govuk-link"
+         th:href="@{{overviewUrl}/(overviewUrl=${@environment.getProperty('overview.url')})}">Companies 
+         House REST API</a> overview for more information about our API approach, REST
       web services and the JSON data format.
     </p>
   </section>
@@ -56,14 +44,14 @@
     <h2 class="govuk-heading-l">API authentication</h2>
     <p class="govuk-body">Access to API services requires authentication. The Companies House API
       requires <a class="govuk-link"
-        th:href="@{{authenticationUrl}/(authenticationUrl=${@environment.getProperty('authentication.url')})}">authentication
-        </a> credentials to be sent with each request, which takes the form of an API key, stream key 
-        or oauth access token.
+        th:href="@{{authenticationUrl}/(authenticationUrl=${@environment.getProperty('authentication.url')})}">API authentication</a> 
+        credentials to be sent with each request, which is sent as an API key, stream key 
+        or OAuth access token.
     </p>
     <p class="govuk-body">
       Learn <a class="govuk-link"
         th:href="@{{howToCreateApplicationUrl}/(howToCreateApplicationUrl=${@environment.getProperty('howToCreateApplication.url')})}">how 
-        to create an application</a> and an API keys, stream keys and oauth web clients.
+        to create an application</a> and API keys, stream keys and OAuth web clients.
     </p>
   </section>
   <section id="guidelines">

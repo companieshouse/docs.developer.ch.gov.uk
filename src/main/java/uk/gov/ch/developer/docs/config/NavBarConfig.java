@@ -47,8 +47,9 @@ public class NavBarConfig {
 
         NavItemList documentation = model
                 .addHeading("General documentation", DisplayRestrictions.none());
+        documentation.add("Companies House API overview", "/");
         documentation.add("Get started", getStartedURL);
-        documentation.add("Companies House REST API overview", overviewURL);
+        documentation.add("Companies House REST API", overviewURL);
         documentation.add("How to create an application", howToCreateApplicationURL);
         documentation.add("API authentication", authenticationUrl);
         documentation.add("Developer guidelines", devGuideURL);
