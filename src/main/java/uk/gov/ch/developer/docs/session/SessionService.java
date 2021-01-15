@@ -1,7 +1,6 @@
 package uk.gov.ch.developer.docs.session;
 
 import java.util.Map;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;

@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class SignOutControllerTest {
+class SignOutControllerTest {
 
     private static final String REDIRECT_PAGE = "/home";
 
@@ -35,7 +35,7 @@ public class SignOutControllerTest {
 
     @Test
     @DisplayName("Test that invalidate Session Is Called when signing out")
-    public void testThatInvalidateSessionIsCalled() throws IOException {
+    void testThatInvalidateSessionIsCalled() throws IOException {
         when(httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY))
                 .thenReturn(session);
         signOutController.doSignOut(httpServletResponse, httpServletRequest);
@@ -44,7 +44,7 @@ public class SignOutControllerTest {
 
     @Test
     @DisplayName("Test that a user is redirected upon signing out")
-    public void testDoSignOut() throws IOException {
+    void testDoSignOut() throws IOException {
         when(httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY))
                 .thenReturn(session);
         when(ioAuthCoordinator.getSignoutUri()).thenReturn(REDIRECT_PAGE);
