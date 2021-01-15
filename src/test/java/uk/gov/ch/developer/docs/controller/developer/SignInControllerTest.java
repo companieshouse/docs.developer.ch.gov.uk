@@ -19,7 +19,7 @@ import uk.gov.ch.oauth.IOAuthCoordinator;
 
 
 @ExtendWith(MockitoExtension.class)
-public class SignInControllerTest {
+class SignInControllerTest {
 
     public static final String AUTHORISE_URI = "https://example.com/authorise";
     static final StringBuffer REQUEST_URL_STRING_BUFFER = new StringBuffer(
