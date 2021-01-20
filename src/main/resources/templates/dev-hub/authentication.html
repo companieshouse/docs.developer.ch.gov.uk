@@ -21,8 +21,8 @@
     Basic authentication usually consists of a username and password. The Companies House API
     takes the username as the API or stream key and ignores the password, so it can be left blank.
   </p>
-  <h3 class="govuk-heading-l">Example of HTTP basic authentication</h3>
-  <p class="govuk-body">For an API key of my_api_key, the following curl request demonstrates the
+  <h3 class="govuk-heading-m">Example of HTTP basic authentication</h3>
+  <p class="govuk-body">For an API key of <code>my_api_key</code>, the following curl request demonstrates the
     setting of the <code>Authorization</code> HTTP request header, as defined by RFC2617:
   </p>
   <pre><code>curl -XGET -u my_api_key: https:<span>//api.company-information.service.gov.uk/company/00000006</span></code></pre>
@@ -82,23 +82,23 @@
       the refresh token for a new access token. The <code>grant_type</code> must be set to <code>refresh_token</code> 
       to exchange a refresh token for an access token.</li>
   </ol>
-  <h3 class="govuk-heading-l">Example of HTTP bearer authentication</h3>
-  <p class="govuk-body">For an access token of my_access_token, the following curl request demonstrates the
+  <h3 class="govuk-heading-m">Example of HTTP bearer authentication</h3>
+  <p class="govuk-body">For an access token of <code>my_access_token</code>, the following curl request demonstrates the
     setting of the <code>Authorization</code> HTTP request header, as defined by RFC2617:
   </p>
-  <pre><code>curl -XGET -H "Authorization: Bearer my_api_key" https:<span>//api.company-information.service.gov.uk/company/00000006</span></code></pre>
+  <pre><code>curl -XGET -H "Authorization: Bearer my_access_token" https:<span>//api.company-information.service.gov.uk/company/00000006</span></code></pre>
   <pre><code class="http"><span class="request">GET <span class="string">/company/00000006</span> HTTP/1.1</span>
 <span class="attribute">Host</span>: <span class="string">api.company-information.service.gov.uk</span>
-<span class="attribute">Authorization</span>: <span class="string">Bearer my_api_key</span>
+<span class="attribute">Authorization</span>: <span class="string">Bearer my_access_token</span>
   </code></pre>
   <h3 class="govuk-heading-m">OAuth 2.0 service specifications</h3>
-  <p class="govuk-body">Each Companies House OAuth 2.0 service endpoint is documented with examples within the 
-    <a class="govuk-link"
+  <p class="govuk-body">Each Companies House OAuth 2.0 service endpoint is documented with examples within the API 
+    specifications list in the <a class="govuk-link"
     th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${@environment.getProperty('developerSpecs.url')})}">
-    API specifications list</a>.
+    Developer's API suite</a>.
   </p>
-  <p class="govuk-body">Companies House has also written an example <a class="govuk-link"
-    href="https://github.com/companieshouse/third-party-test-harness">Third Party Test Harness</a> application that 
+  <p class="govuk-body">Companies House has also written an <a class="govuk-link"
+    href="https://github.com/companieshouse/third-party-test-harness">example third party test harness application</a> that 
     shows how a web server application can interact with the Companies House OAuth 2.0 service. The README of this 
     GitHub repository details how to configure and run the test harness.
   </p>
