@@ -74,8 +74,7 @@
     <code>bearer</code> OAuth access token authorization. Due to the nature of 
     these APIs, testing should only be done against the sandbox environment.
     </p>
-    <p class="govuk-body">To test filing APIs in the sandbox developers will 
-    need to:
+    <h3 class="govuk-heading-m">How developers can test filing APIs in the sandbox</h3>
     <ul class="govuk-list govuk-list--number">
       <li>Create a test company using the test data generator API.</li>
       <li>Store or take note of the company number and authentication code in the response.</li>
@@ -89,7 +88,6 @@
       <li>Periodically check the transaction for mock <code>status</code> updates and handle 
         <code>accepted</code> and <code>rejected</code> responses accordingly.</li>
     </ul>
-    </p>
     <p class="govuk-body">
     Once a test company has been created using the test data generator, it can either be deleted 
     by calling a different endpoint in the test data generator service or it can be reused for 
