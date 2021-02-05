@@ -28,6 +28,8 @@ public class NavBarConfig {
     private String addApplicationURL;
     @Value("${howToCreateApplication.url}")
     private String howToCreateApplicationURL;
+    @Value("${apiTesting.url}")
+    private String apiTestingURL;
     @Value("${developerSpecs.url}")
     private String developerSpecsURL;
 
@@ -53,6 +55,7 @@ public class NavBarConfig {
         documentation.add("How to create an application", howToCreateApplicationURL);
         documentation.add("API authentication", authenticationUrl);
         documentation.add("Developer guidelines", devGuideURL);
+        documentation.add("API testing", apiTestingURL);
         
         NavItemList specs = model.addHeading("API specifications", DisplayRestrictions.none());
         specs.add("API specifications list", developerSpecsURL);

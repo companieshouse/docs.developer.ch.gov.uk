@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/baseLayout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:utext="${templateTitle}"></title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h1 class="govuk-heading-xl">API testing</h1>
+  <section id="environments">
+    <h2 class="govuk-heading-l">Environments</h2>
+    <p class="govuk-body">Companies House APIs are hosted in our live environment
+    where actual company data is made available and real users can file for their companies. 
+    A sandbox environment has also been created running the same API versions as live to allow 
+    software developers to test their integration with Companies House APIs in a safe place.
+    </p>
+    <h2 class="govuk-heading-m">Live</h2>
+    <p class="govuk-body">The live environment runs every API listed in the <a class="govuk-link"
+      th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${@environment.getProperty('developerSpecs.url')})}">
+      Developer's API suite</a> apart from the 
+      <code>sandbox test data generator api</code> service which only 
+      runs in the sandbox environment.
+    </p>
+    <h2 class="govuk-heading-m">Sandbox</h2>
+    <p class="govuk-body">The sandbox environment runs most APIs listed in the <a class="govuk-link"
+      th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${@environment.getProperty('developerSpecs.url')})}">
+      Developer's API suite</a> including the test data generator service. Some APIs such as streaming and 
+      document APIs do not run in the sandbox while others like the search API function but respond with 
+      data from live due to processing limitations detailed below. The sandbox environment does not run 
+      the Companies House website for browser based access to sandbox data.
+    </p>
+    <p class="govuk-body">The sandbox environment is maintained for developers to test their software's 
+      integration with OAuth and Filing APIs which should not be tested in live due to the requirement 
+      for company auth codes and the fact that successful API Filing tests would update actual company 
+      data on the public register.
+    </p>
+    <p class="govuk-body">Data in the sandbox cannot be maintained or updated like live data due to 
+      manual processing steps required in certain cases when processing filings. This internal processing 
+      has been substituted for a mock processing service in the sandbox. Mock internal processing simply 
+      responds to filing API submissions with a <code>status</code> update sent back to the transaction 
+      data, it does not update the test company data itself. More details around this process are 
+      documented below.
+    </p>
+    <h3 class="govuk-heading-m">Sandbox environment URLs</h3>
+    <p class="govuk-body">When testing in the sandbox your application must substitute the live environment 
+    URLs for the sandbox URLs:
+    <ul class="govuk-list govuk-list--bullet">
+      <li>API URL: <code>https://api-sandbox.company-information.service.gov.uk</code></li>
+      <li>Identity service URL: <code>https://identity-sandbox.company-information.service.gov.uk</code></li>
+      <li>Test data generator URL: <code>https://test-data-sandbox.company-information.service.gov.uk</code> (sandbox only)</li>
+    </ul>
+    API keys and OAuth client details must also be substituted for test versions when using the sandbox.
+    </p>
+  </section>
+  <section id="testing-public-data-apis">
+    <h2 class="govuk-heading-l">Testing public data APIs</h2>
+    <p class="govuk-body">Public data APIs such as company data output, 
+    search and the streaming API only allow the reading of existing data. 
+    These APIs only support <code>GET</code> requests using <code>basic</code> 
+    API or stream key authorization. Due to the read only nature of these APIs 
+    testing can be done against the live or sandbox environments.
+    </p>
+  </section>
+  <section id="testing-filing-apis">
+    <h2 class="govuk-heading-l">Testing filing APIs</h2>
+    <p class="govuk-body">Filing APIs such as the transactions and registered 
+    office address (ROA) data change APIs allow data to be created or changed 
+    as well as read. These APIs support a combination of http request methods 
+    like <code>POST</code>, <code>PUT</code> and <code>PATCH</code> and require 
+    <code>bearer</code> OAuth access token authorization. Due to the nature of 
+    these APIs testing should only be done against the sandbox environment.
+    </p>
+    <p class="govuk-body">To test filing APIs in the sandbox developers will 
+    need to:
+    <ul class="govuk-list govuk-list--number">
+      <li>Create a test company using the test data generator API.</li>
+      <li>Store or take note of the company number and authentication code returned.</li>
+      <li>Read the company profile data from the sandbox API.</li>
+      <li>Integrate with the OAuth service to get an access token ready for filing APIs. 
+        This will require a sandbox user to be registered and the test company authentication 
+        code to be provided.</li>
+      <li>Create a filing using the access token as authorisation against the transactions 
+        API and other filing APIs.</li>
+      <li>Submit the transaction.</li>
+      <li>Periodically check the transaction for mock <code>status</code> updates and handle 
+        <code>accepted</code> and <code>rejected</code> responses accordingly.</li>
+    </ul>
+    </p>
+    <p class="govuk-body">
+    Once a test company has been created using the test data generator it can either be deleted 
+    by calling a different endpoint in the test data generator service or it can be reused for 
+    further testing. If you plan to reuse the company you must make sure to store the authentication 
+    code as this cannot be recovered or reset later.
+    </p>
+    <p class="govuk-body">
+    Once a user account has been registered in the sandbox this can also be reused for further testing.
+    </p>
+  </section>
+</div>
+</body>
+</html>
