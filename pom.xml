@@ -144,6 +144,12 @@
       <artifactId>spring-security-config</artifactId>
       <groupId>org.springframework.security</groupId>
     </dependency>
+    <!-- Company House Shared Fragments -->
+    <dependency>
+      <artifactId>common-web-java</artifactId>
+      <groupId>uk.gov.companieshouse</groupId>
+      <version>1.4.0</version>
+    </dependency>
   </dependencies>
 
   <build>

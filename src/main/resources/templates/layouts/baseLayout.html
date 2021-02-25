@@ -77,7 +77,17 @@
     th:src="@{{cdnUrl}/javascripts/app/js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 <script
     th:src="@{{cdnUrl}/javascripts/app/radio-buttons.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
-<script
-    th:src="@{{cdnUrl}/javascripts/app/piwik-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
+
+<th:block th:if="${@environment.getProperty('cookie_consent') == 'true'}">
+  <div
+      th:replace="fragments/piwikWithCookieCheck :: piwikWithCookieCheck (moduleName = 'lfp')"></div>
+  <div th:replace="fragments/piwikWithCookieCheck :: cookieBanner"></div>
+  <script
+      th:src="@{{cdnUrl}/javascripts/app/cookie-consent-poc.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
+      type="text/javascript"></script>
+</th:block>
+<th:block th:unless="${@environment.getProperty('cookie_consent') == 'true'}">
+  <div th:replace="fragments/piwik :: piwik (moduleName = 'lfp')"></div>
+</th:block>
 </body>
 </html>
