@@ -7,13 +7,15 @@
   <title layout:title-pattern="$CONTENT_TITLE"></title>
   <!--[if lte IE 8]>
   <link
-      href="@{{cdnUrl}/stylesheets/govuk-frontend/v2.12.0/govuk-frontend-ie8-2.12.0.min.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
-      rel="stylesheet" type="text/css"/><![endif]-->
+      href="@{{cdnUrl}/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-ie8-3.11.0.min.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
+      rel="stylesheet"
+      type="text/css"/>
+  <![endif]-->
 
   <link
       media="all"
       rel="stylesheet"
-      th:href="@{{cdnUrl}/stylesheets/govuk-frontend/v2.12.0/govuk-frontend-2.12.0.min.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
+      th:href="@{{cdnUrl}/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css(cdnUrl=${@environment.getProperty('cdn.url')})}"
       type="text/css"/>
 
   <link rel="stylesheet" th:href="@{/css/application.css}"
@@ -29,12 +31,23 @@
       th:href="@{{cdnUrl}/images/royal-coat-of-arms-white.png(cdnUrl=${@environment.getProperty('cdn.url')})}"
       type="image/png"/>
 
+  <script th:inline="javascript">
+        window.SERVICE_NAME = 'lfp'
+        window.PIWIK_URL = [[${@environment.getProperty('piwik.url')}]];
+        window.PIWIK_SITE_ID = [[${@environment.getProperty('piwik.siteId')}]];
+
+
+
+  </script>
 </head>
 <body class="govuk-template__body">
 <div hidden id="templateName" th:attr="data-id=${templateName},data-metadata=${metadata}"></div>
 <div id="skiplink-container">
   <a class="govuk-skip-link" href="#main-content">Skip to main content</a>
 </div>
+
+<div th:replace="fragments/piwikWithCookieCheck :: cookieBanner"></div>
+
 <div th:replace="fragments/header :: header"></div>
 <div class="govuk-width-container">
   <div th:replace="fragments/betaBanner :: betaBanner"></div>
@@ -77,17 +90,12 @@
     th:src="@{{cdnUrl}/javascripts/app/js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
 <script
     th:src="@{{cdnUrl}/javascripts/app/radio-buttons.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
+<script
+    th:src="@{{cdnUrl}/javascripts/app/cookie-consent/cookie-consent-1.0.0.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
+    type="text/javascript"></script>
+<script
+    th:src="@{{cdnUrl}/javascripts/app/cookie-consent/piwik-only-cookie-consent.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
+    type="text/javascript"></script>
 
-<th:block th:if="${@environment.getProperty('cookie_consent') == 'true'}">
-  <div
-      th:replace="fragments/piwikWithCookieCheck :: piwikWithCookieCheck (moduleName = 'lfp')"></div>
-  <div th:replace="fragments/piwikWithCookieCheck :: cookieBanner"></div>
-  <script
-      th:src="@{{cdnUrl}/javascripts/app/cookie-consent-poc.js(cdnUrl=${@environment.getProperty('cdn.url')})}"
-      type="text/javascript"></script>
-</th:block>
-<th:block th:unless="${@environment.getProperty('cookie_consent') == 'true'}">
-  <div th:replace="fragments/piwik :: piwik (moduleName = 'lfp')"></div>
-</th:block>
 </body>
 </html>

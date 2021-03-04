@@ -19,6 +19,94 @@
   <name>docs.developer.ch.gov.uk</name>
   <description>Static general documentation content</description>
 
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <environmentVariables>
+            <CACHE_POOL_SIZE>10</CACHE_POOL_SIZE>
+            <CACHE_SERVER>localhost:1234</CACHE_SERVER>
+            <COOKIE_DOMAIN>.companieshouse.gov.uk</COOKIE_DOMAIN>
+            <COOKIE_NAME>abc</COOKIE_NAME>
+            <COOKIE_SECRET>iamasecret</COOKIE_SECRET>
+            <DEFAULT_SESSION_EXPIRATION>3600</DEFAULT_SESSION_EXPIRATION>
+            <HUMAN_LOG>1</HUMAN_LOG>
+            <REDIRECT_URI>/</REDIRECT_URI>
+            <account.url>//</account.url>
+            <cdn.url>//</cdn.url>
+            <chs.url>//</chs.url>
+            <createAccount.url>${home.url}/create-account</createAccount.url>
+            <developerGuidelines.url>${home.url}/developer-guidelines</developerGuidelines.url>
+            <developerSpecs.url>//</developerSpecs.url>
+            <gettingStarted.url>${home.url}/getting-started</gettingStarted.url>
+            <home.url>${home.url}</home.url>
+            <howToCreateApplication.path>//</howToCreateApplication.path>
+            <howToCreateApplication.url>//</howToCreateApplication.url>
+            <manageApplications.url>${home.url}/manage-applications</manageApplications.url>
+            <pageNotFound.path>dev-hub/error/404Error</pageNotFound.path>
+            <piwik.siteId>//</piwik.siteId>
+            <piwik.url>//</piwik.url>
+          </environmentVariables>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <groupId>org.junit.platform</groupId>
+            <version>${junit-platform-surefire-provider.version}</version>
+          </dependency>
+        </dependencies>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>${maven-surefire-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <layout>ZIP</layout>
+          <mainClass>uk.gov.ch.developer.docs.DocsWebApplication</mainClass>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+        <groupId>org.springframework.boot</groupId>
+        <version>${spring-boot-maven-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <groupId>org.jacoco</groupId>
+        <version>${jacoco-maven-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <artifactId>jib-maven-plugin</artifactId>
+        <configuration>
+          <container>
+            <jvmFlags>
+              <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+            </jvmFlags>
+          </container>
+        </configuration>
+        <groupId>com.google.cloud.tools</groupId>
+        <version>2.6.0</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot-dependencies.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <properties>
     <!--Java & Junit-->
     <java-session-handler.version>2.2.0</java-session-handler.version>
@@ -32,7 +120,7 @@
     <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
     <web-security-java.version>1.3.8</web-security-java.version>
     <oauth-signin-java.version>0.2.2</oauth-signin-java.version>
-    <common-web-java.version>1.1.0-rc1</common-web-java.version>
+    <common-web-java.version>1.5.0</common-web-java.version>
     <home.url></home.url>
     <!--Spring -->
     <spring-boot-dependencies.version>2.2.0.RELEASE</spring-boot-dependencies.version>
@@ -43,18 +131,6 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring-boot-dependencies.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -144,75 +220,5 @@
       <artifactId>spring-security-config</artifactId>
       <groupId>org.springframework.security</groupId>
     </dependency>
-    <!-- Company House Shared Fragments -->
-    <dependency>
-      <artifactId>common-web-java</artifactId>
-      <groupId>uk.gov.companieshouse</groupId>
-      <version>1.4.0</version>
-    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <environmentVariables>
-            <CACHE_POOL_SIZE>10</CACHE_POOL_SIZE>
-            <CACHE_SERVER>localhost:1234</CACHE_SERVER>
-            <COOKIE_DOMAIN>.companieshouse.gov.uk</COOKIE_DOMAIN>
-            <COOKIE_NAME>abc</COOKIE_NAME>
-            <COOKIE_SECRET>iamasecret</COOKIE_SECRET>
-            <DEFAULT_SESSION_EXPIRATION>3600</DEFAULT_SESSION_EXPIRATION>
-            <HUMAN_LOG>1</HUMAN_LOG>
-            <REDIRECT_URI>/</REDIRECT_URI>
-            <cdn.url>//</cdn.url>
-            <chs.url>//</chs.url>
-            <account.url>//</account.url>
-            <createAccount.url>${home.url}/create-account</createAccount.url>
-            <developerGuidelines.url>${home.url}/developer-guidelines</developerGuidelines.url>
-            <gettingStarted.url>${home.url}/getting-started</gettingStarted.url>
-            <manageApplications.url>${home.url}/manage-applications</manageApplications.url>
-            <home.url>${home.url}</home.url>
-            <piwik.siteId>//</piwik.siteId>
-            <piwik.url>//</piwik.url>
-            <pageNotFound.path>dev-hub/error/404Error</pageNotFound.path>
-            <developerSpecs.url>//</developerSpecs.url>
-            <howToCreateApplication.path>//</howToCreateApplication.path>
-            <howToCreateApplication.url>//</howToCreateApplication.url>
-          </environmentVariables>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <artifactId>junit-platform-surefire-provider</artifactId>
-            <groupId>org.junit.platform</groupId>
-            <version>${junit-platform-surefire-provider.version}</version>
-          </dependency>
-        </dependencies>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>${maven-surefire-plugin.version}</version>
-      </plugin>
-      <plugin>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring-boot-maven-plugin.version}</version>
-        <configuration>
-          <layout>ZIP</layout>
-          <mainClass>uk.gov.ch.developer.docs.DocsWebApplication</mainClass>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
-        <groupId>org.springframework.boot</groupId>
-      </plugin>
-      <plugin>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${jacoco-maven-plugin.version}</version>
-        <groupId>org.jacoco</groupId>
-      </plugin>
-    </plugins>
-  </build>
 </project>
