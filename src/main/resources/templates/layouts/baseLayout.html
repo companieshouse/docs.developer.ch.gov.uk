@@ -35,9 +35,6 @@
         window.SERVICE_NAME = 'lfp'
         window.PIWIK_URL = [[${@environment.getProperty('piwik.url')}]];
         window.PIWIK_SITE_ID = [[${@environment.getProperty('piwik.siteId')}]];
-
-
-
   </script>
 </head>
 <body class="govuk-template__body">
@@ -45,9 +42,7 @@
 <div id="skiplink-container">
   <a class="govuk-skip-link" href="#main-content">Skip to main content</a>
 </div>
-
 <div th:replace="fragments/piwikWithCookieCheck :: cookieBanner"></div>
-
 <div th:replace="fragments/header :: header"></div>
 <div class="govuk-width-container">
   <div th:replace="fragments/betaBanner :: betaBanner"></div>
