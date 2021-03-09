@@ -207,18 +207,6 @@
         <groupId>org.jacoco</groupId>
         <version>${jacoco-maven-plugin.version}</version>
       </plugin>
-      <plugin>
-        <artifactId>jib-maven-plugin</artifactId>
-        <configuration>
-          <container>
-            <jvmFlags>
-              <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
-            </jvmFlags>
-          </container>
-        </configuration>
-        <groupId>com.google.cloud.tools</groupId>
-        <version>2.6.0</version>
-      </plugin>
     </plugins>
   </build>
 </project>
