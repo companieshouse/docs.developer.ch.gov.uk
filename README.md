@@ -22,6 +22,17 @@ Or start developer-hub by using:
 
 Service can be accessed using the following link: http://dev.chs-dev.internal:4904
 
+## Docker
+To build a Docker image run the following command:
+
+```
+mvn compile jib:dockerBuild
+```
+
+This will output a Docker imaged named: `169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/docs.developer.ch.gov.uk`
+
+You can specify a different image name run `mvn compile jib:dockerBuild -Dimage=<YOUR NAME HERE>`
+
 ## Environment Variables
 The following is a list of mandatory environment variables for the service to run:
 

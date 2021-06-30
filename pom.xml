@@ -207,6 +207,16 @@
         <groupId>org.jacoco</groupId>
         <version>${jacoco-maven-plugin.version}</version>
       </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>3.1.1</version>
+        <configuration>
+          <to>
+            <image>169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/docs.developer.ch.gov.uk</image>
+          </to>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
