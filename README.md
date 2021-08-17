@@ -7,7 +7,6 @@ Static General Documentation pages for the Companies House Developer Hub. This a
 - [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [Maven](https://maven.apache.org/download.cgi)
 - [Git](https://git-scm.com/downloads)
-- [MongoDB](https://www.mongodb.com/)
 
 ## Getting Started
 1. Run `make`
@@ -44,3 +43,7 @@ CHS_DEVELOPER_CLIENT_SECRET | OAuth2 Client Secret
 DEVELOPER_OAUTH2_REQUEST_KEY | OAuth2 Request Key
 COOKIE_SECURE_ONLY | Determines whether cookie is sent via a secure protocol
 REDIRECT_URI | Redirect url post callback & signout
+
+## Related Services
+For full functionality of the developer hub this also requires [applications.api.identity.ch.gov.uk](https://github.com/companieshouse/applications.api.identity.ch.gov.uk)
+and [applications.developer.web.ch.gov.uk](https://github.com/companieshouse/applications.developer.web.ch.gov.uk). For more information, please see their readme documents.
