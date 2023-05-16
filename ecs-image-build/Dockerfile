@@ -2,7 +2,7 @@ ARG IMAGE_VERSION="latest"
 FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-open-jdk8-maven-build:${IMAGE_VERSION}
 
 ARG S3_RELEASE_BUCKET=""
-ARG APPLICATION_NAME=docs.developer.web.ch.gov.uk
+ARG APPLICATION_NAME=docs.developer.ch.gov.uk
 ARG APPLICATION_VERSION=""
 ARG AWS_ACCESS_KEY_ID=""
 ARG AWS_SECRET_ACCESS_KEY=""
