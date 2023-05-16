@@ -20,4 +20,4 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     && unzip ${FILE_NAME} \
     && rm -f ${FILE_NAME} awscliv2.zip
 
-CMD ["java",  "-jar", "-Dserver.port=${PORT}", "docs.developer.ch.gov.uk.jar"]
+CMD ["java",  "-jar", "-Dserver.port=8080", "docs.developer.ch.gov.uk.jar"]
