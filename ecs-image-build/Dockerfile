@@ -1,5 +1,5 @@
 ARG IMAGE_VERSION="latest"
-FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-open-jdk8-maven-build:${IMAGE_VERSION}
+FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-open-jdk-runtime-17:${IMAGE_VERSION}
 
 ARG S3_RELEASE_BUCKET=""
 ARG APPLICATION_NAME=docs.developer.ch.gov.uk
@@ -14,9 +14,8 @@ ARG JAVA_MEM_ARGS=""
 WORKDIR /opt
 COPY docker_start.sh .
 
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-    && unzip awscliv2.zip \
-    && ./aws/install \
+RUN dnf install -y zip gzip tar aws-cli \
+    && dnf clean all \
     && aws s3 cp s3://${S3_RELEASE_BUCKET}/${APPLICATION_NAME}/${FILE_NAME} . \
     && unzip ${FILE_NAME} \
     && rm -f ${FILE_NAME} awscliv2.zip
