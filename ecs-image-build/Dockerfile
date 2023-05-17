@@ -12,6 +12,7 @@ ARG PORT="8080"
 ARG JAVA_MEM_ARGS=""
 
 WORKDIR /opt
+COPY docker_start.sh .
 
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
     && unzip awscliv2.zip \
@@ -20,4 +21,4 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     && unzip ${FILE_NAME} \
     && rm -f ${FILE_NAME} awscliv2.zip
 
-CMD ["java",  "-jar", "-Dserver.port=8080", "docs.developer.ch.gov.uk.jar"]
+CMD ["./docker_start"]
