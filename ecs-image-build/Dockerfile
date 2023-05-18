@@ -14,8 +14,9 @@ ARG JAVA_MEM_ARGS=""
 WORKDIR /opt
 COPY docker_start.sh .
 
-RUN dnf install -y zip gzip tar aws-cli \
-    && dnf clean all \
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && ./aws/install \
     && aws s3 cp s3://${S3_RELEASE_BUCKET}/${APPLICATION_NAME}/${FILE_NAME} . \
     && unzip ${FILE_NAME} \
     && rm -f ${FILE_NAME} awscliv2.zip
