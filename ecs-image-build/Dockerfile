@@ -21,4 +21,4 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     && unzip ${FILE_NAME} \
     && rm -f ${FILE_NAME} awscliv2.zip
 
-CMD ["./docker_start"]
+CMD ["./docker_start.sh"]
