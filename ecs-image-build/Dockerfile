@@ -1,5 +1,4 @@
-ARG IMAGE_VERSION="latest"
-FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-open-jdk8-maven-build:${IMAGE_VERSION}
+FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-open-jdk-runtime:1.0.0
 
 WORKDIR /opt
 COPY /app .
