@@ -23,8 +23,9 @@
     <!--Java & Junit-->
     <common-web-java.version>1.5.0</common-web-java.version>
     <home.url></home.url>
-    <java-session-handler.version>2.2.0</java-session-handler.version>
-    <java.version>1.8</java.version>
+    <!-- <java-session-handler.version>2.2.0</java-session-handler.version> -->
+    <java-session-handler.version>unversioned</java-session-handler.version>
+    <java.version>17</java.version>
     <!--    These versions are earlier than in the Parent POM-->
     <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
     <junit-platform-surefire-provider.version>1.2.0</junit-platform-surefire-provider.version>
@@ -32,12 +33,14 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <mockito-junit-jupiter.version>3.1.0</mockito-junit-jupiter.version>
-    <oauth-signin-java.version>0.2.5</oauth-signin-java.version>
-    <spring-boot-dependencies.version>2.2.0.RELEASE</spring-boot-dependencies.version>
+    <!-- <oauth-signin-java.version>0.2.5</oauth-signin-java.version> -->
+    <oauth-signin-java.version>unversioned</oauth-signin-java.version>
+    <spring-boot-dependencies.version>3.1.0</spring-boot-dependencies.version>
     <!--Spring -->
-    <spring-boot-maven-plugin.version>2.2.0.RELEASE</spring-boot-maven-plugin.version>
+    <spring-boot-maven-plugin.version>3.1.0</spring-boot-maven-plugin.version>
     <spring-test.version>5.1.3.RELEASE</spring-test.version>
-    <structured-logging.version>1.5.0-rc2</structured-logging.version>
+    <!--<structured-logging.version>1.5.0-rc2</structured-logging.version> -->
+    <structured-logging.version>unversioned</structured-logging.version>
     <!--Maven -->
     <thymeleaf-extras-java8time.version>3.0.1.RELEASE</thymeleaf-extras-java8time.version>
     <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
@@ -69,13 +72,6 @@
       <artifactId>jackson-databind</artifactId>
       <groupId>com.fasterxml.jackson.core</groupId>
       <version>2.10.0</version>
-    </dependency>
-    <!--    Testing (Apart from Spring-Test; see Spring Modules)-->
-    <dependency>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <groupId>org.junit.jupiter</groupId>
-      <scope>test</scope>
-      <version>${junit-jupiter-engine.version}</version>
     </dependency>
     <dependency>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -172,6 +168,9 @@
             <cdn.url>//</cdn.url>
             <chs.url>//</chs.url>
             <createAccount.url>${home.url}/create-account</createAccount.url>
+            <overview.url>${home.url}/overview</overview.url>
+            <getStarted.url>${home.url}/get-started</getStarted.url>
+            <authentication.url>${home.url}/authentication</authentication.url>
             <developerGuidelines.url>${home.url}/developer-guidelines</developerGuidelines.url>
             <developerSpecs.url>//</developerSpecs.url>
             <gettingStarted.url>${home.url}/getting-started</gettingStarted.url>
@@ -213,7 +212,7 @@
       <plugin>
         <artifactId>jacoco-maven-plugin</artifactId>
         <groupId>org.jacoco</groupId>
-        <version>${jacoco-maven-plugin.version}</version>
+        <version>0.8.10</version>
       </plugin>
       <plugin>
         <groupId>com.google.cloud.tools</groupId>
