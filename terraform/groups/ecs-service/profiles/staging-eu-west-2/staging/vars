@@ -1,8 +1,4 @@
-aws_bucket = "staging-eu-west-2.terraform-state.ch.gov.uk"
-remote_state_bucket = "ch-service-staging-terraform-state"
 environment = "staging"
-deploy_to = "staging"
-state_prefix = "env:/staging"
 aws_profile = "staging-eu-west-2"
 
 # service configs
