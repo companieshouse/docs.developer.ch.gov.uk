@@ -1,0 +1,19 @@
+environment = "cidev"
+aws_profile = "development-eu-west-2"
+
+required_memory = 512
+max_task_count = 8
+
+# service configs
+log_level = "trace"
+cdn_host = "d3uvya5a8a1ncx.cloudfront.net"
+chs_url = "https://cidev.aws.chdev.org"
+account_local_url = "https://account.cidev.aws.chdev.org"
+dev_specs_url = "https://developer-specs.cidev.aws.chdev.org"
+piwik_url = "https://matomo.platform.aws.chdev.org/"
+piwik_site_id = "7"
+cache_server = "cidev-chs-elasticache.9vgugg.ng.0001.euw2.cache.amazonaws.com:6379"
+cookie_domain = "cidev.aws.chdev.org"
+oauth2_redirect_uri = "https://developer.cidev.aws.chdev.org/oauth2/user/callback"
+oauth2_auth_uri = "https://account.cidev.aws.chdev.org/oauth2/authorise"
+redirect_uri = "https://developer.cidev.aws.chdev.org"
