@@ -18,7 +18,7 @@ terraform {
 }
 
 module "ecs-service" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.215"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.218"
 
 
   # Environmental configuration
@@ -57,9 +57,24 @@ module "ecs-service" {
   service_scaledown_schedule         = var.service_scaledown_schedule
   service_scaleup_schedule           = var.service_scaleup_schedule
   use_capacity_provider              = var.use_capacity_provider
+  use_fargate                        = var.use_fargate
+  fargate_subnets                    = local.application_subnet_ids
+
+  # Cloudwatch
+  cloudwatch_alarms_enabled = var.cloudwatch_alarms_enabled
 
   # Service environment variable and secret configs
   task_environment  = local.task_environment
   task_secrets      = local.task_secrets
-  environment_files = local.environment_files
+  app_environment_filename    = local.app_environment_filename
+  use_set_environment_files   = local.use_set_environment_files
+}
+
+module "secrets" {
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.216"
+
+  name_prefix = "${local.service_name}-${var.environment}"
+  environment = var.environment
+  kms_key_id  = data.aws_kms_key.kms_key.id
+  secrets     = nonsensitive(local.service_secrets)
 }
