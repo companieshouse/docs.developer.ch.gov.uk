@@ -6,15 +6,18 @@ locals {
   service_name              = "docs-developer"
   container_port            = "8080" # default tomcat port required here until prod docker container is built allowing port change via env var
   docker_repo               = "docs.developer.ch.gov.uk"
+  kms_alias                   = "alias/${var.aws_profile}/environment-services-kms"
   lb_listener_rule_priority = 10
   lb_listener_paths         = ["/*"]
   vpc_name                  = data.aws_ssm_parameter.secret[format("/%s/%s", local.name_prefix, "vpc-name")].value
   s3_config_bucket          = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
-  environment_files         = [{
-    "value" : "arn:aws:s3:::${local.s3_config_bucket}/ecs-service-configs/${var.aws_profile}/${var.environment}/global_vars.env",
-    "type"  : "s3"
-  }]
+  app_environment_filename    = "docs.developer.ch.gov.uk"
+  use_set_environment_files   = var.use_set_environment_files
+  application_subnet_ids      = data.aws_subnets.application.ids
+  application_subnet_pattern = local.stack_secrets["application_subnet_pattern"]
 
+  stack_secrets              = jsondecode(data.vault_generic_secret.stack_secrets.data_json)
+  service_secrets            = jsondecode(data.vault_generic_secret.service_secrets.data_json)
 
   # create a map of secret name => secret arn to pass into ecs service module
   # using the trimprefix function to remove the prefixed path from the secret name

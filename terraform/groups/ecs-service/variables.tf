@@ -47,6 +47,13 @@ variable "required_memory" {
   description = "The required memory for this service"
   default = 256 # defaulted low for java service in dev environments, override for production
 }
+
+variable "use_fargate" {
+  type        = bool
+  description = "If true, sets the required capabilities for all containers in the task definition to use FARGATE, false uses EC2"
+  default     = true
+}
+
 variable "use_capacity_provider" {
   type        = bool
   description = "Whether to use a capacity provider instead of setting a launch type for the service"
@@ -73,6 +80,15 @@ variable "service_scaleup_schedule" {
   default     = ""
 }
 
+# ----------------------------------------------------------------------
+# Cloudwatch alerts
+# ----------------------------------------------------------------------
+variable "cloudwatch_alarms_enabled" {
+  description = "Whether to create a standard set of cloudwatch alarms for the service.  Requires an SNS topic to have already been created for the stack."
+  type        = bool
+  default     = true
+}
+
 # ------------------------------------------------------------------------------
 # Service environment variable configs
 # ------------------------------------------------------------------------------
@@ -81,6 +97,13 @@ variable "log_level" {
   type        = string
   description = "The log level for services to use: trace, debug, info or error"
 }
+
+variable "use_set_environment_files" {
+  type        = bool
+  default     = false
+  description = "Toggle default global and shared  environment files"
+}
+
 variable "docs_developer_version" {
   type        = string
   description = "The version of the docs.developer.ch.gov.uk container to run."

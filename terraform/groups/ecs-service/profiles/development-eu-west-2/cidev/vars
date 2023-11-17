@@ -5,6 +5,7 @@ required_memory = 512
 max_task_count = 8
 
 # service configs
+use_set_environment_files = true
 log_level = "trace"
 cdn_host = "d3uvya5a8a1ncx.cloudfront.net"
 chs_url = "https://cidev.aws.chdev.org"
