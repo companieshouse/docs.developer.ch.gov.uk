@@ -35,30 +35,32 @@ locals {
     { "name" = upper(key), "valueFrom" = value }
   ])
 
-  task_secrets = concat(local.global_secret_list,[
-    { "name" : "CHS_DEVELOPER_CLIENT_ID", "valueFrom" : local.secrets_arn_map.web-oauth2-client-id },
-    { "name" : "CHS_DEVELOPER_CLIENT_SECRET", "valueFrom" : local.secrets_arn_map.web-oauth2-client-secret },
-    { "name" : "DEVELOPER_OAUTH2_REQUEST_KEY", "valueFrom" : local.secrets_arn_map.web-oauth2-request-key }
+  ssm_global_version_map = [
+    for sec in data.aws_ssm_parameter.global_secret : {
+      name = "GLOBAL_${var.ssm_version_prefix}${replace(upper(basename(sec.name)), "-", "_")}", value = sec.version
+    }
+  ]
+
+  service_secrets_arn_map = {
+    for sec in module.secrets.secrets:
+    trimprefix(sec.name, "/${local.service_name}-${var.environment}/") => sec.arn
+  }
+
+  service_secret_list = flatten([for key, value in local.service_secrets_arn_map :
+    { "name" = upper(key), "valueFrom" = value }
   ])
 
-  task_environment = [
-    { "name" : "DOC_DEVELOPER_SERVICE_PORT", "value" : local.container_port },
-    { "name" : "LOGLEVEL", "value" : var.log_level },
-    { "name" : "CDN_HOST", "value" : var.cdn_host },
-    { "name" : "CHS_URL", "value" : var.chs_url },
-    { "name" : "ACCOUNT_LOCAL_URL", "value" : var.account_local_url },
-    { "name" : "DEVELOPER_SPECS_URL", "value" : var.dev_specs_url },
-    { "name" : "PIWIK_URL", "value" : var.piwik_url },
-    { "name" : "PIWIK_SITE_ID", "value" : var.piwik_site_id },
-    { "name" : "REDIRECT_URI", "value" : var.redirect_uri },
-    { "name" : "CACHE_POOL_SIZE", "value" : var.cache_pool_size },
-    { "name" : "CACHE_SERVER", "value" : var.cache_server },
-    { "name" : "COOKIE_DOMAIN", "value" : var.cookie_domain },
-    { "name" : "COOKIE_NAME", "value" : var.cookie_name },
-    { "name" : "COOKIE_SECURE_ONLY", "value" : var.cookie_secure_only },
-    { "name" : "DEFAULT_SESSION_EXPIRATION", "value" : var.default_session_expiration },
-    { "name" : "OAUTH2_REDIRECT_URI", "value" : var.oauth2_redirect_uri },
-    { "name" : "OAUTH2_AUTH_URI", "value" : var.oauth2_auth_uri }
+  ssm_service_version_map = [
+    for sec in module.secrets.secrets : {
+      name = "${replace(upper(local.service_name), "-", "_")}_${var.ssm_version_prefix}${replace(upper(basename(sec.name)), "-", "_")}", value = sec.version
+    }
   ]
-}
 
+  # docs.developer secrets to go in list
+  task_secrets = concat(local.global_secret_list,local.service_secret_list,[])
+
+  task_environment = concat(local.ssm_global_version_map,local.ssm_service_version_map,[
+    { "name" : "LOGLEVEL", "value" : var.log_level },
+    { "name" : "DOC_DEVELOPER_SERVICE_PORT", "value" : local.container_port }
+  ])
+}
