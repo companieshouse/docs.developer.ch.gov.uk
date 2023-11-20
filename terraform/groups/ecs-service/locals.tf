@@ -11,7 +11,7 @@ locals {
   lb_listener_paths         = ["/*"]
   vpc_name                  = data.aws_ssm_parameter.secret[format("/%s/%s", local.name_prefix, "vpc-name")].value
   s3_config_bucket          = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
-  app_environment_filename    = "docs.developer.ch.gov.uk"
+  app_environment_filename    = "docs.developer.ch.gov.uk.env"
   use_set_environment_files   = var.use_set_environment_files
   application_subnet_ids      = data.aws_subnets.application.ids
   application_subnet_pattern = local.stack_secrets["application_subnet_pattern"]
