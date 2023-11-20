@@ -33,7 +33,8 @@ module "ecs-service" {
   lb_listener_arn                   = data.aws_lb_listener.dev_site_lb_listener.arn
   lb_listener_rule_priority         = local.lb_listener_rule_priority
   lb_listener_paths                 = local.lb_listener_paths
-  healthcheck_path                  = "/"
+  healthcheck_path          = local.healthcheck_path
+  healthcheck_matcher       = local.healthcheck_matcher
   health_check_grace_period_seconds = 240
   healthcheck_healthy_threshold     = "2"
 
