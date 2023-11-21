@@ -2,7 +2,7 @@ environment = "staging"
 aws_profile = "staging-eu-west-2"
 
 # service configs
-log_level = "trace"
+log_level = "error"
 cdn_host = "d2ovzaxriww2h8.cloudfront.net"
 chs_url = "https://staging.company-information.service.gov.uk"
 account_local_url = "https://identity-staging.company-information.service.gov.uk"

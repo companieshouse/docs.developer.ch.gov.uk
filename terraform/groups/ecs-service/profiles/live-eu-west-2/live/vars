@@ -2,7 +2,7 @@ environment = "live"
 aws_profile = "live-eu-west-2"
 
 # service configs
-log_level = "trace"
+log_level = "info"
 cdn_host = "d3q1r7ldqt8xxd.cloudfront.net"
 chs_url = "https://find-and-update.company-information.service.gov.uk"
 account_local_url = "https://identity.company-information.service.gov.uk"
