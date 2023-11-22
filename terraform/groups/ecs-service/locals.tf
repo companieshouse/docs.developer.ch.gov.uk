@@ -59,7 +59,11 @@ locals {
   ]
 
   # docs.developer secrets to go in list
-  task_secrets = concat(local.global_secret_list,local.service_secret_list,[])
+  task_secrets = concat(local.global_secret_list,local.service_secret_list,[
+    { "name" : "CHS_DEVELOPER_CLIENT_ID", "valueFrom" : local.global_secrets_arn_map.oauth2_client_id },
+    { "name" : "CHS_DEVELOPER_CLIENT_SECRET", "valueFrom" : local.global_secrets_arn_map.oauth2_client_secret },
+    { "name" : "DEVELOPER_OAUTH2_REQUEST_KEY", "valueFrom" : local.global_secrets_arn_map.oauth2_request_key }
+  ])
 
   task_environment = concat(local.ssm_global_version_map,local.ssm_service_version_map,[
     { "name" : "LOGLEVEL", "value" : var.log_level },
