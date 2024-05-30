@@ -38,9 +38,9 @@ The following is a list of mandatory environment variables for the service to ru
 | Name | Description |
 |------|-------------|
 OAUTH2_REDIRECT_URI | The OAuth2 callback url
-CHS_DEVELOPER_CLIENT_ID | OAuth2 Client ID
-CHS_DEVELOPER_CLIENT_SECRET | OAuth2 Client Secret
-DEVELOPER_OAUTH2_REQUEST_KEY | OAuth2 Request Key
+OAUTH2_CLIENT_ID | OAuth2 Client ID
+OAUTH2_CLIENT_SECRET | OAuth2 Client Secret
+OAUTH2_REQUEST_KEY | OAuth2 Request Key
 COOKIE_SECURE_ONLY | Determines whether cookie is sent via a secure protocol
 REDIRECT_URI | Redirect url post callback & signout
 

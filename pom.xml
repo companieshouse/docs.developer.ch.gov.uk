@@ -23,8 +23,8 @@
     <!--Java & Junit-->
     <common-web-java.version>1.5.0</common-web-java.version>
     <home.url></home.url>
-    <java-session-handler.version>2.2.0</java-session-handler.version>
-    <java.version>1.8</java.version>
+    <java-session-handler.version>4.0.7</java-session-handler.version>
+    <java.version>21</java.version>
     <!--    These versions are earlier than in the Parent POM-->
     <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
     <junit-platform-surefire-provider.version>1.2.0</junit-platform-surefire-provider.version>
@@ -32,7 +32,7 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <mockito-junit-jupiter.version>3.1.0</mockito-junit-jupiter.version>
-    <oauth-signin-java.version>0.2.5</oauth-signin-java.version>
+    <oauth-signin-java.version>2.1.6</oauth-signin-java.version>
     <spring-boot-dependencies.version>2.2.0.RELEASE</spring-boot-dependencies.version>
     <!--Spring -->
     <spring-boot-maven-plugin.version>2.2.0.RELEASE</spring-boot-maven-plugin.version>
@@ -137,7 +137,7 @@
     <dependency>
       <artifactId>oauth-signin-java-library</artifactId>
       <groupId>uk.gov.companieshouse</groupId>
-      <version>${oauth-signin-java.version}</version>
+      <version>2.1.5</version>
     </dependency>
     <!-- Security dependencies -->
     <dependency>
