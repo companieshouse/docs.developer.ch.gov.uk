@@ -45,8 +45,8 @@ dist: clean build package
 
 .PHONY: sonar
 sonar:
-	mvn sonar:sonar
+	mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar
 
 .PHONY: sonar-pr-analysis
 sonar-pr-analysis:
-	mvn sonar:sonar -P sonar-pr-analysis
+	mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar -P sonar-pr-analysis
