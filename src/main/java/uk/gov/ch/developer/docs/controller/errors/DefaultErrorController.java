@@ -37,12 +37,6 @@ public class DefaultErrorController extends AbstractPageController implements Er
         super(TITLE);
     }
 
-// TODO JU-548 Do we need to configure this some other way then?
-//    @Override
-//    public String getErrorPath() {
-//        return ERROR_MAPPING;
-//    }
-
     @Override
     public String getPath() {
         return handleError();
