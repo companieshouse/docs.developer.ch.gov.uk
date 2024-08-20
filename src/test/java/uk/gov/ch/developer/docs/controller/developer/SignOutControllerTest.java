@@ -7,11 +7,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.ch.oauth.IOAuthCoordinator;
+import uk.gov.ch.oauth.IOauth;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.mockito.Mockito.verify;
@@ -24,6 +25,8 @@ class SignOutControllerTest {
 
     @Mock
     private IOAuthCoordinator ioAuthCoordinator;
+    @Mock
+    private IOauth iOauth;
     @Mock
     private HttpServletRequest httpServletRequest;
     @Mock
@@ -38,8 +41,11 @@ class SignOutControllerTest {
     void testThatInvalidateSessionIsCalled() throws IOException {
         when(httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY))
                 .thenReturn(session);
+        when(ioAuthCoordinator.getOAuth()).thenReturn(iOauth);
+
         signOutController.doSignOut(httpServletResponse, httpServletRequest);
-        verify(ioAuthCoordinator).invalidateSession(session);
+
+        verify(iOauth).invalidateSession(session);
     }
 
     @Test
@@ -47,8 +53,11 @@ class SignOutControllerTest {
     void testDoSignOut() throws IOException {
         when(httpServletRequest.getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY))
                 .thenReturn(session);
-        when(ioAuthCoordinator.getSignoutUri()).thenReturn(REDIRECT_PAGE);
+        when(session.signOut(httpServletRequest)).thenReturn(REDIRECT_PAGE);
+        when(ioAuthCoordinator.getOAuth()).thenReturn(iOauth);
+
         signOutController.doSignOut(httpServletResponse, httpServletRequest);
+
         verify(httpServletResponse).sendRedirect(REDIRECT_PAGE);
     }
 
