@@ -30,8 +30,6 @@ public class SignOutController {
 
         final Session chSession = (Session) httpServletRequest
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-        // TODO Remove Java 8 String redirectUri = ioAuthCoordinator.getSignoutUri();
-        // TODO Remove Java 8 ioAuthCoordinator.invalidateSession(chSession);
         String redirectUri = chSession.signOut(httpServletRequest);
         ioAuthCoordinator.getOAuth().invalidateSession(chSession);
         httpServletResponse.sendRedirect(redirectUri);
