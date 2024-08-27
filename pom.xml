@@ -77,6 +77,12 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <groupId>org.springframework.boot</groupId>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.vaadin.external.google</groupId>
+          <artifactId>android-json</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>  <!--    Using Parent but overriding scope to Test -->
       <artifactId>mockito-junit-jupiter</artifactId>
