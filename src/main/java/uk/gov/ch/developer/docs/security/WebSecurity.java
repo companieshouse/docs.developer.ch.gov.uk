@@ -14,7 +14,7 @@ public class WebSecurity {
 
     @Configuration
     @Order(1)
-    public static class RootSecurityConfig /*extends WebSecurityConfigurerAdapter*/ {
+    public static class RootSecurityConfig {
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
