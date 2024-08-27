@@ -26,17 +26,17 @@
     <java-session-handler.version>4.1.0</java-session-handler.version>
     <java.version>21</java.version>
     <junit-jupiter-engine.version>5.10.2</junit-jupiter-engine.version>
+    <!--Maven -->
     <maven-surefire-plugin.version>3.4.0</maven-surefire-plugin.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <mockito-junit-jupiter.version>5.12.0</mockito-junit-jupiter.version>
     <oauth-signin-java.version>2.1.8</oauth-signin-java.version>
-    <spring-boot-dependencies.version>3.3.2</spring-boot-dependencies.version>
     <!--Spring -->
-    <spring-boot-maven-plugin.version>3.3.2</spring-boot-maven-plugin.version>
+    <spring-boot-dependencies.version>3.3.3</spring-boot-dependencies.version>
+    <spring-boot-maven-plugin.version>3.3.3</spring-boot-maven-plugin.version>
     <spring-test.version>6.1.12</spring-test.version>
     <structured-logging.version>3.0.12</structured-logging.version>
-    <!--Maven -->
     <thymeleaf-extras-java8time.version>3.0.4.RELEASE</thymeleaf-extras-java8time.version>
     <thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
     <web-security-java.version>3.1.0</web-security-java.version>
