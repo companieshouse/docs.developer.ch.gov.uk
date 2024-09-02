@@ -12,6 +12,8 @@ import uk.gov.companieshouse.session.handler.SessionHandler;
 @EnableWebSecurity
 public class WebSecurity {
 
+    private WebSecurity() {}
+
     @Configuration
     @Order(1)
     public static class RootSecurityConfig {
