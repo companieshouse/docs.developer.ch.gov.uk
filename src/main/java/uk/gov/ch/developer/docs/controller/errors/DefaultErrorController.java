@@ -54,7 +54,7 @@ public class DefaultErrorController extends AbstractPageController implements Er
         logError();
 
         if (status != null) {
-            int statusCode = Integer.parseInt(status.toString());
+            var statusCode = Integer.parseInt(status.toString());
             // display specific error page
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 return getNotFoundPath();

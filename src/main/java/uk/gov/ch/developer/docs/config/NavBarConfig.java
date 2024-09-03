@@ -41,7 +41,7 @@ public class NavBarConfig {
     @Bean
     public NavBarModelBuilder getNavBarModelBuilder() {
 
-        NavBarModelBuilder model = new NavBarModelBuilder();
+        var model = new NavBarModelBuilder();
         NavItemList manageApplications = model
                 .addHeading("Manage applications", DisplayRestrictions.USER_REQUIRED);
         manageApplications.add("View all applications", manageApplicationsURL);

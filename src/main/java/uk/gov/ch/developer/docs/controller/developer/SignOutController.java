@@ -28,7 +28,7 @@ public class SignOutController {
 
         LOGGER.debug("Processing sign out");
 
-        final Session chSession = (Session) httpServletRequest
+        final var chSession = (Session) httpServletRequest
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
         String redirectUri = chSession.signOut(httpServletRequest);
         ioAuthCoordinator.getOAuth().invalidateSession(chSession);
