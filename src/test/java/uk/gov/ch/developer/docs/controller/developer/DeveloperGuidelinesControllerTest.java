@@ -57,6 +57,7 @@ class DeveloperGuidelinesControllerTest {
 
     @Test()
     @DisplayName("Get How To Obtain an API Home Page - Null path")
+    @SuppressWarnings("java:S5778")
     void Test_GetRequest_ThrowsException_ForNullPath() {
         //Inspection suppressed because we are passing null to a @NotNull parameter.
         //noinspection ConstantConditions

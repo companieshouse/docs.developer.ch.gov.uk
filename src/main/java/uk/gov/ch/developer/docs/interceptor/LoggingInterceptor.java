@@ -28,12 +28,14 @@ public class LoggingInterceptor implements HandlerInterceptor {
         this.logger = logger;
     }
 
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) {
         requestLogger.logStartRequestProcessing(request, logger);
         return true;
     }
 
+    @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             @Nullable ModelAndView modelAndView) {
         requestLogger.logEndRequestProcessing(request, response, logger);

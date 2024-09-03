@@ -32,7 +32,7 @@ public class NavItemList implements Iterable<INavBarItem> {
      * @return the newly created child item.
      */
     public NavBarItem add(final String heading, final String url) {
-        NavBarItem newItem = new NavBarItem(heading, url, defaultDisplaySettings.clone());
+        var newItem = new NavBarItem(heading, url, defaultDisplaySettings.clone());
         list.add(newItem);
         return newItem;
     }

@@ -57,6 +57,7 @@ class CreateAccountControllerTest {
 
     @Test()
     @DisplayName("How to Create CH Account  Page - Null path")
+    @SuppressWarnings("java:S5778")
     void Test_GetRequest_ThrowsException_ForNullPath() {
         //Inspection suppressed because we are passing null to a @NotNull parameter.
         //noinspection ConstantConditions

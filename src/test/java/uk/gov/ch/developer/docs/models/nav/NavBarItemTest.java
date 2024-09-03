@@ -20,6 +20,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
 
 class NavBarItemTest {
 
@@ -61,24 +64,20 @@ class NavBarItemTest {
             assertThat(item.getChildren(), is(empty()));
         }
 
-        @Test
-        @DisplayName("- replaces null url")
-        void navBarItem_Constructor_replacesURLWithDefault_IfUrlIsNull_test() {
-            NavBarItem item = new NavBarItem(HEADING, null, DisplayRestrictions.none());
-            assertEquals(DEFAULT_URL, item.getUrl());
+        @ParameterizedTest(name = "- replaces null url")
+        @NullSource
+        void navBarItem_Constructor_replacesURLWithDefault_IfNull(final String url) {
+            assertDefaultUrlIsReturned(url);
         }
 
-        @Test
-        @DisplayName("- replaces empty string url")
-        void navBarItem_Constructor_replacesURLWithDefault_IfUrlIsEmpty_test() {
-            NavBarItem item = new NavBarItem(HEADING, "", DisplayRestrictions.none());
-            assertEquals(DEFAULT_URL, item.getUrl());
+        @ParameterizedTest(name = "- replaces {1} url")
+        @CsvSource(value = {"'':empty","'      ':string of spaces"}, delimiter = ':')
+        void navBarItem_Constructor_replacesURLWithDefault_If(final String url, final String description) {
+            assertDefaultUrlIsReturned(url);
         }
 
-        @Test
-        @DisplayName("- replaces string of spaces url")
-        void navBarItem_Constructor_replacesURLWithDefault_IfUrlIsBlankString_test() {
-            NavBarItem item = new NavBarItem(HEADING, "      ", DisplayRestrictions.none());
+        private void assertDefaultUrlIsReturned(final String url) {
+            final NavBarItem item = new NavBarItem(HEADING, url, DisplayRestrictions.none());
             assertEquals(DEFAULT_URL, item.getUrl());
         }
 
