@@ -10,8 +10,8 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.session.Session;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Controller
@@ -30,8 +30,8 @@ public class SignOutController {
 
         final Session chSession = (Session) httpServletRequest
                 .getAttribute(SessionHandler.CHS_SESSION_REQUEST_ATT_KEY);
-        String redirectUri = ioAuthCoordinator.getSignoutUri();
-        ioAuthCoordinator.invalidateSession(chSession);
+        String redirectUri = chSession.signOut(httpServletRequest);
+        ioAuthCoordinator.getOAuth().invalidateSession(chSession);
         httpServletResponse.sendRedirect(redirectUri);
     }
 

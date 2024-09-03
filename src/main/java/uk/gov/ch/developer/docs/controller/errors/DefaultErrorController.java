@@ -1,8 +1,8 @@
 package uk.gov.ch.developer.docs.controller.errors;
 
 import java.util.HashMap;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -35,11 +35,6 @@ public class DefaultErrorController extends AbstractPageController implements Er
 
     public DefaultErrorController() {
         super(TITLE);
-    }
-
-    @Override
-    public String getErrorPath() {
-        return ERROR_MAPPING;
     }
 
     @Override

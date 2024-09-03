@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Properties;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -29,6 +31,11 @@ class NavBarItemTest {
     static void injectProperties() {
         Properties p = System.getProperties();
         p.setProperty("home.url", DEFAULT_URL);
+    }
+
+    @AfterAll
+    static void cleanUp() {
+        System.getProperties().setProperty("home.url", "");
     }
 
     @Nested
