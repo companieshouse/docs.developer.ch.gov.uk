@@ -19,7 +19,7 @@ public abstract class AbstractPageController extends BaseController {
     @Autowired
     private IUserModel userModel;
 
-    public AbstractPageController(final String title) {
+    protected AbstractPageController(final String title) {
         this.title = title;
     }
 
