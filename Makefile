@@ -43,6 +43,11 @@ endif
 .PHONY: dist
 dist: clean build package
 
+.PHONY: security-check
+security-check:
+	mvn org.owasp:dependency-check-maven:update-only
+	mvn org.owasp:dependency-check-maven:check -DfailBuildOnCVSS=4 -DassemblyAnalyzerEnabled=false
+
 .PHONY: sonar
 sonar:
 	mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar
