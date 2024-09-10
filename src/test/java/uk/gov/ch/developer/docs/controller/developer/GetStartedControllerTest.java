@@ -48,6 +48,14 @@ class GetStartedControllerTest {
     }
 
     @Test
+    @DisplayName("Get Get Started Page with trailing slash - success path")
+    void Test_GetRequest_ReturnsSuccess_ForPathWithTrailingSlash() throws Exception {
+        this.mockMvc.perform(get(URL + "/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name(VIEW));
+    }
+
+    @Test
     @DisplayName("Get Get Started Page - Failure path")
     void Test_GetRequest_ReturnsError_ForIncorrectPath() throws Exception {
         this.mockMvc.perform(get(ApplicationVariables.BAD_REQUEST_URL))
