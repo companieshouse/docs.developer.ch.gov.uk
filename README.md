@@ -4,20 +4,13 @@ Static General Documentation pages for the Companies House Developer Hub. This a
 
 ## Requirements
 
-- [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [Java 21](https://www.oracle.com/java/technologies/downloads/#java21)
 - [Maven](https://maven.apache.org/download.cgi)
 - [Git](https://git-scm.com/downloads)
 
 ## Getting Started
 1. Run `make`
 2. Run `./start.sh`
-
-## Running in vagrant
-If running in vagrant you can start all developer-hub services by using:
-- `ubic start chs.dev-hub`
-
-Or start developer-hub by using:
-- `ubic start chs.dev-hub.docs-developer-service`
 
 Service can be accessed using the following link: http://dev.chs-dev.internal:4904
 
@@ -28,7 +21,7 @@ To build a Docker image run the following command:
 mvn compile jib:dockerBuild
 ```
 
-This will output a Docker imaged named: `169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/docs.developer.ch.gov.uk`
+This will output a Docker imaged named: `416670754337.dkr.ecr.eu-west-2.amazonaws.com/docs.developer.ch.gov.uk`
 
 You can specify a different image name run `mvn compile jib:dockerBuild -Dimage=<YOUR NAME HERE>`
 
@@ -43,6 +36,25 @@ CHS_DEVELOPER_CLIENT_SECRET | OAuth2 Client Secret
 DEVELOPER_OAUTH2_REQUEST_KEY | OAuth2 Request Key
 COOKIE_SECURE_ONLY | Determines whether cookie is sent via a secure protocol
 REDIRECT_URI | Redirect url post callback & signout
+
+### Endpoints
+
+| Method | Path                                                                  | Description                                                 |
+|--------|-----------------------------------------------------------------------|-------------------------------------------------------------|
+| *      | /                                                                     |                                                             |
+| *      | /api-testing                                                          |                                                             |
+| GET    | /api/docs                                                             |                                                             |
+| *      | /authentication                                                       |                                                             |
+| *      | /create-account                                                       |                                                             |
+| *      | /developer-guidelines                                                 |                                                             |
+| *      | /error                                                                |                                                             |
+| *      | /get-started                                                          |                                                             |
+| *      | /how-to-create-an-application                                         |                                                             |
+| *      | /manage-applications                                                  |                                                             |
+| GET    | /oauth2/user/callback                                                 |                                                             |
+| *      | /overview                                                             |                                                             |
+| GET    | /signin                                                               |                                                             |
+| GET    | /signout                                                              |                                                             |
 
 ## Related Services
 For full functionality of the developer hub this also requires [applications.api.identity.ch.gov.uk](https://github.com/companieshouse/applications.api.identity.ch.gov.uk)

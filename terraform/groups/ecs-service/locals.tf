@@ -1,4 +1,5 @@
 # Define all hardcoded local variable and local variables looked up from data resources
+
 locals {
   stack_name                = "developer-site" # this must match the stack name the service deploys into
   name_prefix               = "${local.stack_name}-${var.environment}"
@@ -33,7 +34,7 @@ locals {
     trimprefix(sec.name, "/${local.global_prefix}/") => sec.arn
   }
 
-  global_secret_list = flatten([for key, value in local.global_secrets_arn_map : 
+  global_secret_list = flatten([for key, value in local.global_secrets_arn_map :
     { "name" = upper(key), "valueFrom" = value }
   ])
 
