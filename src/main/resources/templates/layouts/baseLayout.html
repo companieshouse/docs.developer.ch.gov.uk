@@ -42,7 +42,7 @@
 <div th:replace="fragments/header :: header"></div>
 <div class="govuk-width-container">
   <div th:replace="fragments/userBar :: userBar"></div>
-  <div th:replace="fragments/backButtonLink :: backButtonLink"></div>
+  <div th:replace="fragments/back-button :: backLink"></div>
   <div th:switch="${isErrorPage}">
     <!-- Non Error pages require Nav bar and do not have main wrapper in fragment -->
     <div th:case="false" th:remove="tag">
