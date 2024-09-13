@@ -41,19 +41,19 @@ REDIRECT_URI | Redirect url post callback & signout
 
 | Method | Path                                                                  | Description                                                 |
 |--------|-----------------------------------------------------------------------|-------------------------------------------------------------|
-| *      | /                                                                     |                                                             |
-| *      | /api-testing                                                          |                                                             |
-| GET    | /api/docs                                                             |                                                             |
-| *      | /authentication                                                       |                                                             |
-| *      | /create-account                                                       |                                                             |
-| *      | /developer-guidelines                                                 |                                                             |
-| *      | /error                                                                |                                                             |
-| *      | /get-started                                                          |                                                             |
-| *      | /how-to-create-an-application                                         |                                                             |
-| *      | /manage-applications                                                  |                                                             |
-| GET    | /oauth2/user/callback                                                 |                                                             |
-| *      | /overview                                                             |                                                             |
-| GET    | /signin                                                               |                                                             |
+| *      | /                                                                     | Companies House API overview                                |
+| *      | /api-testing                                                          | API testing                                                 |
+| GET    | /api/docs                                                             | ( redirects to '/' )                                        |
+| *      | /authentication                                                       | API authentication                                          |
+| *      | /create-account                                                       | How to Create a Companies House Account                     |
+| *      | /developer-guidelines                                                 | Developer guidelines                                        |
+| *      | /error                                                                | Sorry we are experiencing technical difficulties            |
+| *      | /get-started                                                          | Get started                                                 |
+| *      | /how-to-create-an-application                                         | How to create an application                                |
+| *      | /manage-applications                                                  | Application Overview                                        |
+| GET    | /oauth2/user/callback                                                 | ( redirects )                                               |
+| *      | /overview                                                             | Companies House REST API                                    |
+| GET    | /signin                                                               | Sign in to Companies House ( redirect )                     |
 | GET    | /signout                                                              |                                                             |
 
 ## Related Services
