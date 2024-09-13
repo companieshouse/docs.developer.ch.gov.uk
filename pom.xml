@@ -25,7 +25,7 @@
     <home.url></home.url>
     <java-session-handler.version>4.1.0</java-session-handler.version>
     <java.version>21</java.version>
-    <junit-jupiter-engine.version>5.10.2</junit-jupiter-engine.version>
+    <junit-jupiter-engine.version>5.10.3</junit-jupiter-engine.version>
     <!--Maven -->
     <maven-surefire-plugin.version>3.4.0</maven-surefire-plugin.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -35,15 +35,15 @@
     <!--Spring -->
     <spring-boot-dependencies.version>3.3.3</spring-boot-dependencies.version>
     <spring-boot-maven-plugin.version>3.3.3</spring-boot-maven-plugin.version>
+    <spring-boot.version>3.3.3</spring-boot.version>
     <spring-test.version>6.1.12</spring-test.version>
     <structured-logging.version>3.0.12</structured-logging.version>
-    <thymeleaf-extras-java8time.version>3.0.4.RELEASE</thymeleaf-extras-java8time.version>
     <thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
     <web-security-java.version>3.1.0</web-security-java.version>
     <log4j2.version>2.16.0</log4j2.version>
     <!-- Jacoco-->
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
-    <jib-maven-plugin.version>3.4.1</jib-maven-plugin.version>
+    <jib-maven-plugin.version>3.4.3</jib-maven-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -56,8 +56,8 @@
         <type>pom</type>
       </dependency>
       <dependency>
-        <artifactId>spring-boot-dependencies</artifactId>
         <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
         <scope>import</scope>
         <type>pom</type>
         <version>${spring-boot-dependencies.version}</version>
@@ -74,8 +74,8 @@
       <version>${junit-jupiter-engine.version}</version>
     </dependency>
     <dependency>
-      <artifactId>spring-boot-starter-test</artifactId>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -83,6 +83,11 @@
           <artifactId>android-json</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+        <version>${spring-boot.version}</version>
     </dependency>
     <dependency>  <!--    Using Parent but overriding scope to Test -->
       <artifactId>mockito-junit-jupiter</artifactId>
@@ -109,11 +114,6 @@
       <artifactId>thymeleaf-layout-dialect</artifactId>
       <groupId>nz.net.ultraq.thymeleaf</groupId>
       <version>${thymeleaf-layout-dialect.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>thymeleaf-extras-java8time</artifactId>
-      <groupId>org.thymeleaf.extras</groupId>
-      <version>${thymeleaf-extras-java8time.version}</version>
     </dependency>
     <!-- Logging dependencies -->
     <dependency>
