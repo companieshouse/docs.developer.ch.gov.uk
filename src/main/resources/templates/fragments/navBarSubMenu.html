@@ -16,7 +16,7 @@
   <li th:if="${not #lists.isEmpty(menu.children)}">
     <ul>
       <li th:each="item : ${menu.children}" th:remove="tag">
-        <span th:replace="fragments/navBarSubMenu :: navBarSubMenu(menu=${item})"></span>
+          <span th:replace="~{fragments/navBarSubMenu :: navBarSubMenu(menu=${item})}"></span>
       </li>
     </ul>
   </li>
