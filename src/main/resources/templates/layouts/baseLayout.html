@@ -38,18 +38,18 @@
 <div id="skiplink-container">
   <a class="govuk-skip-link" href="#main-content">Skip to main content</a>
 </div>
-<div th:replace="fragments/piwikWithCookieCheck :: cookieBanner"></div>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/piwikWithCookieCheck :: cookieBanner}"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="govuk-width-container">
-  <div th:replace="fragments/userBar :: userBar"></div>
-  <div th:replace="fragments/back-button :: backLink"></div>
+  <div th:replace="~{fragments/userBar :: userBar}"></div>
+  <div th:replace="~{fragments/back-button :: backLink}"></div>
   <div th:switch="${isErrorPage}">
     <!-- Non Error pages require Nav bar and do not have main wrapper in fragment -->
     <div th:case="false" th:remove="tag">
       <main class="govuk-main-wrapper" id="main-content">
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-one-third">
-            <div th:replace="fragments/navBar :: navBar"></div>
+            <div th:replace="~{fragments/navBar :: navBar}"></div>
           </div>
           <div class="govuk-grid-column-two-thirds">
             <div layout:fragment="content"></div>
@@ -63,7 +63,7 @@
     </div>
   </div>
 </div>
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 <script
     th:src="@{{cdnUrl}/javascripts/app/body-js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}"></script>
