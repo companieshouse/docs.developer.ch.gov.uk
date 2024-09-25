@@ -48,6 +48,12 @@
 
   <dependencyManagement>
     <dependencies>
+        <dependency>
+            <!--Overriding spring-webflux version to remove vulnerability CVE-2024-38816 pulled in by oauth-signin-java-library -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+            <version>6.1.13</version>
+        </dependency>
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-bom</artifactId>
