@@ -59,4 +59,3 @@ REDIRECT_URI | Redirect url post callback & signout
 ## Related Services
 For full functionality of the developer hub this also requires [applications.api.identity.ch.gov.uk](https://github.com/companieshouse/applications.api.identity.ch.gov.uk)
 and [applications.developer.web.ch.gov.uk](https://github.com/companieshouse/applications.developer.web.ch.gov.uk). For more information, please see their readme documents.
-
