@@ -23,7 +23,7 @@
     <!--Java & Junit-->
     <common-web-java.version>3.0.22</common-web-java.version>
     <home.url></home.url>
-    <java-session-handler.version>4.1.0</java-session-handler.version>
+    <java-session-handler.version>4.1.1</java-session-handler.version>
     <java.version>21</java.version>
     <junit-jupiter-engine.version>5.10.3</junit-jupiter-engine.version>
     <!--Maven -->
