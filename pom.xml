@@ -31,7 +31,7 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <mockito-junit-jupiter.version>5.12.0</mockito-junit-jupiter.version>
-    <oauth-signin-java.version>2.1.11</oauth-signin-java.version>
+    <oauth-signin-java.version>2.1.12</oauth-signin-java.version>
     <!--Spring -->
     <spring-boot-dependencies.version>3.3.3</spring-boot-dependencies.version>
     <spring-boot-maven-plugin.version>3.3.3</spring-boot-maven-plugin.version>
