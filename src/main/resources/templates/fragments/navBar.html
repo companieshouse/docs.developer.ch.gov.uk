@@ -15,7 +15,7 @@
         <h4 class="app-subnav__theme" th:text="${section.key}"></h4>
         <ul class="app-subnav__section">
           <th:block th:each="item : ${section.value}">
-            <li th:replace="fragments/navBarSubMenu :: navBarSubMenu(menu=${item})"> Text</li>
+              <li th:replace="~{fragments/navBarSubMenu :: navBarSubMenu(menu=${item})}"> Text</li>
           </th:block>
         </ul>
       </div>
