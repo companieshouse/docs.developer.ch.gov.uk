@@ -31,14 +31,13 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <mockito-junit-jupiter.version>5.12.0</mockito-junit-jupiter.version>
-    <oauth-signin-java.version>2.1.12</oauth-signin-java.version>
+    <oauth-signin-java.version>2.1.23</oauth-signin-java.version>
     <!--Spring -->
-    <spring-boot-dependencies.version>3.4.5</spring-boot-dependencies.version>
     <spring-boot-maven-plugin.version>3.4.5</spring-boot-maven-plugin.version>
     <spring-boot.version>3.4.5</spring-boot.version>
     <structured-logging.version>3.0.12</structured-logging.version>
     <thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
-    <web-security-java.version>3.1.0</web-security-java.version>
+    <web-security-java.version>3.1.5</web-security-java.version>
     <log4j2.version>2.24.3</log4j2.version>
     <!-- Jacoco-->
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
@@ -59,7 +58,7 @@
         <artifactId>spring-boot-dependencies</artifactId>
         <scope>import</scope>
         <type>pom</type>
-        <version>${spring-boot-dependencies.version}</version>
+        <version>${spring-boot.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -85,7 +84,6 @@
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-actuator</artifactId>
-        <version>${spring-boot.version}</version>
     </dependency>
     <dependency>  <!--    Using Parent but overriding scope to Test -->
       <artifactId>mockito-junit-jupiter</artifactId>
