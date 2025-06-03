@@ -17,7 +17,7 @@ public class SignOutController {
 
     private final String redirectUri;
 
-    public SignOutController(@Value("signout.redirect.url") String redirectUri) {
+    public SignOutController(@Value("${signout.redirect.url}") String redirectUri) {
         this.redirectUri = redirectUri;
     }
 
