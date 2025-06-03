@@ -11,7 +11,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@TestPropertySource(properties = "REDIRECT_URI=/")
+@TestPropertySource(properties = {
+        "REDIRECT_URI=http://dev.chs.local",
+        "CHS_URL=http://chs.local",
+        "DEVELOPER_URL=http://dev.chs.local"
+})
 class DocsWebApplicationTest {
 
     @Autowired

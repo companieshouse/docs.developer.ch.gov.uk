@@ -21,7 +21,11 @@ import uk.gov.ch.developer.docs.DocsWebApplication;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = DocsWebApplication.class)
-@TestPropertySource(properties = "REDIRECT_URI=/")
+@TestPropertySource(properties = {
+        "REDIRECT_URI=http://dev.chs.local",
+        "CHS_URL=http://chs.local",
+        "DEVELOPER_URL=http://dev.chs.local"
+})
 class ApplicationOverviewControllerTest {
 
     private static final String URL = "/manage-applications";
