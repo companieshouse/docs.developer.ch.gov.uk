@@ -21,7 +21,11 @@ import uk.gov.ch.developer.docs.DocsWebApplication;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = DocsWebApplication.class)
-@TestPropertySource(properties = "REDIRECT_URI=/")
+@TestPropertySource(properties = {
+        "REDIRECT_URI=http://dev.chs.local",
+        "CHS_URL=http://chs.local",
+        "DEVELOPER_URL=http://dev.chs.local"
+})
 class HistoricHomeControllerTest {
 
     private static final String URL = "/api/docs";
@@ -46,7 +50,7 @@ class HistoricHomeControllerTest {
     @DisplayName("Get Historic Home Page is redirected")
     void Test_GetRequest_ReturnsSuccess_ForCorrectPath() throws Exception {
         this.mockMvc.perform(get(URL))
-                .andExpect(redirectedUrl("/"))
+                .andExpect(redirectedUrl("http://dev.chs.local"))
                 .andExpect(status().is3xxRedirection());
     }
 }
