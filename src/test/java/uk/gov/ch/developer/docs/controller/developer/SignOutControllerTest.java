@@ -8,6 +8,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.ch.developer.docs.DocsWebApplication;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
@@ -19,20 +20,19 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class SignOutControllerTest {
 
-    private static final String REDIRECT_PAGE = "/home";
-
     @Mock
     private HttpServletResponse httpServletResponse;
     @Spy
     private Logger logger = LoggerFactory.getLogger(DocsWebApplication.APPLICATION_NAME_SPACE);
 
-    private final SignOutController signOutController = new SignOutController(logger, REDIRECT_PAGE);
+    private final SignOutController signOutController = new SignOutController(logger);
 
     @Test
     @DisplayName("Test that a user is redirected upon signing out")
     void testDoSignOut() throws IOException {
+        ReflectionTestUtils.setField(signOutController, "redirectUri", "/dev-hub");
         signOutController.doSignOut(httpServletResponse);
 
-        verify(httpServletResponse).sendRedirect(REDIRECT_PAGE);
+        verify(httpServletResponse).sendRedirect("/dev-hub");
     }
 }
