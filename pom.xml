@@ -175,6 +175,7 @@
             <account.url>//</account.url>
             <cdn.url>//</cdn.url>
             <chs.url>//</chs.url>
+            <DEVELOPER_URL>/dev-hub</DEVELOPER_URL>
             <createAccount.url>${home.url}/create-account</createAccount.url>
             <developerGuidelines.url>${home.url}/developer-guidelines</developerGuidelines.url>
             <developerSpecs.url>//</developerSpecs.url>
