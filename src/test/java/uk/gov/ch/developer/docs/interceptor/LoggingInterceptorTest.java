@@ -2,29 +2,29 @@ package uk.gov.ch.developer.docs.interceptor;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.servlet.ModelAndView;
 import uk.gov.companieshouse.logging.Logger;
-import uk.gov.companieshouse.logging.util.RequestLogger;
+import uk.gov.companieshouse.logging.util.LogContextProperties;
 
 @ExtendWith(MockitoExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class LoggingInterceptorTest {
 
-    @Mock
-    RequestLogger mockRequestLogger;
     @Mock
     HttpServletRequest mockRequest;
     @Mock
@@ -33,42 +33,36 @@ class LoggingInterceptorTest {
     Object mockHandler;
     @Mock
     ModelAndView mockModelAndView;
-    /**
-     * This is being done using mock() rather than through the annotation so that it is initalised
-     * before @InjectMocks
-     */
-    private Logger mockLogger = mock(Logger.class);
-    /**
-     * This is initalised with the constructor due to LOGGER being a final field.
-     */
+    @Mock
+    HttpSession mockSession;
+
+    @Mock
+    private Logger logger;
+
     @InjectMocks
-    LoggingInterceptor interceptor = new LoggingInterceptor(mockLogger);
+    LoggingInterceptor interceptor;
 
     @Test
     @DisplayName("Tests the interceptor invokes the Request Logger to pre handle the start of the request")
     void test_preHandle_Invokes_RequestLogger() {
+        when(mockRequest.getSession()).thenReturn(mockSession);
         assertTrue(interceptor.preHandle(mockRequest, mockResponse, mockHandler));
-        verify(mockRequestLogger, times(1)).logStartRequestProcessing(
-                mockRequest,
-                mockLogger
-        );
+        verify(logger, times(1)).infoStartOfRequest(any());
     }
 
     @Test
     @DisplayName("Tests the interceptor invokes the Request Logger to post handle the end of the request")
     void test_postHandle_Invokes_RequestLogger() {
+        when(mockRequest.getSession()).thenReturn(mockSession);
+        when(mockSession.getAttribute(LogContextProperties.START_TIME_KEY.value())).thenReturn(System.currentTimeMillis());
+        when(mockResponse.getStatus()).thenReturn(200);
         interceptor.postHandle(mockRequest, mockResponse, mockHandler, mockModelAndView);
-        verify(mockRequestLogger, times(1)).logEndRequestProcessing(
-                mockRequest,
-                mockResponse,
-                mockLogger
-        );
-
+        verify(logger, times(1)).infoEndOfRequest(any(), eq(200), anyLong());
     }
 
     @Test
     void test_constructor_doesnt_Error() {
-        LoggingInterceptor newInterceptor = new LoggingInterceptor();
+        LoggingInterceptor newInterceptor = new LoggingInterceptor(logger);
         assertNotNull(newInterceptor);
     }
 }

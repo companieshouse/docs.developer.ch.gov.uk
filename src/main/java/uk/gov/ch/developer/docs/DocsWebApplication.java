@@ -26,6 +26,11 @@ public class DocsWebApplication implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loggingInterceptor);
+        registry.addInterceptor(loggingInterceptor).excludePathPatterns(
+                "/favicon.ico",
+                "/img/**",
+                "/assets/images/**",
+                "/css/**"
+        );
     }
 }
