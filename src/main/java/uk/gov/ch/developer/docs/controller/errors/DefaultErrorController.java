@@ -9,10 +9,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import uk.gov.ch.developer.docs.DocsWebApplication;
 import uk.gov.ch.developer.docs.controller.AbstractPageController;
-import uk.gov.companieshouse.logging.Logger;
-import uk.gov.companieshouse.logging.LoggerFactory;
 
 @Controller
 @RequestMapping(DefaultErrorController.ERROR_MAPPING)
@@ -20,8 +17,6 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 public class DefaultErrorController extends AbstractPageController implements ErrorController {
 
 
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(DocsWebApplication.APPLICATION_NAME_SPACE);
     private static final String TITLE = "Error in Request";
     public static final String ERROR_MAPPING = "/error";
 
@@ -75,14 +70,14 @@ public class DefaultErrorController extends AbstractPageController implements Er
         errorMap.put("Error Code",
                 getRequestAttributeAsString(RequestDispatcher.ERROR_STATUS_CODE));
 
-        LOGGER.error("", errorMap);
+        logger.error("", errorMap);
     }
 
     private String getRequestAttributeAsString(String attribute) {
         try {
             return request.getAttribute(attribute).toString();
         } catch (NullPointerException e) {
-            LOGGER.debug(String.format("Could not find %s in request attributes.", attribute));
+            logger.debug(String.format("Could not find %s in request attributes.", attribute));
             return null;
         }
     }
