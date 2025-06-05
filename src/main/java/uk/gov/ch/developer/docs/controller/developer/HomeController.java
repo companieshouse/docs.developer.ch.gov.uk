@@ -16,6 +16,7 @@ public class HomeController extends AbstractPageController {
 
     public HomeController() {
         super(TITLE);
+        logger.trace(String.format("HomeController initialized with title: {%s}", TITLE));
     }
 
     @Override
