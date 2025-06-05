@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.companieshouse.logging.Logger;
+import uk.gov.companieshouse.logging.LoggerFactory;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultErrorControllerTest {
@@ -24,6 +26,8 @@ class DefaultErrorControllerTest {
 
     @Mock
     HttpServletRequest mockRequest;
+    @Spy
+    Logger logger = LoggerFactory.getLogger("DefaultErrorControllerTest");
     @InjectMocks
     @Spy
     private DefaultErrorController controller;
