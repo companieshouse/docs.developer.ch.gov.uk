@@ -16,7 +16,6 @@ public class OverviewController extends AbstractPageController {
 
     public OverviewController() {
         super(TITLE);
-        logger.trace(String.format("OverviewController initialized with title: {%s}", TITLE));
     }
 
     @Override
