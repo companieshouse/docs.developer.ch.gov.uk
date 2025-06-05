@@ -9,19 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.ch.oauth.IOAuthCoordinator;
 import uk.gov.ch.oauth.exceptions.UnauthorisedException;
-import uk.gov.companieshouse.logging.Logger;
 
 @Controller
 @RequestMapping("${callback.url}")
 public class UserCallbackController {
 
     private final IOAuthCoordinator coordinator;
-    private final Logger logger;
 
     @Autowired
-    public UserCallbackController(IOAuthCoordinator coordinator, Logger logger) {
+    public UserCallbackController(IOAuthCoordinator coordinator) {
         this.coordinator = coordinator;
-        this.logger = logger;
     }
 
     @GetMapping
