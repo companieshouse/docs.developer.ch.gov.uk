@@ -17,6 +17,15 @@ terraform {
   }
 }
 
+module "secrets" {
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.294"
+
+  name_prefix = "${local.service_name}-${var.environment}"
+  environment = var.environment
+  kms_key_id  = data.aws_kms_key.kms_key.id
+  secrets     = nonsensitive(local.service_secrets)
+}
+
 module "ecs-service" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.294"
 
@@ -32,13 +41,13 @@ module "ecs-service" {
   lb_listener_arn                   = data.aws_lb_listener.dev_site_lb_listener.arn
   lb_listener_rule_priority         = local.lb_listener_rule_priority
   lb_listener_paths                 = local.lb_listener_paths
-  health_check_grace_period_seconds = 240
-  healthcheck_healthy_threshold     = "2"
 
-  # ECS Task container health check
+  # Service Healthcheck configuration
   use_task_container_healthcheck = true
   healthcheck_path          = local.healthcheck_path
   healthcheck_matcher       = local.healthcheck_matcher
+  health_check_grace_period_seconds = 300
+  healthcheck_healthy_threshold     = "2"
 
   # Docker container details
   docker_registry   = var.docker_registry
@@ -49,19 +58,19 @@ module "ecs-service" {
   # Service configuration
   service_name = local.service_name
   name_prefix  = local.name_prefix
+  use_fargate                        = var.use_fargate
+  fargate_subnets                    = local.application_subnet_ids
+  service_autoscale_enabled          = var.service_autoscale_enabled
 
   # Service performance and scaling configs
   desired_task_count                 = var.desired_task_count
   max_task_count                     = var.max_task_count
   required_cpus                      = var.required_cpus
   required_memory                    = var.required_memory
-  service_autoscale_enabled          = var.service_autoscale_enabled
   service_autoscale_target_value_cpu = var.service_autoscale_target_value_cpu
   service_scaledown_schedule         = var.service_scaledown_schedule
   service_scaleup_schedule           = var.service_scaleup_schedule
   use_capacity_provider              = var.use_capacity_provider
-  use_fargate                        = var.use_fargate
-  fargate_subnets                    = local.application_subnet_ids
 
   # Cloudwatch
   cloudwatch_alarms_enabled = var.cloudwatch_alarms_enabled
@@ -71,13 +80,7 @@ module "ecs-service" {
   task_secrets      = local.task_secrets
   app_environment_filename    = local.app_environment_filename
   use_set_environment_files   = local.use_set_environment_files
-}
 
-module "secrets" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.294"
+  depends_on = [module.secrets]
 
-  name_prefix = "${local.service_name}-${var.environment}"
-  environment = var.environment
-  kms_key_id  = data.aws_kms_key.kms_key.id
-  secrets     = nonsensitive(local.service_secrets)
 }
