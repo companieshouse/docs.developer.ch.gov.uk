@@ -1,13 +1,6 @@
 artifact_name       := docs.developer.ch.gov.uk
 version             := "unversioned"
 
-dependency_check_base_suppressions:=common_suppressions_spring_6.xml
-dependency_check_suppressions_repo_branch:=main
-dependency_check_minimum_cvss := 4
-dependency_check_assembly_analyzer_enabled := false
-dependency_check_suppressions_repo_url:=git@github.com:companieshouse/dependency-check-suppressions.git
-suppressions_file := target/suppressions.xml
-
 .PHONY: all
 all: build
 
@@ -71,7 +64,6 @@ all: clean build build-image
 run:
 	docker run -it --rm $(artifact_name)
 
-
 .PHONY: dependency-check
 dependency-check:
 	@ if [ -n "$(DEPENDENCY_CHECK_SUPPRESSIONS_HOME)" ]; then \
@@ -93,8 +85,10 @@ dependency-check:
 		fi; \
 	fi; \
 	printf -- 'suppressions_home="%s"\n' "$${suppressions_home}"; \
-	DEPENDENCY_CHECK_SUPPRESSIONS_HOME="$${suppressions_home}" "$${suppressions_home}/scripts/depcheck" --repo-name=TodoMyRepoName
+	DEPENDENCY_CHECK_SUPPRESSIONS_HOME="$${suppressions_home}" "$${suppressions_home}/scripts/depcheck" --repo-name=docs.developer.ch.gov.uk
 
+.PHONY: security-check
+security-check: dependency-check
 .PHONY: security-check
 security-check: dependency-check
 
