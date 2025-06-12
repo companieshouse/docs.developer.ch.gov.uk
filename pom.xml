@@ -33,7 +33,6 @@
     <mockito-junit-jupiter.version>5.12.0</mockito-junit-jupiter.version>
     <common-web-java.version>3.0.22</common-web-java.version>
     <java-session-handler.version>4.1.7</java-session-handler.version>
-    <oauth-signin-java.version>2.1.23</oauth-signin-java.version>
     <structured-logging.version>3.0.12</structured-logging.version>
     <thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
     <web-security-java.version>3.1.5</web-security-java.version>
@@ -128,11 +127,6 @@
       <artifactId>web-security-java</artifactId>
       <groupId>uk.gov.companieshouse</groupId>
       <version>${web-security-java.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>oauth-signin-java-library</artifactId>
-      <groupId>uk.gov.companieshouse</groupId>
-      <version>${oauth-signin-java.version}</version>
     </dependency>
 
     <!--    Testing (Apart from Spring-Test; see Spring Modules)-->

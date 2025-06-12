@@ -51,10 +51,7 @@ REDIRECT_URI | Redirect url post callback & signout
 | *      | /get-started                                                          | Get started                                                 |
 | *      | /how-to-create-an-application                                         | How to create an application                                |
 | *      | /manage-applications                                                  | Application Overview                                        |
-| GET    | /oauth2/user/callback                                                 | ( redirects )                                               |
 | *      | /overview                                                             | Companies House REST API                                    |
-| GET    | /signin                                                               | Sign in to Companies House ( redirect )                     |
-| GET    | /signout                                                              |                                                             |
 
 ## Related Services
 For full functionality of the developer hub this also requires [applications.api.identity.ch.gov.uk](https://github.com/companieshouse/applications.api.identity.ch.gov.uk)
