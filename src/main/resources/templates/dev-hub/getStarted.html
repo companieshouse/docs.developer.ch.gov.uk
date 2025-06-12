@@ -14,7 +14,7 @@
   <section id="register">
     <h2 class="govuk-heading-l">Register a Companies House user account </h2>
     <p class="govuk-body">
-      You must <a class="govuk-link" href="/signin">register a user account</a> with Companies House
+      You must <a class="govuk-link" th:href="${@environment.getProperty('signin.url')}">register a user account</a> with Companies House
       to explore and perform tests with the Companies House API.
     </p>
     <p class="govuk-body">
