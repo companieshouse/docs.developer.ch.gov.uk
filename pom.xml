@@ -24,18 +24,17 @@
     <home.url/>
     <java.version>21</java.version>
     <!--Spring -->
-    <spring-boot-dependencies.version>3.4.6</spring-boot-dependencies.version>
-    <spring-boot-maven-plugin.version>3.4.6</spring-boot-maven-plugin.version>
+      <spring-boot-dependencies.version>3.5.5</spring-boot-dependencies.version>
     <!--Maven -->
     <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <mockito-junit-jupiter.version>5.12.0</mockito-junit-jupiter.version>
-    <common-web-java.version>3.0.22</common-web-java.version>
-    <java-session-handler.version>4.1.7</java-session-handler.version>
-    <structured-logging.version>3.0.12</structured-logging.version>
+    <common-web-java.version>3.0.41</common-web-java.version>
+    <java-session-handler.version>4.1.10</java-session-handler.version>
+    <structured-logging.version>3.0.37</structured-logging.version>
     <thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
-    <web-security-java.version>3.1.5</web-security-java.version>
+    <web-security-java.version>3.1.7</web-security-java.version>
     <log4j2.version>2.24.3</log4j2.version>
     <junit-jupiter-engine.version>5.10.3</junit-jupiter-engine.version>
     <!-- Jacoco-->
@@ -77,6 +76,12 @@
         <scope>import</scope>
         <type>pom</type>
       </dependency>
+        <!-- CVE-2025-48924 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.18.0</version>
+        </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -162,7 +167,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring-boot-maven-plugin.version}</version>
         <configuration>
           <mainClass>uk.gov.ch.developer.docs.DocsWebApplication</mainClass>
         </configuration>
