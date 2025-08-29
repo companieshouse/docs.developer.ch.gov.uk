@@ -35,7 +35,7 @@
     <structured-logging.version>3.0.37</structured-logging.version>
     <thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
     <web-security-java.version>3.1.7</web-security-java.version>
-    <log4j2.version>2.24.3</log4j2.version>
+      <log4j.version>2.20.0</log4j.version>
     <junit-jupiter-engine.version>5.10.3</junit-jupiter-engine.version>
     <!-- Jacoco-->
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
@@ -62,13 +62,13 @@
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-bom</artifactId>
-        <version>${log4j2.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-bom</artifactId>
+            <version>${log4j.version}</version>
+            <scope>import</scope>
+            <type>pom</type>
+        </dependency>
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
@@ -120,6 +120,12 @@
       <artifactId>structured-logging</artifactId>
       <groupId>uk.gov.companieshouse</groupId>
       <version>${structured-logging.version}</version>
+        <exclusions>
+            <exclusion>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+            </exclusion>
+        </exclusions>
     </dependency>
     <dependency>
       <artifactId>common-web-java</artifactId>
