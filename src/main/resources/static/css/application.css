@@ -93,12 +93,23 @@
   }
 }
 .govuk-header {
-  border-bottom: 10px solid rgb(0, 94, 165);
+  border-bottom: 10px solid #1d70b8;
+  background-color: #1d70b8;
 }
 .govuk-header__container {
   border-bottom: 0;
   padding-bottom: 7px;
+  background-color: #1d70b8;
 }
+
+.govuk-header__logo {
+  padding-top:7px;
+}
+
+#service-name {
+  color: #0b0c0c;
+}
+
 
 /* The following is a work around, so that a valid logo is discovered in a suitable location */
 .govuk-footer__copyright-logo {
