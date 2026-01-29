@@ -39,7 +39,7 @@
     <junit-jupiter-engine.version>5.10.3</junit-jupiter-engine.version>
     <!-- Jacoco-->
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
-    <jib-maven-plugin.version>3.4.3</jib-maven-plugin.version>
+    <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
       <!-- Sonar -->
       <sonar.projectName>docs.developer.ch.gov.uk</sonar.projectName>
       <!--suppress UnresolvedMavenProperty -->
