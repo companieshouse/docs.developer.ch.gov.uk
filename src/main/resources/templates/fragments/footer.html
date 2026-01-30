@@ -5,7 +5,7 @@
   <title>Header</title>
 </head>
 <body>
-<footer class="govuk-footer" id="footer" th:fragment="footer">
+<footer class="govuk-footer">
   <div class="govuk-width-container">
     <svg
             focusable="false"
@@ -29,6 +29,30 @@
     </svg>
     <div class="govuk-footer__meta">
       <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <h2 class="govuk-visually-hidden">Support links</h2>
+        <ul class="govuk-footer__inline-list">
+          <li class="govuk-footer__inline-list-item">
+            <a class="govuk-footer__link" href="http://www.companieshouse.gov.uk/legal/termsAndConditions.shtml" target="_blank">
+              Policies
+            </a>
+          </li>
+          <li class="govuk-footer__inline-list-item">
+            <a class="govuk-footer__link"
+               th:href="@{{chsUrl}/help/cookies(chsUrl=${@environment.getProperty('chs.url')})}" target="_blank">
+              Cookies
+            </a>
+          </li>
+          <li class="govuk-footer__inline-list-item">
+            <a class="govuk-footer__link" href="https://forum.aws.chdev.org/" target="_blank">
+              Forum
+            </a>
+          </li>
+          <li class="govuk-footer__inline-list-item">
+            <a class="govuk-footer__link" href="https://www.gov.uk/find-contact-details-companies-house" target="_blank">
+              Contact us
+            </a>
+          </li>
+        </ul>
         <svg
                 aria-hidden="true"
                 focusable="false"
