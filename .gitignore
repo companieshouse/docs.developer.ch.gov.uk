@@ -27,8 +27,7 @@ hs_err_pid*
 
 # Sensitive or high-churn files
 .DS_Store
-.idea
-.idea/compiler.xml
+.idea/
 =======
 target/
 pom.xml.tag

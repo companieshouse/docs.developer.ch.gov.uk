@@ -13,7 +13,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="docs.developer.ch.gov.uk" options="" />
+      <module name="docs.developer.ch.gov.uk" options="-parameters" />
     </option>
   </component>
 </project>
