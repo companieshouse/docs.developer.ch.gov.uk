@@ -30,7 +30,7 @@
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <mockito-junit-jupiter.version>5.12.0</mockito-junit-jupiter.version>
-    <common-web-java.version>3.0.41</common-web-java.version>
+    <common-web-java.version>4.0.0</common-web-java.version>
     <java-session-handler.version>4.1.10</java-session-handler.version>
     <structured-logging.version>3.0.37</structured-logging.version>
     <thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
