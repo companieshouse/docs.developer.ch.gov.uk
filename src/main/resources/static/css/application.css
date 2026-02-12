@@ -110,14 +110,6 @@
   color: #0b0c0c;
 }
 
-
-/* The following is a work around, so that a valid logo is discovered in a suitable location */
-.govuk-footer__copyright-logo {
-  background-image:
-   url("/assets/images/govuk-crest-2x.png"),
-   url("/assets/images/govuk-crest.png");
-}
-
 @media (max-width: 40.0525em) {
   .app-hide-mobile {
     display: none;
@@ -594,4 +586,8 @@ pre code {
   .govuk-header__content {
     width: 61.66%;
   }
+}
+
+.govuk-footer {
+    background-color: #f4f8fb;
 }
