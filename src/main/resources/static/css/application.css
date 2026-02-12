@@ -587,3 +587,7 @@ pre code {
     width: 61.66%;
   }
 }
+
+.govuk-footer {
+    background-color: #f4f8fb;
+}
