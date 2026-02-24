@@ -588,6 +588,13 @@ pre code {
   }
 }
 
+
+.govuk-footer__copyright-logo {
+  background-image:
+   url("/assets/images/govuk-crest-2x.png"),
+   url("/assets/images/govuk-crest.png");
+}
+
 .govuk-footer {
     background-color: #f4f8fb;
 }
