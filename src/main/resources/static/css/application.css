@@ -591,3 +591,8 @@ pre code {
 .govuk-footer {
     background-color: #f4f8fb;
 }
+
+.govuk-service-navigation {
+    border-bottom: 1px solid #8eb8dc;
+    background-color: #f4f8fb;   
+}
