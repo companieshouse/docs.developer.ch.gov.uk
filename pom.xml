@@ -40,25 +40,7 @@
     <!-- Jacoco-->
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
-      <!-- Sonar -->
-      <sonar.projectName>docs.developer.ch.gov.uk</sonar.projectName>
-      <!--suppress UnresolvedMavenProperty -->
-      <sonar.host.url>${CODE_ANALYSIS_HOST_URL}</sonar.host.url>
-      <!--suppress UnresolvedMavenProperty -->
-      <sonar.token>${CODE_ANALYSIS_TOKEN}</sonar.token>
-      <sonar.login/>
-      <sonar.password/>
-      <sonar.projectKey>uk.gov.companieshouse:docs.developer.ch.gov.uk</sonar.projectKey>
   </properties>
-
-  <profiles>
-    <profile>
-      <id>sonar-pr-analysis</id>
-      <properties>
-        <sonar.pullrequest.base>main</sonar.pullrequest.base>
-      </properties>
-    </profile>
-  </profiles>
 
   <dependencyManagement>
     <dependencies>
