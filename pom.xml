@@ -42,10 +42,18 @@
     <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
     <!-- Add Tomcat version property for consistent override -->
     <tomcat.version>10.1.54</tomcat.version>
+    <opentelemetry-instrumentation.version>2.27.0</opentelemetry-instrumentation.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+        <dependency>
+          <groupId>io.opentelemetry.instrumentation</groupId>
+          <artifactId>opentelemetry-instrumentation-bom</artifactId>
+          <version>${opentelemetry-instrumentation.version}</version>
+          <type>pom</type>
+          <scope>import</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-bom</artifactId>
@@ -168,6 +176,10 @@
       <groupId>org.mockito</groupId>
       <scope>test</scope>
       <version>${mockito-junit-jupiter.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-spring-boot-starter</artifactId>
     </dependency>
   </dependencies>
 
