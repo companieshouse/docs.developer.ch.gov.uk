@@ -42,7 +42,7 @@
     <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
     <!-- Add Tomcat version property for consistent override -->
     <tomcat.version>10.1.54</tomcat.version>
-    <opentelemetry-instrumentation.version>2.25.0</opentelemetry-instrumentation.version>
+    <opentelemetry-instrumentation.version>2.23.0</opentelemetry-instrumentation.version>
   </properties>
 
   <dependencyManagement>
