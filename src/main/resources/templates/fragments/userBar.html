@@ -18,11 +18,11 @@
         </ul>
         <ul th:case="false" th:remove="tag">
           <li><a class="piwik-event govuk-link" data-event-id="Sign In" id="user-signin"
-                 th:href="${@environment.getProperty('signin.url')}">Sign in / Register
+                 th:href="${signinUrl}">Sign in / Register
           </a></li>
         </ul>
         <li><a class="govuk-link"
-               th:href="${@environment.getProperty('developerforum.url')}">Developer forum
+               th:href="${developerforumUrl}">Developer forum
         </a></li>
       </ul>
     </div>
