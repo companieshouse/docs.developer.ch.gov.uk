@@ -24,7 +24,7 @@
     <home.url/>
     <java.version>21</java.version>
     <!--Spring -->
-      <spring-boot-dependencies.version>3.5.13</spring-boot-dependencies.version>
+      <spring-boot-dependencies.version>3.5.14</spring-boot-dependencies.version>
     <!--Maven -->
     <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
@@ -40,12 +40,18 @@
     <!-- Jacoco-->
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
-    <!-- Add Tomcat version property for consistent override -->
-    <tomcat.version>10.1.54</tomcat.version>
+    <opentelemetry-instrumentation.version>2.23.0</opentelemetry-instrumentation.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+        <dependency>
+          <groupId>io.opentelemetry.instrumentation</groupId>
+          <artifactId>opentelemetry-instrumentation-bom</artifactId>
+          <version>${opentelemetry-instrumentation.version}</version>
+          <type>pom</type>
+          <scope>import</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-bom</artifactId>
@@ -65,25 +71,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.18.0</version>
-        </dependency>
-        <!--
-            Tomcat is overriden to  ${tomcat.version} (10.1.54) to remediate CVEs (CVE-2026-34487, CVE-2026-34483, CVE-2026-34486, CVE-2026-34500).
-            Remove once Spring Boot BOM manages a secure version.
-        -->
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-el</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-websocket</artifactId>
-            <version>${tomcat.version}</version>
         </dependency>
     </dependencies>
   </dependencyManagement>
@@ -168,6 +155,23 @@
       <groupId>org.mockito</groupId>
       <scope>test</scope>
       <version>${mockito-junit-jupiter.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-spring-boot-starter</artifactId>
+    </dependency>
+    <!--    Override CVEs-->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.25.4</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>2.3.21</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
