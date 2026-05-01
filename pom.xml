@@ -40,8 +40,6 @@
     <!-- Jacoco-->
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
-    <!-- Add Tomcat version property for consistent override -->
-    <tomcat.version>10.1.54</tomcat.version>
     <opentelemetry-instrumentation.version>2.23.0</opentelemetry-instrumentation.version>
   </properties>
 
@@ -73,25 +71,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.18.0</version>
-        </dependency>
-        <!--
-            Tomcat is overriden to  ${tomcat.version} (10.1.54) to remediate CVEs (CVE-2026-34487, CVE-2026-34483, CVE-2026-34486, CVE-2026-34500).
-            Remove once Spring Boot BOM manages a secure version.
-        -->
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-el</artifactId>
-            <version>${tomcat.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-websocket</artifactId>
-            <version>${tomcat.version}</version>
         </dependency>
     </dependencies>
   </dependencyManagement>
