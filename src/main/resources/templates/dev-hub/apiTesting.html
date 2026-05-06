@@ -18,14 +18,14 @@
     </p>
     <h2 class="govuk-heading-m">Live</h2>
     <p class="govuk-body">The live environment runs every API listed in the <a class="govuk-link"
-      th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${@environment.getProperty('developerSpecs.url')})}">
+      th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${developerSpecsUrl})}">
       Developer's API suite</a> apart from the 
       <code>sandbox test data generator api</code> service which only 
       runs in the sandbox environment.
     </p>
     <h2 class="govuk-heading-m">Sandbox</h2>
     <p class="govuk-body">The sandbox environment runs most APIs listed in the <a class="govuk-link"
-      th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${@environment.getProperty('developerSpecs.url')})}">
+      th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${developerSpecsUrl})}">
       Developer's API suite</a> including the test data generator service. Some APIs such as streaming and 
       document APIs do not run in the sandbox while others like the search API respond with 
       data from live due to processing limitations detailed below. The sandbox environment does not run 

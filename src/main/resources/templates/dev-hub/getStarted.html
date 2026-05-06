@@ -35,7 +35,7 @@
     </p>
     <p class="govuk-body">
       Read the <a class="govuk-link"
-         th:href="@{{overviewUrl}/(overviewUrl=${@environment.getProperty('overview.url')})}">Companies 
+         th:href="@{{overviewUrl}/(overviewUrl=${overviewUrl})}">Companies
          House REST API</a> overview for more information about our API approach, REST
       web services and the JSON data format.
     </p>
@@ -44,20 +44,20 @@
     <h2 class="govuk-heading-l">API authentication</h2>
     <p class="govuk-body">Access to API services requires authentication. The Companies House API
       requires <a class="govuk-link"
-        th:href="@{{authenticationUrl}/(authenticationUrl=${@environment.getProperty('authentication.url')})}">API authentication</a> 
+        th:href="@{{authenticationUrl}/(authenticationUrl=${authenticationUrl})}">API authentication</a>
         credentials to be sent with each request, which is sent as an API key, stream key 
         or OAuth access token.
     </p>
     <p class="govuk-body">
       Learn <a class="govuk-link"
-        th:href="@{{howToCreateApplicationUrl}/(howToCreateApplicationUrl=${@environment.getProperty('howToCreateApplication.url')})}">how 
+        th:href="@{{howToCreateApplicationUrl}/(howToCreateApplicationUrl=${howToCreateApplicationUrl})}">how
         to create an application</a> as well as API keys, stream keys and OAuth web clients.
     </p>
   </section>
   <section id="guidelines">
     <h2 class="govuk-heading-l">Developer guidelines</h2>
     <p class="govuk-body">Read the <a class="govuk-link"
-                                      th:href="@{{devGuideURL}/(devGuideURL=${@environment.getProperty('developerGuidelines.url')})}">developer
+                                      th:href="@{{devGuideURL}/(devGuideURL=${developerGuidelinesUrl})}">developer
       guidelines</a> for information about security, API rate
       limits and enumerated types as you’re developing your application.
     </p>

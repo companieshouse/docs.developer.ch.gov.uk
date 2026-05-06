@@ -36,7 +36,7 @@
       can be used to interact with the Companies House OAuth 2.0 service.
   </p>
   <p class="govuk-body"><a class="govuk-link"
-        th:href="@{{authenticationUrl}/(authenticationUrl=${@environment.getProperty('authentication.url')})}">API authentication</a> 
+        th:href="@{{authenticationUrl}/(authenticationUrl=${authenticationUrl})}">API authentication</a>
         details how to use each type of API client with the Companies House API and OAuth 2.0 services.
   </p>
 </div>
