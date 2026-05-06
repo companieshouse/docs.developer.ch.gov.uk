@@ -13,7 +13,7 @@
         <ul th:case="true" th:remove="tag">
           <li class="user" id="signed-in-user" th:text="${userModel.getId()}"></li>
           <li><a class="piwik-event govuk-link" data-event-id="Sign out" id="user-signout"
-                 th:href="${@environment.getProperty('signout.url')}">Sign out
+                 th:href="${signoutUrl}">Sign out
           </a></li>
         </ul>
         <ul th:case="false" th:remove="tag">

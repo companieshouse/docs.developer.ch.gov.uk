@@ -75,7 +75,7 @@
   <section id="api-specs">
     <h2 class="govuk-heading-l">API specifications</h2>
     <p class="govuk-body">The API specifications list in the <a class="govuk-link"
-      th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${@environment.getProperty('developerSpecs.url')})}">
+      th:href="@{{developerSpecsUrl}/(developerSpecsUrl=${developerSpecsUrl})}">
       Developer's API suite</a> documents all of the available Companies House public API operations, from
       reading public company data to submitting a data change for a specific company.
     </p>
