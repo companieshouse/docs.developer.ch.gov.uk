@@ -8,8 +8,14 @@ import uk.gov.ch.developer.docs.models.nav.NavBarModel;
 import uk.gov.ch.developer.docs.models.nav.NavBarModelBuilder;
 import uk.gov.ch.developer.docs.models.user.IUserModel;
 import uk.gov.ch.developer.docs.session.SessionService;
+import uk.gov.companieshouse.logging.Logger;
+import uk.gov.companieshouse.logging.LoggerFactory;
+
+import static uk.gov.ch.developer.docs.DocsWebApplication.APPLICATION_NAME_SPACE;
 
 public abstract class AbstractPageController extends BaseController {
+
+    protected static final Logger logger = LoggerFactory.getLogger(APPLICATION_NAME_SPACE);
 
     private final String title;
     @Autowired
@@ -27,6 +33,7 @@ public abstract class AbstractPageController extends BaseController {
 
     @GetMapping
     public String get() {
+        logger.info("Getting template request");
         return getTemplateName();
     }
 
@@ -54,6 +61,7 @@ public abstract class AbstractPageController extends BaseController {
     @ModelAttribute(ModelAttributeNames.NAV_BAR_MODEL)
     public NavBarModel getNavBar(ModelMap model,
             @ModelAttribute(ModelAttributeNames.USER_MODEL) IUserModel iUserModel) {
+        logger.info("Getting Navbar");
         return navbarFactory.build(model);
     }
 }
