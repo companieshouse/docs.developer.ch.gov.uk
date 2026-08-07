@@ -58,6 +58,8 @@
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
         <!-- Source: https://mvnrepository.com/artifact/com.google.cloud.tools/jib-maven-plugin -->
         <jib-maven-plugin.version>3.5.2</jib-maven-plugin.version>
+        <!-- Source: https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-failsafe-plugin -->
+        <maven-failsafe-plugin.version>3.5.6</maven-failsafe-plugin.version>
 
     </properties>
 
@@ -296,6 +298,12 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco-maven-plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
             </plugin>
 
         </plugins>

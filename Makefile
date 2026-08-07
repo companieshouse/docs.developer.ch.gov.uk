@@ -2,7 +2,9 @@ artifact_name       := docs.developer.ch.gov.uk
 version             := "unversioned"
 
 .PHONY: all
-all: build
+all:
+	@# Help: Calls methods required to build a locally runnable version, typically the build target
+	mvn clean install
 
 .PHONY: clean
 clean:
@@ -16,7 +18,7 @@ clean:
 build:
 	mvn versions:set -DnewVersion=$(version) -DgenerateBackupPoms=false
 	mvn package -DskipTests=true
-	cp ./target/$(artifact_name)-$(version).jar ./$(artifact_name).jar
+	cp ./target/$(artifact_name).jar ./$(artifact_name).jar
 
 .PHONY: test
 test: test-unit
@@ -27,32 +29,20 @@ test-unit: clean
 
 .PHONY: test-integration
 test-integration:
-	mvn integration-test -Dskip.unit.tests=true
+	mvn integration-test verify -Dskip.unit.tests=true failsafe:verify
 
 .PHONY: package
 package:
+ifndef version
+	$(error No version given. Aborting)
+endif
 	$(info Packaging version: $(version))
 	mvn versions:set -DnewVersion=$(version) -DgenerateBackupPoms=false
 	mvn package -DskipTests=true
 	$(eval tmpdir:=$(shell mktemp -d build-XXXXXXXXXX))
-	cp ./target/$(artifact_name)-$(version).jar $(tmpdir)/$(artifact_name).jar
+	cp ./target/$(artifact_name).jar $(tmpdir)/$(artifact_name).jar
 	cd $(tmpdir); zip -r ../$(artifact_name)-$(version).zip *
 	rm -rf $(tmpdir)
 
 .PHONY: dist
 dist: clean build package
-
-.PHONY: build-image
-build-image:
-	@echo "Running build-image"
-	docker build --build-arg JAR_FILE=$(artifact_jar) -t $(artifact_name) .
-	@echo "Finished build-image"
-
-.PHONY: all
-all: clean build build-image
-	@echo "Running all"
-
-.PHONY: run
-run:
-	docker run -it --rm $(artifact_name)
-
