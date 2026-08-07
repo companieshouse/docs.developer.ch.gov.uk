@@ -18,10 +18,13 @@ public abstract class AbstractPageController extends BaseController {
     protected static final Logger logger = LoggerFactory.getLogger(APPLICATION_NAME_SPACE);
 
     private final String title;
+
     @Autowired
     private SessionService sessionService;
+
     @Autowired
     private NavBarModelBuilder navbarFactory;
+
     @Autowired
     private IUserModel userModel;
 
@@ -31,7 +34,14 @@ public abstract class AbstractPageController extends BaseController {
 
     public abstract String getPath();
 
-    @GetMapping
+    /**
+     * Preserve the original behaviour of Spring Boot 2 to allow a trailing slash on service endpoints. This is to avoid
+     * negatively impacting external API users who may rely on it.
+     * <p>
+     * This was previously achieved through the use of PathMatchConfigurer.setUseTrailingSlashMatch(true),
+     * but this was removed in Spring Boot 4.
+     */
+    @GetMapping({"", "/"})
     public String get() {
         logger.info("Getting template request");
         return getTemplateName();

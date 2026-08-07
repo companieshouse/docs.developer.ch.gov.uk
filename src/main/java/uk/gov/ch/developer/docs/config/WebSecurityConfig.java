@@ -9,7 +9,7 @@ import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import uk.gov.companieshouse.csrf.config.ChsCsrfMitigationHttpSecurityBuilder;
 
 @Configuration
-public class WebSecurityConfig {
+public class    WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
