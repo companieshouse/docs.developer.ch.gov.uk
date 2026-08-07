@@ -35,11 +35,11 @@ public abstract class AbstractPageController extends BaseController {
     public abstract String getPath();
 
     /**
-     * Preserve the original behaviour of Spring Boot 2 to allow a trailing slash on service endpoints. This is to avoid
-     * negatively impacting external API users who may rely on it.
+     * Preserve the original behaviour from earlier Spring Boot versions by allowing both
+     * "/path" and "/path/" to be handled by this controller method, avoiding breaking existing links.
      * <p>
-     * This was previously achieved through the use of PathMatchConfigurer.setUseTrailingSlashMatch(true),
-     * but this was removed in Spring Boot 4.
+     * This was previously achieved via PathMatchConfigurer.setUseTrailingSlashMatch(true), but that option was removed in
+     * Spring Boot 4.
      */
     @GetMapping({"", "/"})
     public String get() {

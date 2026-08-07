@@ -40,8 +40,6 @@
         <spring-boot.version>4.1.0</spring-boot.version>
         <!-- Source: https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
         <mockito-junit-jupiter.version>5.23.0</mockito-junit-jupiter.version>
-        <!-- Source: https://mvnrepository.com/artifact/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect -->
-        <thymeleaf-layout-dialect.version>4.0.1</thymeleaf-layout-dialect.version>
         <!-- Source: https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j -->
         <log4j.version>2.26.1</log4j.version>
         <!-- Source: https://mvnrepository.com/artifact/io.opentelemetry.instrumentation/opentelemetry-instrumentation-bom -->
