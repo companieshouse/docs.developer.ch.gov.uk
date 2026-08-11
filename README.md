@@ -9,10 +9,11 @@ Static General Documentation pages for the Companies House Developer Hub. This a
 - [Git](https://git-scm.com/downloads)
 
 ## Getting Started
-1. Run `make`
-2. Run `./start.sh`
+1. Run `chs-dev services enable docs-developer-ch-gov-uk` You may also want to enable (applications-api-identity-ch-gov-uk, applications-developer-web-ch-gov-uk)
+2. Run `chs-dev development enable docs-developer-ch-gov-uk` (this will allow you to make changes).
+3. Run `chs-dev up --otel` to start the service.
 
-Service can be accessed using the following link: http://dev.chs-dev.internal:4904
+Service can be accessed using the following link: http://dev.chs.local/
 
 ## Docker
 To build a Docker image run the following command:

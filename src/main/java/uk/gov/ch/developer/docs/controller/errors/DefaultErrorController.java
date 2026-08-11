@@ -5,7 +5,7 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.boot.webmvc.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +13,6 @@ import uk.gov.ch.developer.docs.controller.AbstractPageController;
 
 @Controller
 @RequestMapping(DefaultErrorController.ERROR_MAPPING)
-
 public class DefaultErrorController extends AbstractPageController implements ErrorController {
 
 
@@ -22,6 +21,7 @@ public class DefaultErrorController extends AbstractPageController implements Er
 
     @Autowired
     HttpServletRequest request;
+
     @Value("${error.pageNotFound.path}")
     String notFoundPath;
 

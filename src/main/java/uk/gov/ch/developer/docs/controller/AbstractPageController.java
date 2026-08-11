@@ -18,10 +18,13 @@ public abstract class AbstractPageController extends BaseController {
     protected static final Logger logger = LoggerFactory.getLogger(APPLICATION_NAME_SPACE);
 
     private final String title;
+
     @Autowired
     private SessionService sessionService;
+
     @Autowired
     private NavBarModelBuilder navbarFactory;
+
     @Autowired
     private IUserModel userModel;
 
@@ -31,7 +34,14 @@ public abstract class AbstractPageController extends BaseController {
 
     public abstract String getPath();
 
-    @GetMapping
+    /**
+     * Preserve the original behaviour from earlier Spring Boot versions by allowing both
+     * "/path" and "/path/" to be handled by this controller method, avoiding breaking existing links.
+     * <p>
+     * This was previously achieved via PathMatchConfigurer.setUseTrailingSlashMatch(true), but that option was removed in
+     * Spring Boot 4.
+     */
+    @GetMapping({"", "/"})
     public String get() {
         logger.info("Getting template request");
         return getTemplateName();
