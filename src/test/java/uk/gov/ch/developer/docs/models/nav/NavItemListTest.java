@@ -72,7 +72,7 @@ class NavItemListTest {
             NavItemList list = new NavItemList(EnumSet.of(DisplayRestrictions.USER_REQUIRED));
             for (int i = 0; i < 20; i++) {
                 String value = String.valueOf(i);
-                NavBarItem item = list.add(value, value);
+                list.add(value, value);
             }
             Iterator<INavBarItem> iter = list.iterator();
 
@@ -121,12 +121,5 @@ class NavItemListTest {
             assertTrue(list.hasDrawableChildren(EnumSet.of(DisplayRestrictions.USER_REQUIRED)));
         }
 
-        @Test
-        @DisplayName("- Returns True if list values require log in and user logged in.")
-        void NavItemList_hasDrawableChildren_ReturnsTrue_IfChildrenRequireSignIn_AndUserSignedIn_b_test() {
-            NavItemList list = new NavItemList(EnumSet.of(DisplayRestrictions.USER_REQUIRED));
-            list.add(HEADING, URL);
-            assertTrue(list.hasDrawableChildren(EnumSet.of(DisplayRestrictions.USER_REQUIRED)));
-        }
     }
 }

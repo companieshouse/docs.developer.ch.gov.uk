@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.ui.ModelMap;
 
 /**
@@ -126,8 +125,7 @@ public class NavBarModelBuilder {
             final List<INavBarItem> clonedChildren = value.getChildren(currentRestrictions)
                     .stream()
                     .map(child -> cloneItemIfVisible(child, currentRestrictions))
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                    .filter(Objects::nonNull).toList();
             ret = new NavBarItem(value, clonedChildren);
         }
         return ret;
