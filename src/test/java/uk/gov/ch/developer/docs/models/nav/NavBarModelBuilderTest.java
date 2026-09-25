@@ -222,7 +222,7 @@ class NavBarModelBuilderTest {
                 assertFalse(item.getRestrictions().contains(DisplayRestrictions.USER_REQUIRED));
             }
             assertThat(subItems, hasSize(1));
-            assertEquals(NO_USER, subItems.get(0).getHeading());
+            assertEquals(NO_USER, subItems.getFirst().getHeading());
         }
 
 
@@ -259,9 +259,9 @@ class NavBarModelBuilderTest {
             ModelMap userModel = addUserToModel(new ModelMap());
 
             NavBarModel outWithUser = builderWithMocks.build(userModel);
-            Map<String, NavItemList> map_withUser = outWithUser.getSections();
-            assertThat(map_withUser.keySet(), hasSize(4));
-            assertThat(map_withUser.keySet(),
+            Map<String, NavItemList> mapWithUser = outWithUser.getSections();
+            assertThat(mapWithUser.keySet(), hasSize(4));
+            assertThat(mapWithUser.keySet(),
                     containsInRelativeOrder("Manage Applications", "General Documentation",
                             "Manage account", "Help"));
         }
@@ -358,7 +358,7 @@ class NavBarModelBuilderTest {
             INavBarItem clonedItem = builder
                     .cloneItemIfVisible(navBarItem, DisplayRestrictions.none());
             assertThat(clonedItem.getChildren(), hasSize(1));
-            INavBarItem clonedChild = clonedItem.getChildren().get(0);
+            INavBarItem clonedChild = clonedItem.getChildren().getFirst();
             assertNotEquals(child, clonedChild);
             assertEquals(child.getHeading(), clonedChild.getHeading());
             assertEquals(child.getUrl(), clonedChild.getUrl());

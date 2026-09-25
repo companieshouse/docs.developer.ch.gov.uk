@@ -1,5 +1,7 @@
 package uk.gov.ch.developer.docs.models.nav;
 
+import org.jspecify.annotations.NonNull;
+
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -40,6 +42,7 @@ public class NavItemList implements Iterable<INavBarItem> {
     /**
      * {@inheritDoc} Cycles across children at top level without going deeper into tree.
      */
+    @NonNull
     public Iterator<INavBarItem> iterator() {
         return Collections.unmodifiableList(list).iterator();
     }

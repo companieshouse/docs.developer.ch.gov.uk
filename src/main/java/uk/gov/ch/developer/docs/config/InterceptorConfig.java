@@ -1,8 +1,8 @@
 package uk.gov.ch.developer.docs.config;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import uk.gov.ch.developer.docs.interceptor.LoggingInterceptor;
@@ -11,7 +11,7 @@ import uk.gov.ch.developer.docs.interceptor.LoggingInterceptor;
 @ComponentScan("uk.gov.companieshouse.authentication.interceptor")
 public class InterceptorConfig implements WebMvcConfigurer {
 
-    private LoggingInterceptor loggingInterceptor;
+    private final LoggingInterceptor loggingInterceptor;
 
 
     public InterceptorConfig(LoggingInterceptor loggingInterceptor) {

@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Basic implementation of the INavBarItem.
@@ -127,10 +126,8 @@ public class NavBarItem implements INavBarItem {
      */
     @Override
     public List<INavBarItem> getChildren(final EnumSet<DisplayRestrictions> restrictions) {
-        List<? extends INavBarItem> ret = children.stream()
-                .filter(item -> item.isVisible(restrictions)).collect(
-                        Collectors.toList());
-        return Collections.unmodifiableList(ret);
+        return children.stream()
+                .filter(item -> item.isVisible(restrictions)).toList();
     }
 
     /**

@@ -23,7 +23,6 @@ import uk.gov.companieshouse.session.model.UserProfile;
 class UserModelTest {
 
     private final String email = "email";
-    private final String id = "id";
     @Mock
     SignInInfo loggedInInfo;
     @Mock
@@ -34,13 +33,13 @@ class UserModelTest {
     UserProfile loggedInProfile;
     @Mock
     UserProfile loggedOutProfile;
-    private UserModel userModel = new UserModel();
+    private final UserModel userModel = new UserModel();
 
     private void invalidateUser() {
         userModel.clear();
 
-        assertThrows(IllegalAccessException.class, () -> userModel.getEmail());
-        assertThrows(IllegalAccessException.class, () -> userModel.getEmail());
+        assertThrows(IllegalAccessException.class, userModel::getEmail);
+        assertThrows(IllegalAccessException.class, userModel::getEmail);
     }
 
     private void logoutTest() {
@@ -48,8 +47,8 @@ class UserModelTest {
 
         userModel.populateUserDetails(mockSession);
 
-        assertThrows(IllegalAccessException.class, () -> userModel.getId());
-        assertThrows(IllegalAccessException.class, () -> userModel.getEmail());
+        assertThrows(IllegalAccessException.class, userModel::getId);
+        assertThrows(IllegalAccessException.class, userModel::getEmail);
         verify(loggedOutInfo, never()).getUserProfile();
     }
 
@@ -80,8 +79,8 @@ class UserModelTest {
         void badSession_cannotBeAccessed() {
             userModel.populateUserDetails(null);
 
-            assertThrows(IllegalAccessException.class, () -> userModel.getId());
-            assertThrows(IllegalAccessException.class, () -> userModel.getEmail());
+            assertThrows(IllegalAccessException.class, userModel::getId);
+            assertThrows(IllegalAccessException.class, userModel::getEmail);
         }
 
         @Nested
@@ -104,8 +103,8 @@ class UserModelTest {
 
                 userModel.populateUserDetails(mockSession);
 
-                assertThrows(IllegalAccessException.class, () -> userModel.getId());
-                assertThrows(IllegalAccessException.class, () -> userModel.getEmail());
+                assertThrows(IllegalAccessException.class, userModel::getId);
+                assertThrows(IllegalAccessException.class, userModel::getEmail);
             }
 
             @Test

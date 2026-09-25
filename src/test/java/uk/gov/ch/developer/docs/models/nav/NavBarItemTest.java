@@ -128,7 +128,7 @@ class NavBarItemTest {
         void navBarItem_getChildren_withRestrictions_Doesnt_ReturnsInvalid_test() {
             NavBarItem parent = new NavBarItem(HEADING, URL,
                     EnumSet.of(DisplayRestrictions.USER_REQUIRED));
-            NavBarItem child = parent.add(HEADING, URL);
+            parent.add(HEADING, URL);
             final List<INavBarItem> children = parent.getChildren(DisplayRestrictions.none());
             assertThat(children, hasSize(0));
         }
